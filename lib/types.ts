@@ -12,8 +12,24 @@ export type IntensityRange = 0|1|2|3|4|5
 
 export type Term = {
   description: string
+  pattern: Pattern
   rightsIntensity?: IntensityRange
   obligationIntensity?: IntensityRange
+}
+
+export type Pattern = {
+  name: string
+  description: string
+  class: PatternClass
+}
+
+export type PatternClass = {
+  name: string
+  description: string
+  order: number
+  color: {
+    hex: string
+  }
 }
 
 export type Reference = {
