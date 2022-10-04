@@ -36,7 +36,11 @@ const EntryPage = ({
   entry,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   // Render post...
-  return <h1>Hello world </h1>
+  return (
+    <div>
+      <pre>{JSON.stringify(entry, null, 2)}</pre>
+    </div>
+  )
 }
 
 export default EntryPage
