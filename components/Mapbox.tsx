@@ -33,7 +33,6 @@ const Mapbox = (props: Props) => {
 
     for (const entry of entries) {
       if (!entry.location.geopoint) continue
-      console.log(entry)
       // Create a DOM element for each marker.
       const el = document.createElement("div")
       el.className = "marker"
