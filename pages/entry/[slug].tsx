@@ -37,7 +37,7 @@ const EntryPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   // Render post...
   return (
-    <div>
+    <div className="bg-rent">
       <pre>{JSON.stringify(entry, null, 2)}</pre>
     </div>
   )
