@@ -1,70 +1,93 @@
-import mapboxgl from "mapbox-gl"
+import { pipe } from "fp-ts/lib/function"
 import "mapbox-gl/dist/mapbox-gl.css"
-import { useEffect, useState } from "react"
+import { useRef } from "react"
+import Map, { Layer, MapRef, Marker, Source } from "react-map-gl"
+import { A, RA } from "../lib/fp"
+import { testPolygons } from "../lib/mock"
 import { Entry } from "../lib/types"
-import * as ReactDOM from "react-dom"
+import Button from "./Button"
 
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!
 type Props = {
   entries: Entry[]
 }
 
 const Mapbox = (props: Props) => {
   const { entries } = props
-  const [mapElement, setMapElement] = useState<HTMLDivElement | null>(null)
+  const mapRef = useRef<MapRef>(null)
 
-  useEffect(() => {
-    if (!mapElement) return
-
-    const map = new mapboxgl.Map({
-      container: mapElement,
-      // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-      style: process.env.NEXT_PUBLIC_MAPBOX_STYLE_URL,
-      zoom: 1.5,
-      center: [30, 50],
-      projection: {
-        name: "globe",
-      },
-    })
-
-    map.on("load", () => {
-      // Set the default atmosphere style
-      // map.setFog({})
-
-      for (const entry of entries) {
-        if (!entry.location.geopoint) continue
-        // Create a DOM element for each marker.
-        const el = document.createElement("div")
-        el.className = "marker"
-        const size = 50
-        el.style.width = `${size}px`
-        el.style.height = `${size}px`
-        el.className = "bg-pink-500 absolute"
-
-        // Add a popup displayed on click for each marker
-        const popup = new mapboxgl.Popup({ offset: 25 })
-
-        popup.setHTML(
-          `<a href="/entry/${entry.slug.current}"><h2>${entry.location.region}</h2></a>`
+  return (
+    <Map
+      mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!}
+      mapStyle={process.env.NEXT_PUBLIC_MAPBOX_STYLE_URL!}
+      initialViewState={{
+        latitude: 50,
+        longitude: 4,
+        zoom: 1.5,
+      }}
+      projection={{ name: "globe" as any }}
+      ref={mapRef}
+    >
+      <Source
+        id={`entryPolygons`}
+        type="geojson"
+        data={{
+          // geometry: { type: "Polygon", coordinates: [coords] },
+          type: "FeatureCollection",
+          features: pipe(
+            testPolygons,
+            A.map((coords) => ({
+              geometry: {
+                type: "Polygon",
+                coordinates: [coords],
+              },
+              properties: {},
+              type: "Feature",
+            }))
+          ),
+        }}
+      >
+        <Layer
+          id="foo"
+          type="fill"
+          source="entryPolygons"
+          paint={{
+            "fill-color": "#4E3FC8",
+          }}
+        />
+      </Source>
+      {pipe(
+        entries,
+        RA.filter((entry) => !!entry.location.geopoint),
+        RA.map(
+          ({
+            location: {
+              geopoint: { lat, lng },
+              region,
+            },
+            slug,
+          }) => (
+            <Marker
+              key={slug.current}
+              longitude={lng}
+              latitude={lat}
+              anchor="bottom"
+            >
+              <Button
+                className="marker w-8 h-8 absolute bg-pink-500"
+                onClick={() => {
+                  mapRef.current
+                    ?.getMap()
+                    .flyTo({ center: { lat, lng }, zoom: 18 })
+                }}
+              >
+                {region}
+              </Button>
+            </Marker>
+          )
         )
-
-        // entry.slug.current
-
-        const { lat, lng } = entry.location.geopoint
-
-        // Add markers to the map.
-        new mapboxgl.Marker(el, {
-          rotationAlignment: "map",
-          offset: [0, -size / 2],
-        })
-          .setLngLat([lng, lat])
-          .setPopup(popup)
-          .addTo(map)
-      }
-    })
-  }, [entries, mapElement])
-
-  return <div ref={setMapElement} className="relative h-full w-full" />
+      )}
+    </Map>
+  )
 }
 
 export default Mapbox
