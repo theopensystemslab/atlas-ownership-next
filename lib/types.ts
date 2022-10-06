@@ -43,8 +43,8 @@ export type Entry = {
   name: string
   description: string
   location: Location
-  dates: {
-    start: string
+  dates?: {
+    start?: string
     end?: string
   }
   mainImage: {
