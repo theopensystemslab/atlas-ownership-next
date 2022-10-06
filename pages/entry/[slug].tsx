@@ -1,8 +1,10 @@
 import { useRouter } from "next/router"
 import { useEffect, useMemo } from "react"
+import { EntryLayout } from "../../components/layout/EntryLayout"
 import { useGetEntryFromSlug } from "../../lib/queries"
 import store from "../../lib/store"
 import { trpc } from "../../lib/trpc"
+import { Entry } from "../../lib/types"
 
 const EntryPage = () => {
   const router = useRouter()
@@ -26,16 +28,7 @@ const EntryPage = () => {
   const { data: patternClasses, error: patternClaassesError } =
     trpc.patternClasses.useQuery()
 
-  // Render post...
-  return (
-    <div>
-      {/* <h1 className="m-2">{entry?.name}</h1>
-      <div id="chart-container" className="max-w-[800px]">
-        <Chart showLabels={true} terms={entry?.terms} patterns={patterns} patternClasses={patternClasses} />
-      </div> */}
-      {/* <pre>{JSON.stringify(entry, null, 2)}</pre> */}
-    </div>
-  )
+  return entry ? <EntryLayout {...entry}/> : null;
 }
 
-export default EntryPage
+export default EntryPage;

@@ -36,6 +36,7 @@ export type Reference = {
   name: string
   link: string
   source: string
+  _key: string
 }
 
 export type Entry = {
@@ -49,6 +50,11 @@ export type Entry = {
   mainImage: {
     source: string
     credit: string
+    file: {
+      asset: {
+        url: string
+      }
+    }
   }
   references: Reference[]
   slug: {

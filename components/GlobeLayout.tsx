@@ -8,7 +8,7 @@ const GlobeLayout = (props: Props) => {
   return (
     <div className="absolute w-full h-full">
       <MapboxGlobe />
-      <div className="absolute top-0 left-0">{children}</div>
+      <div className="absolute top-0 left-0 h-full w-full z-20">{children}</div>
     </div>
   )
 }
