@@ -10,7 +10,7 @@ import store from "../lib/store"
 function MyApp({ Component, pageProps }: AppProps) {
   useSWR<Entry[]>("entries", () => sanityClient.fetch(entriesQuery), {
     onSuccess: (entries) => {
-      if (store.entries.length === 0) store.entries = entries
+      store.entries = entries
     },
   })
   return (
