@@ -1,18 +1,11 @@
-import "../styles/globals.css"
 import type { AppProps } from "next/app"
 import GlobeLayout from "../components/GlobeLayout"
-import useSWR from "swr"
-import { sanityClient } from "../lib/sanity.server"
-import { entriesQuery } from "../lib/queries"
-import { Entry } from "../lib/types"
-import store from "../lib/store"
+import { useEntriesQuery } from "../lib/queries"
+import { trpc } from "../lib/trpc"
+import "../styles/globals.css"
 
 function MyApp({ Component, pageProps }: AppProps) {
-  useSWR<Entry[]>("entries", () => sanityClient.fetch(entriesQuery), {
-    onSuccess: (entries) => {
-      store.entries = entries
-    },
-  })
+  useEntriesQuery()
   return (
     <GlobeLayout>
       <Component {...pageProps} />
@@ -20,4 +13,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   )
 }
 
-export default MyApp
+export default trpc.withTRPC(MyApp)
