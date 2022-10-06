@@ -7,9 +7,11 @@ import { Entry } from "../lib/types"
 
 const Home = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { entries } = props
+
   useEffect(() => {
     store.entries = entries
   }, [entries])
+
   return null
 }
 
