@@ -26,8 +26,8 @@ const GlobeEntry = (props: Props) => {
   const [markerState, setMarkerState] = useState<number>(0)
   const [debouncedMarkerState] = useDebounce(markerState, 100)
 
-  const zoomThreshold = 5
-  const deltaThreshold1 = 15
+  const zoomThreshold = 4
+  const deltaThreshold1 = 11
 
   useEffect(
     () =>
