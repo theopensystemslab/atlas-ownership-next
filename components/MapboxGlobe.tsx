@@ -6,6 +6,7 @@ import { A, RA } from "../lib/fp"
 import { testPolygons } from "../lib/mock"
 import store, { useStore } from "../lib/store"
 import GlobeEntry from "./GlobeEntry"
+import React from "react"
 
 const MapboxGlobe = () => {
   const { entries } = useStore()
@@ -59,4 +60,4 @@ const MapboxGlobe = () => {
   )
 }
 
-export default MapboxGlobe
+export default React.memo(MapboxGlobe)

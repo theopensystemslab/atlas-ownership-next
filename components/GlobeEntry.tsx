@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import { Marker } from "react-map-gl"
 import { useDebounce, useDebouncedCallback } from "use-debounce"
@@ -63,14 +64,18 @@ const GlobeEntry = (props: Props) => {
           }}
         />
       ) : (
-        <Button
-          className="marker absolute bg-pink-500"
-          onClick={() => {
-            store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
-          }}
-        >
-          {name}
-        </Button>
+        <Link href={`/entry/${slug.current}`}>
+          <a>
+            <div
+              className="marker absolute bg-pink-500"
+              onClick={() => {
+                store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
+              }}
+            >
+              {name}
+            </div>
+          </a>
+        </Link>
       )}
     </Marker>
   )

@@ -5,9 +5,7 @@ import GlobeLayout from "../components/GlobeLayout"
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <GlobeLayout>
-      <div className="absolute">
-        <Component {...pageProps} />
-      </div>
+      <Component {...pageProps} />
     </GlobeLayout>
   )
 }
