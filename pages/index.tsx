@@ -1,16 +1,16 @@
-import type { GetStaticProps, InferGetStaticPropsType, NextPage } from "next"
-import Mapbox from "../components/Mapbox"
+import type { GetStaticProps, InferGetStaticPropsType } from "next"
+import { useEffect } from "react"
 import { entriesQuery } from "../lib/queries"
 import { sanityClient } from "../lib/sanity.server"
+import store from "../lib/store"
 import { Entry } from "../lib/types"
 
 const Home = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   const { entries } = props
-  return (
-    <div className="absolute w-full h-full">
-      <Mapbox entries={entries} />
-    </div>
-  )
+  useEffect(() => {
+    store.entries = entries
+  }, [entries])
+  return null
 }
 
 export const getStaticProps: GetStaticProps<{ entries: Entry[] }> = async ({

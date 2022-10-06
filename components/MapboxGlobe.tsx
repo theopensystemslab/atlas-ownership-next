@@ -1,19 +1,14 @@
 import { pipe } from "fp-ts/lib/function"
 import "mapbox-gl/dist/mapbox-gl.css"
-import { useRef } from "react"
-import Map, { Layer, MapRef, Marker, Source } from "react-map-gl"
+import Map, { Layer, Source } from "react-map-gl"
+import { ref } from "valtio"
 import { A, RA } from "../lib/fp"
 import { testPolygons } from "../lib/mock"
-import { Entry } from "../lib/types"
-import Button from "./Button"
+import store, { useStore } from "../lib/store"
+import GlobeEntry from "./GlobeEntry"
 
-type Props = {
-  entries: Entry[]
-}
-
-const Mapbox = (props: Props) => {
-  const { entries } = props
-  const mapRef = useRef<MapRef>(null)
+const MapboxGlobe = () => {
+  const { entries } = useStore()
 
   return (
     <Map
@@ -25,7 +20,9 @@ const Mapbox = (props: Props) => {
         zoom: 1.5,
       }}
       projection={{ name: "globe" as any }}
-      ref={mapRef}
+      ref={(mapRef) => {
+        store.map = mapRef?.getMap() ? ref(mapRef.getMap()) : null
+      }}
     >
       <Source
         id={`entryPolygons`}
@@ -58,36 +55,10 @@ const Mapbox = (props: Props) => {
       {pipe(
         entries,
         RA.filter((entry) => !!entry.location.geopoint),
-        RA.map(
-          ({
-            location: {
-              geopoint: { lat, lng },
-              region,
-            },
-            slug,
-          }) => (
-            <Marker
-              key={slug.current}
-              longitude={lng}
-              latitude={lat}
-              anchor="bottom"
-            >
-              <Button
-                className="marker w-8 h-8 absolute bg-pink-500"
-                onClick={() => {
-                  mapRef.current
-                    ?.getMap()
-                    .flyTo({ center: { lat, lng }, zoom: 18 })
-                }}
-              >
-                {region}
-              </Button>
-            </Marker>
-          )
-        )
+        RA.map((entry) => <GlobeEntry key={entry.slug.current} entry={entry} />)
       )}
     </Map>
   )
 }
 
-export default Mapbox
+export default MapboxGlobe
