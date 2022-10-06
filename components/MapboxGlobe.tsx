@@ -14,15 +14,12 @@ const MapboxGlobe = () => {
     <Map
       mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN!}
       mapStyle={process.env.NEXT_PUBLIC_MAPBOX_STYLE_URL!}
-      initialViewState={{
-        latitude: 50,
-        longitude: 4,
-        zoom: 1.5,
-      }}
+      initialViewState={store.viewState}
       projection={{ name: "globe" as any }}
       ref={(mapRef) => {
         store.map = mapRef?.getMap() ? ref(mapRef.getMap()) : null
       }}
+      onMove={({ viewState }) => void (store.viewState = viewState)}
     >
       <Source
         id={`entryPolygons`}
@@ -55,6 +52,7 @@ const MapboxGlobe = () => {
       {pipe(
         entries,
         RA.filter((entry) => !!entry.location.geopoint),
+        RA.takeLeft(10),
         RA.map((entry) => <GlobeEntry key={entry.slug.current} entry={entry} />)
       )}
     </Map>
