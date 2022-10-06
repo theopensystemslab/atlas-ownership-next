@@ -1,4 +1,3 @@
-import React, { useRef } from "react"
 import _ from "lodash"
 import Highcharts from "highcharts"
 import HighchartsReact from "highcharts-react-official"
@@ -6,13 +5,14 @@ import HighchartsReact from "highcharts-react-official"
 import { Pattern, PatternClass, Term } from "../lib/types"
 
 type Props = {
+  showLabels: boolean,
   terms: Term[]
   patterns: Pattern[]
   patternClasses: PatternClass[]
 }
 
 const Chart = (props: Props) => {
-  const { terms, patterns, patternClasses } = props
+  const { showLabels, terms, patterns, patternClasses } = props
 
   // Group terms by pattern
   let totalsByPattern = _(terms)
@@ -63,7 +63,6 @@ const Chart = (props: Props) => {
     chart: {
       type: "bar",
       animation: false,
-      width: 800,
       backgroundColor: "transparent",
     },
     plotOptions: {
@@ -81,8 +80,10 @@ const Chart = (props: Props) => {
     colors: categoryColors,
     xAxis: [{
       categories: categories,
+      lineColor: "transparent",
       reversed: true,
       labels: {
+        enabled: showLabels,
         step: 1,
       },
     }, { // mirror axis on right side
@@ -92,13 +93,43 @@ const Chart = (props: Props) => {
       visible: false,
     }],
     yAxis: [{
+      title: {
+        text: ""
+      },
+      labels: {
+        enabled: false,
+      },
       maxPadding: 0,
-      visible: false,
+      visible: true, // visible = true to show plotLines, but essentially hidden
+      min: -5,
+      max: 5,
+      tickInterval: 1,
+      gridLineColor: "transparent",
+      plotLines: [{
+        value: 0,
+        color: "#000",
+        width: 4,
+        zIndex: 999,
+      }],
     }],
     title: { text: "" },
     tooltip: { enabled: false },
     legend: { enabled: false },
     credits: { enabled: false },
+    responsive: {
+      rules: [{
+        condition: {
+          maxWidth: 400,
+        },
+        chartOptions: {
+          xAxis: [{
+            labels: {
+              enabled: false, // overwrites showLabels prop
+            },
+          }],
+        },
+      }],
+    },
   }
 
   return (
@@ -106,7 +137,7 @@ const Chart = (props: Props) => {
       highcharts={Highcharts}
       options={options}
     />
-  );
+  )
 }
 
 export default Chart
