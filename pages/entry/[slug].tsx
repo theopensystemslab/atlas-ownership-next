@@ -1,15 +1,30 @@
 import { useRouter } from "next/router"
-import Chart from "../../components/Chart"
+import { useEffect, useMemo } from "react"
 import { useGetEntryFromSlug } from "../../lib/queries"
+import store from "../../lib/store"
 import { trpc } from "../../lib/trpc"
 
 const EntryPage = () => {
   const router = useRouter()
   const getEntry = useGetEntryFromSlug()
-  const entry = getEntry((router.query.slug ?? "") as string)
+  const entry = useMemo(
+    () => getEntry(router.query.slug),
+    [getEntry, router.query.slug]
+  )
+
+  useEffect(() => {
+    if (!entry) return
+    const {
+      location: {
+        geopoint: { lat, lng },
+      },
+    } = entry
+    store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
+  }, [entry])
 
   const { data: patterns, error: patternsError } = trpc.patterns.useQuery()
-  const { data: patternClasses, error: patternClaassesError } = trpc.patternClasses.useQuery()
+  const { data: patternClasses, error: patternClaassesError } =
+    trpc.patternClasses.useQuery()
 
   // Render post...
   return (

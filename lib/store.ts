@@ -1,26 +1,26 @@
-import { MapboxMap, ViewState } from "react-map-gl"
+import { MapboxMap, ViewState as ReactMapGLViewState } from "react-map-gl"
 import { proxy, useSnapshot } from "valtio"
+
+export type ViewState = Omit<ReactMapGLViewState, "padding">
 
 type Store = {
   map: MapboxMap | null
   viewState: ViewState
+  lastBirdseyeViewState: ViewState
+}
+
+const initialViewState: ViewState = {
+  latitude: 50,
+  longitude: 4,
+  zoom: 1.5,
+  pitch: 0,
+  bearing: 0,
 }
 
 const store = proxy<Store>({
   map: null,
-  viewState: {
-    latitude: 50,
-    longitude: 4,
-    zoom: 1.5,
-    pitch: 0,
-    bearing: 0,
-    padding: {
-      top: 0,
-      bottom: 0,
-      left: 0,
-      right: 0,
-    },
-  },
+  viewState: initialViewState,
+  lastBirdseyeViewState: initialViewState,
 })
 
 export const useStore = () => useSnapshot(store) as typeof store
