@@ -1,8 +1,16 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import type { AppProps } from "next/app"
+import GlobeLayout from "../components/GlobeLayout"
+import { useEntriesQuery } from "../lib/queries"
+import { trpc } from "../lib/trpc"
+import "../styles/globals.css"
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  useEntriesQuery()
+  return (
+    <GlobeLayout>
+      <Component {...pageProps} />
+    </GlobeLayout>
+  )
 }
 
-export default MyApp
+export default trpc.withTRPC(MyApp)
