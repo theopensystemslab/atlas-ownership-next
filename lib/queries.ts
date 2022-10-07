@@ -10,9 +10,10 @@ export const patternClassesQuery = `*[_type == "patternClass"] | order(order)`
 export const useGetEntryFromSlug = () => {
   const { data: entries } = trpc.entries.useQuery()
 
-  return (slug: string) => pipe(
-    entries ?? [],
-    RA.findFirst((entry) => entry.slug.current === slug),
-    O.toNullable
-  )
+  return (slug: string | string[] | undefined) =>
+    pipe(
+      entries ?? [],
+      RA.findFirst((entry) => entry.slug.current === slug),
+      O.toNullable
+    )
 }

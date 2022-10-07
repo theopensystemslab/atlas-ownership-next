@@ -1,15 +1,19 @@
 import { useRouter } from "next/router"
-import Chart from "../../components/Chart"
+import { useMemo } from "react"
 import { useGetEntryFromSlug } from "../../lib/queries"
 import { trpc } from "../../lib/trpc"
 
 const EntryPage = () => {
   const router = useRouter()
   const getEntry = useGetEntryFromSlug()
-  const entry = getEntry((router.query.slug ?? "") as string)
+  const entry = useMemo(
+    () => getEntry(router.query.slug),
+    [getEntry, router.query.slug]
+  )
 
   const { data: patterns, error: patternsError } = trpc.patterns.useQuery()
-  const { data: patternClasses, error: patternClaassesError } = trpc.patternClasses.useQuery()
+  const { data: patternClasses, error: patternClaassesError } =
+    trpc.patternClasses.useQuery()
 
   // Render post...
   return (
