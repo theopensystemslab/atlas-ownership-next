@@ -1,15 +1,15 @@
-import Link from "next/link";
-import { Close, ArrowUpRight } from "@carbon/icons-react";
-import { Entry } from "../../lib/types";
+import Link from "next/link"
+import { Close, ArrowUpRight } from "@carbon/icons-react"
+import { Entry } from "../../lib/types"
 
 interface EntryItemProps {
-  heading: string;
-  className?: string;
-  children: React.ReactNode;
+  heading: string
+  className?: string
+  children: React.ReactNode
 }
 
 const EntryHeader = (entry?: Entry) => (
-  <div 
+  <div
     // TODO: The sanity image pipeline could get us an optimized image here
     // https://www.sanity.io/docs/presenting-images
     style={{ backgroundImage: `url(${entry?.mainImage?.file?.asset?.url})` }}
@@ -23,7 +23,7 @@ const EntryHeader = (entry?: Entry) => (
     </nav>
     <h1 className="text-5xl w-1/2">{entry?.name}</h1>
   </div>
-);
+)
 
 const EntryItem = ({ heading, className, children }: EntryItemProps) => (
   <section className={className}>
@@ -32,7 +32,7 @@ const EntryItem = ({ heading, className, children }: EntryItemProps) => (
     </div>
     {children}
   </section>
-);
+)
 
 const References = (entry?: Entry) => (
   <>
@@ -42,7 +42,7 @@ const References = (entry?: Entry) => (
       </a>
     ))}
   </>
-);
+)
 
 const EntryDetails = (entry?: Entry) => (
   <div className="bg-white text-black grid grid-cols-4 grid-rows-auto gap-x-4 gap-y-6 p-4">
@@ -73,10 +73,10 @@ const EntryDetails = (entry?: Entry) => (
       </EntryItem>
     )}
   </div>
-);
+)
 
 export const EntryLayout = (entry?: Entry) => (
-  <div className="bg-white z-20 text-white absolute top-0 left-0 h-full w-full">
+  <div className="bg-white z-20 text-white absolute inset-0 max-w-4xl m-auto">
     <EntryHeader {...entry} />
     <EntryDetails {...entry} />
     <div className="bg-sky-700 h-96 place-items-center grid text-2xl">
@@ -90,4 +90,4 @@ export const EntryLayout = (entry?: Entry) => (
       FOOTER
     </footer>
   </div>
-);
+)
