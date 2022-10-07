@@ -12,13 +12,13 @@ if (typeof Highcharts === "object") {
 
 type Props = {
   showLabels: boolean,
-  terms: Term[]
-  patterns: Pattern[]
-  patternClasses: PatternClass[]
+  terms?: Term[]
+  patterns?: Pattern[]
+  patternClasses?: PatternClass[]
 }
 
 const Chart = (props: Props) => {
-  const { showLabels, terms, patterns, patternClasses } = props
+  const { showLabels, terms = [], patterns = [], patternClasses = [] } = props
 
   // Group terms by pattern
   let totalsByPattern = _(terms)
@@ -59,7 +59,7 @@ const Chart = (props: Props) => {
   
   // Highcharts config
   const categories: string[] = patternClasses.map(patternClass => patternClass.name)
-  const categoryColors: string [] = patternClasses.map(patternClass => patternClass.color.hex)
+  const categoryColors: string[] = patternClasses.map(patternClass => patternClass.color.hex)
   const series = [
     { name: "Obligations", data: totalsByPatternClass.map(total => -Math.abs(total.avgObligations) || 0) }, // represent as negative, replace NaN with 0
     { name: "Rights", data: totalsByPatternClass.map(total => total.avgRights || 0) },

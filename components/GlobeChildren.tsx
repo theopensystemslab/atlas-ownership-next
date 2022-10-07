@@ -1,11 +1,11 @@
 import { pipe } from "fp-ts/lib/function"
 import { Fragment } from "react"
 import { RA } from "../lib/fp"
-import { useStore } from "../lib/store"
+import { trpc } from "../lib/trpc"
 import GlobeEntry from "./GlobeEntry"
 
 const GlobeChildren = () => {
-  const { entries } = useStore()
+  const { data: entries = [] } = trpc.entries.useQuery()
 
   const entryChildren = pipe(
     entries,
