@@ -81,7 +81,7 @@ const GlobeEntry = (props: Props) => {
         <Link href={`/entry/${slug.current}`}>
           <a>
             <div
-              className="marker absolute w-64 text-white font-extrabold text-xl bg-white bg-opacity-20"
+              className="marker absolute w-64 text-white font-extrabold text-xl"
               onClick={() => {
                 store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
               }}
