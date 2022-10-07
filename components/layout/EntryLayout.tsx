@@ -16,9 +16,13 @@ const EntryHeader = (entry?: Entry) => (
     className="h-80 p-4 pt-2 flex flex-col justify-between bg-center bg-cover"
   >
     <nav className="flex justify-between">
-      <Link href="../">The Atlas of Ownership</Link>
-      <Link href="../">
-        <Close size={32} className="cursor-pointer" />
+      <Link href="/">
+        <a>The Atlas of Ownership</a>
+      </Link>
+      <Link href="/">
+        <a>
+          <Close size={32} className="cursor-pointer" />
+        </a>
       </Link>
     </nav>
     <h1 className="text-5xl w-1/2">{entry?.name}</h1>
