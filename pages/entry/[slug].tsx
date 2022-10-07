@@ -35,10 +35,13 @@ const EntryPage = () => {
       animate={{
         opacity: 1,
         transition: {
-          delay: 2,
+          delay: 1,
         },
       }}
       exit={{ opacity: 0 }}
+      transition={{
+        duration: 2,
+      }}
     >
       <EntryLayout {...entry} />
     </motion.div>

@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { Close, ArrowUpRight } from "@carbon/icons-react"
 import { Entry } from "../../lib/types"
+import Back from "../Back"
 
 interface EntryItemProps {
   heading: string
@@ -16,14 +17,14 @@ const EntryHeader = (entry?: Entry) => (
     className="h-80 p-4 pt-2 flex flex-col justify-between bg-center bg-cover"
   >
     <nav className="flex justify-between">
-      <Link href="/">
+      <Back>
         <a>The Atlas of Ownership</a>
-      </Link>
-      <Link href="/">
+      </Back>
+      <Back>
         <a>
           <Close size={32} className="cursor-pointer" />
         </a>
-      </Link>
+      </Back>
     </nav>
     <h1 className="text-5xl w-1/2">{entry?.name}</h1>
   </div>
@@ -80,7 +81,7 @@ const EntryDetails = (entry?: Entry) => (
 )
 
 export const EntryLayout = (entry?: Entry) => (
-  <div className="bg-white z-20 text-white absolute inset-0 max-w-4xl m-auto">
+  <div className="bg-white z-20 text-white fixed inset-0 max-w-4xl m-auto overflow-y-auto no-scrollbar">
     <EntryHeader {...entry} />
     <EntryDetails {...entry} />
     <div className="bg-sky-700 h-96 place-items-center grid text-2xl">
