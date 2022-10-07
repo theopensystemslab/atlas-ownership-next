@@ -49,7 +49,7 @@ const EntryPage = ({
   return (
     <div>
       <h1 className="m-2">{entry.name}</h1>
-      <div id="chart-container" className="w-[600px] h-[600px]">
+      <div id="chart-container" className="max-w-[800px]">
         <Chart showLabels={true} terms={entry.terms} patterns={patterns} patternClasses={patternClasses} />
       </div>
       {/* <pre>{JSON.stringify(entry, null, 2)}</pre> */}

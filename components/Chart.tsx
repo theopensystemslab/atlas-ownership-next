@@ -64,6 +64,7 @@ const Chart = (props: Props) => {
       type: "bar",
       animation: false,
       backgroundColor: "transparent",
+      height: "50%", // set height as % of container width to preserve aspect ratio
     },
     plotOptions: {
       series: {
@@ -124,7 +125,7 @@ const Chart = (props: Props) => {
         chartOptions: {
           xAxis: [{
             labels: {
-              enabled: false, // overwrites showLabels prop
+              enabled: false, // overwrites showLabels prop when condition is met
             },
           }],
         },
