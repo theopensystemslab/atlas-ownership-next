@@ -3,17 +3,21 @@ import { useRouter } from "next/router"
 import { MapboxMap, ViewState } from "react-map-gl"
 import { proxy, useSnapshot } from "valtio"
 import { O, RA } from "./fp"
-import { Entry } from "./types"
+import { Entry, Pattern, PatternClass } from "./types"
 
 type Store = {
   map: MapboxMap | null
   entries: Entry[]
+  patterns: Pattern[]
+  patternClasses: PatternClass[]
   viewState: ViewState
 }
 
 const store = proxy<Store>({
   map: null,
   entries: [],
+  patterns: [],
+  patternClasses: [],
   viewState: {
     latitude: 50,
     longitude: 4,
@@ -40,4 +44,5 @@ export const useEntry = () => {
     O.toNullable
   )
 }
+
 export default store

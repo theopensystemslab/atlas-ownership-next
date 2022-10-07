@@ -3,6 +3,7 @@ import { useEntry } from "../../lib/store"
 
 const EntryPage = () => {
   const entry = useEntry()
+
   // Render post...
   return (
     <div>

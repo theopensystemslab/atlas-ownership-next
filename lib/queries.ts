@@ -12,3 +12,17 @@ export const useEntriesQuery = () =>
       store.entries = entries
     },
   })
+
+export const usePatternsQuery = () => 
+  trpc.patterns.useQuery(undefined, {
+    onSuccess: (patterns) => {
+      store.patterns = patterns
+    },
+  })
+
+export const usePatternClassesQuery = () => 
+  trpc.patternClasses.useQuery(undefined, {
+    onSuccess: (patternClasses) => {
+      store.patternClasses = patternClasses
+    },
+  })

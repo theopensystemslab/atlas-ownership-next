@@ -1,11 +1,14 @@
 import type { AppProps } from "next/app"
 import GlobeLayout from "../components/GlobeLayout"
-import { useEntriesQuery } from "../lib/queries"
+import { useEntriesQuery, usePatternClassesQuery, usePatternsQuery } from "../lib/queries"
 import { trpc } from "../lib/trpc"
 import "../styles/globals.css"
 
 function MyApp({ Component, pageProps }: AppProps) {
   useEntriesQuery()
+  usePatternsQuery()
+  usePatternClassesQuery()
+  
   return (
     <GlobeLayout>
       <Component {...pageProps} />
