@@ -1,22 +1,23 @@
-import React, { PropsWithChildren } from "react";
-import Footer from "./Footer";
-import Header from "./Header";
-import MapboxGlobe from "./MapboxGlobe";
+import { AnimatePresence } from "framer-motion"
+import React, { PropsWithChildren } from "react"
+import Footer from "./Footer"
+import Header from "./Header"
+import MapboxGlobe from "./MapboxGlobe"
 
-type Props = PropsWithChildren<{}>;
+type Props = PropsWithChildren<{}>
 
 const GlobeLayout = (props: Props) => {
-  const { children } = props;
+  const { children } = props
   return (
     <>
       <Header />
       <div className="absolute w-full h-3/4">
         <MapboxGlobe />
-        {children}
+        <AnimatePresence>{children}</AnimatePresence>
       </div>
       <Footer />
     </>
-  );
-};
+  )
+}
 
-export default GlobeLayout;
+export default GlobeLayout

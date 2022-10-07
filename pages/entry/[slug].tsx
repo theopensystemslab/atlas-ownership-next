@@ -5,6 +5,7 @@ import { useGetEntryFromSlug } from "../../lib/queries"
 import store from "../../lib/store"
 import { trpc } from "../../lib/trpc"
 import { Entry } from "../../lib/types"
+import { motion } from "framer-motion"
 
 const EntryPage = () => {
   const router = useRouter()
@@ -28,7 +29,20 @@ const EntryPage = () => {
   const { data: patternClasses, error: patternClaassesError } =
     trpc.patternClasses.useQuery()
 
-  return entry ? <EntryLayout {...entry}/> : null;
+  return entry ? (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{
+        opacity: 1,
+        transition: {
+          delay: 2,
+        },
+      }}
+      exit={{ opacity: 0 }}
+    >
+      <EntryLayout {...entry} />
+    </motion.div>
+  ) : null
 }
 
-export default EntryPage;
+export default EntryPage
