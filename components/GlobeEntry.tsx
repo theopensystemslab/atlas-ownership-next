@@ -1,12 +1,16 @@
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { Marker } from "react-map-gl"
 import { useDebounce } from "use-debounce"
 import { subscribeKey } from "valtio/utils"
 import { hypot } from "../lib/fp"
+import { entryBySlugQuery, useGetEntryFromSlug } from "../lib/queries"
 import store from "../lib/store"
+import { trpc } from "../lib/trpc"
 import { Entry } from "../lib/types"
 import Button from "./Button"
+import Chart from "./Chart"
 
 type Props = {
   entry: Entry
@@ -28,6 +32,13 @@ const GlobeEntry = (props: Props) => {
 
   const zoomThreshold = 4
   const deltaThreshold1 = 11
+  const deltaThreshold2 = 8
+
+  const getEntry = useGetEntryFromSlug()
+  const entry = getEntry(slug.current)
+
+  const { data: patterns, error: patternsError } = trpc.patterns.useQuery()
+  const { data: patternClasses, error: patternClaassesError } = trpc.patternClasses.useQuery()
 
   useEffect(
     () =>
@@ -49,6 +60,9 @@ const GlobeEntry = (props: Props) => {
           case debouncedMarkerState === 1 && d > deltaThreshold1:
             setMarkerState(0)
             break
+          case debouncedMarkerState === 2 && d > deltaThreshold2:
+            setMarkerState(2)
+            break
         }
       }),
     [debouncedMarkerState, lat, lng, markerState]
@@ -58,11 +72,25 @@ const GlobeEntry = (props: Props) => {
     <Marker key={slug.current} longitude={lng} latitude={lat} anchor="center">
       {debouncedMarkerState === 0 ? (
         <Button
-          className="marker  absolute bg-white rounded-full w-2 h-2"
+          className="marker absolute bg-white rounded-full w-2 h-2"
           onClick={() => {
             store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
           }}
         />
+      ) : debouncedMarkerState === 1 ? (
+        <Link href={`/entry/${slug.current}`}>
+          <a>
+            <div
+              className="marker absolute w-64 text-white font-extrabold text-xl"
+              onClick={() => {
+                store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
+              }}
+            >
+              <Chart showLabels={false} terms={entry?.terms} patterns={patterns} patternClasses={patternClasses} />
+              {name}
+            </div>
+          </a>
+        </Link>
       ) : (
         <Link href={`/entry/${slug.current}`}>
           <a>
