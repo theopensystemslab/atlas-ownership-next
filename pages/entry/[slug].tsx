@@ -40,7 +40,7 @@ const EntryPage = () => {
       }}
       exit={{ opacity: 0 }}
     >
-      <EntryLayout {...entry} />
+      <EntryLayout entry={entry} patterns={patterns} patternClasses={patternClasses} />
     </motion.div>
   ) : null
 }

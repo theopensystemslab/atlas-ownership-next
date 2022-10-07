@@ -71,6 +71,10 @@ const Chart = (props: Props) => {
       animation: false,
       backgroundColor: "transparent",
       height: "50%", // set height as % of container width to preserve aspect ratio
+      style: {
+        fontFamily: "inherit",
+        fontWeight: 700,
+      },
     },
     plotOptions: {
       series: {
@@ -91,9 +95,13 @@ const Chart = (props: Props) => {
       reversed: true,
       labels: {
         enabled: showLabels,
+        style: {
+          color: "black",
+          fontSize: "1em",
+        },
       },
       accessibility: {
-        description: 'Obligations'
+        description: "Obligations"
       },
     }, { // mirror axis on right side
       opposite: true,
@@ -101,7 +109,7 @@ const Chart = (props: Props) => {
       linkedTo: 0,
       visible: false,
       accessibility: {
-        description: 'Rights'
+        description: "Rights"
       },
     }],
     yAxis: [{
@@ -112,8 +120,8 @@ const Chart = (props: Props) => {
         enabled: false,
       },
       accessibility: {
-        description: 'Intensity of Rights or Obligations',
-        rangeDescription: '0-5'
+        description: "Intensity of Rights or Obligations",
+        rangeDescription: "0-5",
       },
       maxPadding: 0,
       visible: true, // visible = true to show plotLines, but essentially hidden
@@ -134,7 +142,7 @@ const Chart = (props: Props) => {
     credits: { enabled: false },
     accessibility: {
       point: {
-        valueDescriptionFormat: `{xDescription} ranks {value}/5 in`
+        valueDescriptionFormat: "{xDescription} ranks {value}/5 in"
       }
     },
     responsive: {

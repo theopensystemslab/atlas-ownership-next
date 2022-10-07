@@ -1,6 +1,13 @@
 import Link from "next/link"
 import { Close, ArrowUpRight } from "@carbon/icons-react"
-import { Entry } from "../../lib/types"
+import { Entry, Pattern, PatternClass } from "../../lib/types"
+import Chart from "../Chart"
+
+interface EntryLayoutProps {
+  entry?: Entry
+  patterns?:  Pattern[]
+  patternClasses?: PatternClass[]
+}
 
 interface EntryItemProps {
   heading: string
@@ -79,19 +86,24 @@ const EntryDetails = (entry?: Entry) => (
   </div>
 )
 
-export const EntryLayout = (entry?: Entry) => (
-  <div className="bg-white z-20 text-white absolute inset-0 max-w-4xl m-auto">
-    <EntryHeader {...entry} />
-    <EntryDetails {...entry} />
-    <div className="bg-sky-700 h-96 place-items-center grid text-2xl">
-      CHART
+export const EntryLayout = (props: EntryLayoutProps) => {
+  const { entry, patterns, patternClasses } = props
+
+  return (
+    <div className="bg-white z-20 text-white absolute inset-0 max-w-4xl m-auto">{}
+      <EntryHeader {...entry} />
+      <EntryDetails {...entry} />
+      <div className="bg-white h-96 place-items-center grid text-2xl">
+        <Chart showLabels={true} terms={entry?.terms} patterns={patterns} patternClasses={patternClasses} />
+      </div>
+      <div className="bg-teal-900 h-96 place-items-center grid text-2xl">
+        STATIC MAP
+      </div>
+      {/* Get Footer component once merged */}
+      <footer className="bg-black h-64 place-items-center grid text-2xl">
+        FOOTER
+      </footer>
     </div>
-    <div className="bg-teal-900 h-96 place-items-center grid text-2xl">
-      STATIC MAP
-    </div>
-    {/* Get Footer component once merged */}
-    <footer className="bg-black h-64 place-items-center grid text-2xl">
-      FOOTER
-    </footer>
-  </div>
-)
+  )
+}
+
