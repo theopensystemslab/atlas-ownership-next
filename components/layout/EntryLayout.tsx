@@ -2,6 +2,7 @@ import { ArrowUpRight, Close } from "@carbon/icons-react"
 import { Entry, Pattern, PatternClass } from "../../lib/types"
 import Back from "../Back"
 import Chart from "../Chart"
+import Footer from "../Footer"
 
 interface EntryLayoutProps {
   entry?: Entry
@@ -86,6 +87,17 @@ const EntryDetails = (entry?: Entry) => (
   </div>
 )
 
+const StaticMapImage = (entry: Entry) => {
+  const { lat, lng } = entry.location?.geopoint!
+  const staticMapImageURL = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/pin-l+555555(${lng},${lat})/${lng},${lat},12,0/1280x400?access_token=pk.eyJ1IjoibXlzdGVyeWJlYXIiLCJhIjoiY2t6bzV6b2I3MzVybTJubzA1OWVqNGFhcCJ9.qHUcoQV2DBtX3qpCQytRTA`
+  return (
+    <div
+      style={{ backgroundImage: `url("${staticMapImageURL}")` }}
+      className="h-80 p-4 pt-2 flex flex-col justify-between bg-center bg-cover"
+    ></div>
+  );
+};
+
 export const EntryLayout = (props: EntryLayoutProps) => {
   const { entry, patterns, patternClasses } = props
 
@@ -96,14 +108,8 @@ export const EntryLayout = (props: EntryLayoutProps) => {
       <div className="bg-white h-96 place-items-center grid text-2xl">
         <Chart showLabels={true} terms={entry?.terms} patterns={patterns} patternClasses={patternClasses} />
       </div>
-      <div className="bg-teal-900 h-96 place-items-center grid text-2xl">
-        STATIC MAP
-      </div>
-      {/* Get Footer component once merged */}
-      <footer className="bg-black h-64 place-items-center grid text-2xl">
-        FOOTER
-      </footer>
+      { entry?.location?.geopoint && <StaticMapImage {...entry}/>}
+      {/* <Footer /> */}
     </div>
   )
 }
-
