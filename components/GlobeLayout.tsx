@@ -1,16 +1,17 @@
-import React, { PropsWithChildren } from "react"
-import MapboxGlobe from "./MapboxGlobe"
+import React, { PropsWithChildren } from "react";
+import MapboxGlobe from "./MapboxGlobe";
 
-type Props = PropsWithChildren<{}>
+type Props = PropsWithChildren<{}>;
 
 const GlobeLayout = (props: Props) => {
-  const { children } = props
+  const { children } = props;
+  console.log(props)
   return (
     <div className="absolute w-full h-full">
       <MapboxGlobe />
-      <div className="absolute top-0 left-0 h-full w-full z-20">{children}</div>
+      {children}
     </div>
-  )
-}
+  );
+};
 
-export default GlobeLayout
+export default GlobeLayout;

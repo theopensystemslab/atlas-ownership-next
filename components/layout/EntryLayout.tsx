@@ -76,7 +76,7 @@ const EntryDetails = (entry?: Entry) => (
 );
 
 export const EntryLayout = (entry?: Entry) => (
-  <div className="bg-white z-20 text-white">
+  <div className="bg-white z-20 text-white absolute top-0 left-0 h-full w-full">
     <EntryHeader {...entry} />
     <EntryDetails {...entry} />
     <div className="bg-sky-700 h-96 place-items-center grid text-2xl">
