@@ -10,10 +10,9 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-/* a {
-  color: inherit;
-  text-decoration: none;
-} */
+a {
+  @apply hover:underline
+}
 
 * {
   box-sizing: border-box;

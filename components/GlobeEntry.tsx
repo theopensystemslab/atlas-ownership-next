@@ -18,12 +18,11 @@ const GlobeEntry = (props: Props) => {
   const {
     entry: {
       name,
-      location: {
-        geopoint: { lat, lng },
-      },
       slug,
     },
   } = props
+
+  const { lat, lng } = props.entry.location!.geopoint;
 
   const [markerState, setMarkerState] = useState<number>(0)
   const [debouncedMarkerState] = useDebounce(markerState, 100)
@@ -33,7 +32,7 @@ const GlobeEntry = (props: Props) => {
   const deltaThreshold2 = 8
 
   const getEntry = useGetEntryFromSlug()
-  const entry = getEntry(slug.current)
+  const entry = getEntry(slug?.current)
 
   const { data: patterns, error: patternsError } = trpc.patterns.useQuery()
   const { data: patternClasses, error: patternClaassesError } =
@@ -68,15 +67,15 @@ const GlobeEntry = (props: Props) => {
   )
 
   return (
-    <Marker key={slug.current} longitude={lng} latitude={lat} anchor="center">
+    <Marker key={slug?.current} longitude={lng} latitude={lat} anchor="center">
       {debouncedMarkerState === 0 ? (
-        <Link href={`/entry/${slug.current}`}>
+        <Link href={`/entry/${slug?.current}`}>
           <a>
             <div className="marker absolute bg-white rounded-full w-2 h-2" />
           </a>
         </Link>
       ) : debouncedMarkerState === 1 ? (
-        <Link href={`/entry/${slug.current}`}>
+        <Link href={`/entry/${slug?.current}`}>
           <a>
             <div
               className="marker absolute w-64 text-white font-extrabold text-xl"
@@ -95,7 +94,7 @@ const GlobeEntry = (props: Props) => {
           </a>
         </Link>
       ) : (
-        <Link href={`/entry/${slug.current}`}>
+        <Link href={`/entry/${slug?.current}`}>
           <a>
             <div
               className="marker absolute bg-pink-500"

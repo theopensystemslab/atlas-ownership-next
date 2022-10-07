@@ -28,7 +28,7 @@ const GlobeChildren = () => {
   const entryChildren = pipe(
     entries,
     RA.filter((entry) => !!entry.location?.geopoint),
-    RA.map((entry) => <GlobeEntry key={entry.slug.current} entry={entry} />)
+    RA.map((entry) => <GlobeEntry key={entry?.slug?.current} entry={entry} />)
   )
   return <Fragment>{entryChildren}</Fragment>
 }

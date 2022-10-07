@@ -36,23 +36,29 @@ export type Reference = {
   name: string
   link: string
   source: string
+  _key: string
 }
 
 export type Entry = {
-  name: string
-  description: string
-  location: Location
-  dates: {
-    start: string
+  name?: string
+  description?: string
+  location?: Location
+  dates?: {
+    start?: string
     end?: string
   }
-  mainImage: {
-    source: string
-    credit: string
+  mainImage?: {
+    source?: string
+    credit?: string
+    file?: {
+      asset?: {
+        url?: string
+      }
+    }
   }
-  references: Reference[]
-  slug: {
+  references?: Reference[]
+  slug?: {
     current: string
   }
-  terms: Term[]
+  terms?: Term[]
 }
