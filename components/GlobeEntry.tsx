@@ -1,15 +1,13 @@
 import Link from "next/link"
-import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { Marker } from "react-map-gl"
 import { useDebounce } from "use-debounce"
 import { subscribeKey } from "valtio/utils"
 import { hypot } from "../lib/fp"
-import { entryBySlugQuery, useGetEntryFromSlug } from "../lib/queries"
+import { useGetEntryFromSlug } from "../lib/queries"
 import store from "../lib/store"
 import { trpc } from "../lib/trpc"
 import { Entry } from "../lib/types"
-import Button from "./Button"
 import Chart from "./Chart"
 
 type Props = {
@@ -38,7 +36,8 @@ const GlobeEntry = (props: Props) => {
   const entry = getEntry(slug.current)
 
   const { data: patterns, error: patternsError } = trpc.patterns.useQuery()
-  const { data: patternClasses, error: patternClaassesError } = trpc.patternClasses.useQuery()
+  const { data: patternClasses, error: patternClaassesError } =
+    trpc.patternClasses.useQuery()
 
   useEffect(
     () =>
@@ -71,12 +70,11 @@ const GlobeEntry = (props: Props) => {
   return (
     <Marker key={slug.current} longitude={lng} latitude={lat} anchor="center">
       {debouncedMarkerState === 0 ? (
-        <Button
-          className="marker absolute bg-white rounded-full w-2 h-2"
-          onClick={() => {
-            store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
-          }}
-        />
+        <Link href={`/entry/${slug.current}`}>
+          <a>
+            <div className="marker absolute bg-white rounded-full w-2 h-2" />
+          </a>
+        </Link>
       ) : debouncedMarkerState === 1 ? (
         <Link href={`/entry/${slug.current}`}>
           <a>
@@ -86,7 +84,12 @@ const GlobeEntry = (props: Props) => {
                 store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
               }}
             >
-              <Chart showLabels={false} terms={entry?.terms} patterns={patterns} patternClasses={patternClasses} />
+              <Chart
+                showLabels={false}
+                terms={entry?.terms}
+                patterns={patterns}
+                patternClasses={patternClasses}
+              />
               {name}
             </div>
           </a>
