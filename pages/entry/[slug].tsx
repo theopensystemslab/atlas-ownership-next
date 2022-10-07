@@ -15,7 +15,7 @@ const EntryPage = () => {
   )
 
   useEffect(() => {
-    if (!entry) return
+    if (!entry?.location?.geopoint) return
     const {
       location: {
         geopoint: { lat, lng },

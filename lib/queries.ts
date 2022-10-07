@@ -14,7 +14,7 @@ export const useGetEntryFromSlug = () => {
   return (slug: string | string[] | undefined): Entry | null =>
     pipe(
       entries ?? [],
-      RA.findFirst((entry) => entry.slug.current === slug),
+      RA.findFirst((entry) => entry?.slug?.current === slug),
       O.toNullable
     )
 }

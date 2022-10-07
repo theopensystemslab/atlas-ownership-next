@@ -8,11 +8,11 @@ interface EntryItemProps {
   children: React.ReactNode;
 }
 
-const EntryHeader = (entry: Entry) => (
+const EntryHeader = (entry?: Entry) => (
   <div 
     // TODO: The sanity image pipeline could get us an optimized image here
     // https://www.sanity.io/docs/presenting-images
-    style={{ backgroundImage: `url(${entry.mainImage.file.asset.url})` }}
+    style={{ backgroundImage: `url(${entry?.mainImage?.file?.asset?.url})` }}
     className="h-80 p-4 pt-2 flex flex-col justify-between bg-center bg-cover"
   >
     <nav className="flex justify-between">
@@ -21,7 +21,7 @@ const EntryHeader = (entry: Entry) => (
         <Close size={32} className="cursor-pointer" />
       </Link>
     </nav>
-    <h1 className="text-5xl w-1/2">{entry.name}</h1>
+    <h1 className="text-5xl w-1/2">{entry?.name}</h1>
   </div>
 );
 
@@ -34,9 +34,9 @@ const EntryItem = ({ heading, className, children }: EntryItemProps) => (
   </section>
 );
 
-const References = (entry: Entry) => (
+const References = (entry?: Entry) => (
   <>
-    {entry.references.map((reference) => (
+    {entry?.references?.map((reference) => (
       <a key={reference._key} href={reference.link} className="text-sm block">
         {reference.name} <ArrowUpRight className="ml-1 inline-flex" />
       </a>
@@ -44,30 +44,30 @@ const References = (entry: Entry) => (
   </>
 );
 
-const EntryDetails = (entry: Entry) => (
+const EntryDetails = (entry?: Entry) => (
   <div className="bg-white text-black grid grid-cols-4 grid-rows-auto gap-x-4 gap-y-6 p-4">
     <EntryItem heading="Model" className="col-span-2">
       {/* TODO: What is this value...? */}
       <p className="text-2xl">Plot Lease</p>
     </EntryItem>
     <EntryItem heading="Location">
-      <p className="text-2xl">{entry.location.region}</p>
+      <p className="text-2xl">{entry?.location?.region}</p>
     </EntryItem>
     <EntryItem heading="Dates">
-      {entry.dates?.start ? (
+      {entry?.dates?.start ? (
         <p className="text-2xl">
-          {new Date(Date.parse(entry.dates.start)).getFullYear() + " - "}
-          {entry.dates.end &&
-            new Date(Date.parse(entry.dates.end)).getFullYear()}
+          {new Date(Date.parse(entry?.dates.start)).getFullYear() + " - "}
+          {entry?.dates.end &&
+            new Date(Date.parse(entry?.dates.end)).getFullYear()}
         </p>
       ) : (
         <p className="text-2xl">Unknown</p>
       )}
     </EntryItem>
     <EntryItem heading="Description" className="col-span-2">
-      <p className="text-sm">{entry.description}</p>
+      <p className="text-sm">{entry?.description}</p>
     </EntryItem>
-    {entry.references.length && (
+    {entry?.references?.length && (
       <EntryItem heading="Useful Resources" className="col-span-2">
         <References {...entry} />
       </EntryItem>
@@ -75,7 +75,7 @@ const EntryDetails = (entry: Entry) => (
   </div>
 );
 
-export const EntryLayout = (entry: Entry) => (
+export const EntryLayout = (entry?: Entry) => (
   <div className="bg-white z-20 text-white">
     <EntryHeader {...entry} />
     <EntryDetails {...entry} />
