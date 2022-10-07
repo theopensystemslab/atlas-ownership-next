@@ -1,8 +1,14 @@
 import _ from "lodash"
 import Highcharts from "highcharts"
+import HighchartsAccessibility from "highcharts/modules/accessibility"
 import HighchartsReact from "highcharts-react-official"
 
 import { Pattern, PatternClass, Term } from "../lib/types"
+
+// https://github.com/highcharts/highcharts-react#highcharts-with-nextjs
+if (typeof Highcharts === "object") {
+  HighchartsAccessibility(Highcharts)
+}
 
 type Props = {
   showLabels: boolean,
@@ -85,13 +91,18 @@ const Chart = (props: Props) => {
       reversed: true,
       labels: {
         enabled: showLabels,
-        step: 1,
+      },
+      accessibility: {
+        description: 'Obligations'
       },
     }, { // mirror axis on right side
       opposite: true,
       reversed: true,
       linkedTo: 0,
       visible: false,
+      accessibility: {
+        description: 'Rights'
+      },
     }],
     yAxis: [{
       title: {
@@ -99,6 +110,10 @@ const Chart = (props: Props) => {
       },
       labels: {
         enabled: false,
+      },
+      accessibility: {
+        description: 'Intensity of Rights or Obligations',
+        rangeDescription: '0-5'
       },
       maxPadding: 0,
       visible: true, // visible = true to show plotLines, but essentially hidden
@@ -117,6 +132,11 @@ const Chart = (props: Props) => {
     tooltip: { enabled: false },
     legend: { enabled: false },
     credits: { enabled: false },
+    accessibility: {
+      point: {
+        valueDescriptionFormat: `{xDescription} ranks {value}/5 in`
+      }
+    },
     responsive: {
       rules: [{
         condition: {
