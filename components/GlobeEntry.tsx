@@ -16,20 +16,18 @@ type Props = {
 
 const GlobeEntry = (props: Props) => {
   const {
-    entry: {
-      name,
-      slug,
-    },
+    entry: { name, slug },
   } = props
 
-  const { lat, lng } = props.entry.location!.geopoint;
+  const { lat, lng } = props.entry.location!.geopoint
 
   const [markerState, setMarkerState] = useState<number>(0)
-  const [debouncedMarkerState] = useDebounce(markerState, 100)
+  const [debouncedMarkerState] = useDebounce(markerState, 50)
 
   const zoomThreshold = 4
+
   const deltaThreshold1 = 11
-  const deltaThreshold2 = 8
+  const deltaThreshold2 = 3
 
   const getEntry = useGetEntryFromSlug()
   const entry = getEntry(slug?.current)
@@ -52,13 +50,13 @@ const GlobeEntry = (props: Props) => {
         const d = hypot(dx, dy) * zoom
 
         switch (true) {
-          case debouncedMarkerState === 0 && d <= deltaThreshold1:
-            setMarkerState(1)
-            break
-          case debouncedMarkerState === 1 && d > deltaThreshold1:
+          case d >= deltaThreshold1:
             setMarkerState(0)
             break
-          case debouncedMarkerState === 2 && d > deltaThreshold2:
+          case d < deltaThreshold1 && d >= deltaThreshold2:
+            setMarkerState(1)
+            break
+          case d < deltaThreshold2:
             setMarkerState(2)
             break
         }
@@ -71,14 +69,35 @@ const GlobeEntry = (props: Props) => {
       {debouncedMarkerState === 0 ? (
         <Link href={`/entry/${slug?.current}`}>
           <a>
-            <div className="marker absolute bg-white rounded-full w-2 h-2" />
+            <div className="marker absolute bg-white w-2 h-2 rounded-full" />
           </a>
         </Link>
       ) : debouncedMarkerState === 1 ? (
         <Link href={`/entry/${slug?.current}`}>
           <a>
             <div
-              className="marker absolute w-64 text-white font-extrabold text-xl"
+              style={{
+                transform: `translate(-50%, -50%)`,
+                fontFamily: "Inter",
+              }}
+              className="marker absolute bg-white bg-opacity-75 p-1 text-sm font-bold"
+              onClick={() => {
+                store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
+              }}
+            >
+              {name}
+            </div>
+          </a>
+        </Link>
+      ) : (
+        <Link href={`/entry/${slug?.current}`}>
+          <a>
+            <div
+              className="marker absolute font-bold text-sm w-32"
+              style={{
+                transform: `translate(-50%, -50%)`,
+                fontFamily: "Inter",
+              }}
               onClick={() => {
                 store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
               }}
@@ -89,20 +108,9 @@ const GlobeEntry = (props: Props) => {
                 patterns={patterns}
                 patternClasses={patternClasses}
               />
-              {name}
-            </div>
-          </a>
-        </Link>
-      ) : (
-        <Link href={`/entry/${slug?.current}`}>
-          <a>
-            <div
-              className="marker absolute bg-pink-500"
-              onClick={() => {
-                store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
-              }}
-            >
-              {name}
+              <div className="bg-white bg-opacity-75 font-extrabold p-1">
+                {name}
+              </div>
             </div>
           </a>
         </Link>
