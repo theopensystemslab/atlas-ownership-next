@@ -60,7 +60,9 @@ const EntryDetails = (entry?: Entry) => (
   <div className="bg-white text-black grid grid-cols-4 grid-rows-auto gap-x-4 gap-y-6 p-4">
     <EntryItem heading="Tenure type" className="col-span-2">
       <p className="text-2xl">{
-        entry?.tenureType ? TenureType[entry.tenureType] : "Unknown"
+        entry?.tenureType 
+          ? entry.tenureType.map(type => TenureType[type]).join(" - ") 
+          : "Unknown"
       }</p>
     </EntryItem>
     <EntryItem heading="Location">
