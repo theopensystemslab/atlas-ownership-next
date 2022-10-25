@@ -61,7 +61,7 @@ export type Entry = {
     current: string
   }
   terms?: Term[],
-  tenureType?: keyof typeof TenureType;
+  tenureType?: Array<keyof typeof TenureType>;
 }
 
 export enum TenureType {
