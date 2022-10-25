@@ -60,5 +60,14 @@ export type Entry = {
   slug?: {
     current: string
   }
-  terms?: Term[]
+  terms?: Term[],
+  tenureType?: keyof typeof TenureType;
+}
+
+export enum TenureType {
+  leasehold = "Leasehold",
+  freehold = "Freehold",
+  renting = "Renting",
+  communityLandTrust = "Community Land Trust",
+  other = "Other",
 }

@@ -1,5 +1,5 @@
 import { ArrowUpRight, Close } from "@carbon/icons-react"
-import { Entry, Pattern, PatternClass } from "../../lib/types"
+import { Entry, Pattern, PatternClass, TenureType } from "../../lib/types"
 import Back from "../Back"
 import Chart from "../Chart"
 import Footer from "../Footer"
@@ -58,9 +58,10 @@ const References = (entry?: Entry) => (
 
 const EntryDetails = (entry?: Entry) => (
   <div className="bg-white text-black grid grid-cols-4 grid-rows-auto gap-x-4 gap-y-6 p-4">
-    <EntryItem heading="Model" className="col-span-2">
-      {/* TODO: What is this value...? */}
-      <p className="text-2xl">Plot Lease</p>
+    <EntryItem heading="Tenure type" className="col-span-2">
+      <p className="text-2xl">{
+        entry?.tenureType ? TenureType[entry.tenureType] : "Unknown"
+      }</p>
     </EntryItem>
     <EntryItem heading="Location">
       <p className="text-2xl">{entry?.location?.region}</p>
