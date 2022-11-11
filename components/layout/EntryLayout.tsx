@@ -83,7 +83,7 @@ const EntryDetails = (entry?: Entry) => (
       <p className="text-sm">{entry?.description}</p>
     </EntryItem>
     {entry?.references?.length && (
-      <EntryItem heading="Useful Resources" className="col-span-2">
+      <EntryItem heading="References" className="col-span-2">
         <References {...entry} />
       </EntryItem>
     )}
