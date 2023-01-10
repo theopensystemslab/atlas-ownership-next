@@ -2,3 +2,13 @@
   @apply bg-red-500;
   @apply absolute h-full z-10;
 }
+
+.chevvy {
+  @apply bg-white;
+}
+
+.chevvy > div {
+  @apply bg-inherit;
+  @apply flex justify-end;
+  @apply transform translate-x-4;
+}

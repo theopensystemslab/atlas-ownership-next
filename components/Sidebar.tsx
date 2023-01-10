@@ -9,6 +9,12 @@ const ColoredRow = ({ color }: { color: string }) => (
   </div>
 )
 
+const Chevvy = (props: any) => (
+  <div className={css.chevvy} {...props}>
+    <div>{`>`}</div>
+  </div>
+)
+
 const Sidebar = () => {
   const [open, setOpen] = useState(false)
   const toggleOpen = () => void setOpen((p) => !p)
@@ -32,8 +38,8 @@ const Sidebar = () => {
         mass: 0.9,
         stiffness: 120,
       }}
-      onClick={toggleOpen}
     >
+      <Chevvy onClick={toggleOpen} />
       <ColoredRow color="red" />
       <ColoredRow color="green" />
       <ColoredRow color="blue" />
