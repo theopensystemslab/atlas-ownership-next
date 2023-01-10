@@ -3,6 +3,12 @@ import css from "@/styles/Sidebar.module.css"
 import { motion } from "framer-motion"
 import theme from "tailwindcss/defaultTheme"
 
+const ColoredRow = ({ color }: { color: string }) => (
+  <div style={{ backgroundColor: color }}>
+    {`lalalalalalalalalalalalalalalalalalalalalalalalalalalalala`}
+  </div>
+)
+
 const Sidebar = () => {
   const [open, setOpen] = useState(false)
   const toggleOpen = () => void setOpen((p) => !p)
@@ -11,7 +17,7 @@ const Sidebar = () => {
     <motion.div
       variants={{
         closed: {
-          x: `calc(-100% + ${theme.spacing[12]})`,
+          x: `calc(-100% + ${theme.spacing[1]})`,
         },
         open: {
           x: 0,
@@ -28,7 +34,12 @@ const Sidebar = () => {
       }}
       onClick={toggleOpen}
     >
-      {"foo bar ding quat poo pah ling loo"}
+      <ColoredRow color="red" />
+      <ColoredRow color="green" />
+      <ColoredRow color="blue" />
+      <ColoredRow color="pink" />
+      <ColoredRow color="black" />
+      <ColoredRow color="yellow" />
     </motion.div>
   )
 }
