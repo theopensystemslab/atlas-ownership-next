@@ -3,6 +3,7 @@ import React, { PropsWithChildren } from "react"
 import Footer from "./Footer"
 import Header from "./Header"
 import MapboxGlobe from "./MapboxGlobe"
+import Sidebar from "./Sidebar"
 
 type Props = PropsWithChildren<{}>
 
@@ -11,6 +12,7 @@ const GlobeLayout = (props: Props) => {
   return (
     <>
       <Header />
+      <Sidebar />
       <div className="absolute w-full h-3/4">
         <MapboxGlobe />
         <AnimatePresence>{children}</AnimatePresence>

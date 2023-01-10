@@ -1,0 +1,4 @@
+.root {
+  @apply bg-red-500;
+  @apply absolute h-full z-10;
+}
