@@ -5,10 +5,11 @@
 
 .chevvy {
   @apply bg-white;
+  @apply cursor-pointer;
 }
 
 .chevvy > div {
   @apply bg-inherit;
-  @apply flex justify-end;
-  @apply transform translate-x-4;
+  @apply flex justify-end pr-2;
+  @apply transform translate-x-6;
 }
