@@ -11,7 +11,18 @@ const ColoredRow = ({ color }: { color: string }) => (
 
 const Chevvy = (props: any) => (
   <div className={css.chevvy} {...props}>
-    <div>{props?.open ? `<` : `>`}</div>
+    <motion.div
+      variants={{
+        closed: {
+          x: `${theme.spacing[6]}`,
+        },
+        open: {
+          x: 0,
+        },
+      }}
+    >
+      {props?.open ? `<` : `>`}
+    </motion.div>
   </div>
 )
 
