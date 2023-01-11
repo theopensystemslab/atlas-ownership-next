@@ -3,10 +3,11 @@ import "mapbox-gl/dist/mapbox-gl.css"
 import React from "react"
 import Map, { Layer, Source } from "react-map-gl"
 import { ref } from "valtio"
-import { A } from "../lib/fp"
-import { testPolygons } from "../lib/mock"
-import store from "../lib/store"
-import GlobeChildren from "./GlobeChildren"
+import { A } from "../../lib/fp"
+import { testPolygons } from "../../lib/mock"
+import store from "../../lib/store"
+import GlobeChildren from "../GlobeChildren"
+import EntryCircles from "./EntryCircles"
 
 const MapboxGlobe = () => {
   return (
@@ -21,7 +22,8 @@ const MapboxGlobe = () => {
       onMove={({ viewState }) => void (store.viewState = viewState)}
       reuseMaps
     >
-      <Source
+      <EntryCircles />
+      {/* <Source
         id={`entryPolygons`}
         type="geojson"
         data={{
@@ -47,8 +49,11 @@ const MapboxGlobe = () => {
             "fill-color": "#4E3FC8",
           }}
         />
+      </Source> */}
+      {/* <Source>
+        <Layer />
       </Source>
-      <GlobeChildren />
+      <GlobeChildren /> */}
     </Map>
   )
 }
