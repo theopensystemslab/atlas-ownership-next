@@ -1,9 +1,9 @@
 import { AnimatePresence } from "framer-motion"
 import React, { PropsWithChildren } from "react"
-import Footer from "./Footer"
-import Header from "./Header"
-import MapboxGlobe from "./MapboxGlobe"
-import Sidebar from "./sidebar/Sidebar"
+import Footer from "../Footer"
+import Header from "../Header"
+import MapboxGlobe from "../map/MapboxGlobe"
+import Sidebar from "../sidebar/Sidebar"
 
 type Props = PropsWithChildren<{}>
 
