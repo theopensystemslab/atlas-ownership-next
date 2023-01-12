@@ -1,0 +1,14 @@
+.root {
+  @apply bg-red-500;
+  @apply absolute h-full z-10;
+}
+
+.chevvy {
+  @apply bg-white;
+  @apply cursor-pointer;
+}
+
+.chevvy > div {
+  @apply bg-inherit;
+  @apply flex justify-end pr-2;
+}
