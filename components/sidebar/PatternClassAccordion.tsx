@@ -1,8 +1,9 @@
 import { pipe } from "fp-ts/lib/function"
-import { motion, AnimatePresence } from "framer-motion"
-import React, { Fragment, useState } from "react"
-import { A } from "../lib/fp"
-import { Pattern, PatternClass } from "../lib/types"
+import { AnimatePresence, motion } from "framer-motion"
+import { useState } from "react"
+import { A } from "../../lib/fp"
+import { Pattern, PatternClass } from "../../lib/types"
+import PatternClassAccordionPattern from "./PatternClassAccordionPattern"
 
 type Props = {
   patternClass: PatternClass
@@ -44,12 +45,10 @@ const PatternClassAccordion = (props: Props) => {
             {pipe(
               patterns,
               A.map((pattern) => (
-                <div
-                  className="overflow-hidden text-ellipsis w-full whitespace-nowrap"
+                <PatternClassAccordionPattern
                   key={pattern.name}
-                >
-                  {pattern.name}
-                </div>
+                  pattern={pattern}
+                />
               ))
             )}
           </motion.section>

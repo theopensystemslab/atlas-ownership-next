@@ -3,7 +3,7 @@ import React, { PropsWithChildren } from "react"
 import Footer from "./Footer"
 import Header from "./Header"
 import MapboxGlobe from "./MapboxGlobe"
-import Sidebar from "./Sidebar"
+import Sidebar from "./sidebar/Sidebar"
 
 type Props = PropsWithChildren<{}>
 

@@ -3,8 +3,8 @@ import { pipe } from "fp-ts/lib/function"
 import { motion } from "framer-motion"
 import { useState } from "react"
 import theme from "tailwindcss/defaultTheme"
-import { A, pipeLog } from "../lib/fp"
-import { trpc } from "../lib/trpc"
+import { A, pipeLog } from "../../lib/fp"
+import { trpc } from "../../lib/trpc"
 import PatternClassAccordion from "./PatternClassAccordion"
 
 const ColoredRow = ({ color }: { color: string }) => (
