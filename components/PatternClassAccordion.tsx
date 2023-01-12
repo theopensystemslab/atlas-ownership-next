@@ -20,11 +20,10 @@ const PatternClassAccordion = (props: Props) => {
   const [isOpen, setOpen] = useState(false)
 
   return (
-    <Fragment>
+    <div style={{ backgroundColor: hex }} className="w-64">
       <motion.header
-        className="w-64 h-8"
+        className="h-8"
         initial={false}
-        animate={{ backgroundColor: hex }}
         onClick={() => setOpen(!isOpen)}
       >
         {name}
@@ -44,12 +43,19 @@ const PatternClassAccordion = (props: Props) => {
           >
             {pipe(
               patterns,
-              A.map((pattern) => <div key={pattern.name}>{pattern.name}</div>)
+              A.map((pattern) => (
+                <div
+                  className="overflow-hidden text-ellipsis w-full whitespace-nowrap"
+                  key={pattern.name}
+                >
+                  {pattern.name}
+                </div>
+              ))
             )}
           </motion.section>
         )}
       </AnimatePresence>
-    </Fragment>
+    </div>
   )
 }
 
