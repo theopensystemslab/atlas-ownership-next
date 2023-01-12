@@ -35,7 +35,7 @@ const Sidebar = () => {
   const toggleOpen = () => void setOpen((p) => !p)
 
   const { data: patternClasses = [] } = trpc.patternClasses.useQuery()
-  const { data: patterns = [] } = trpc.patterns.useQuery()
+  const { data: patterns = [] } = trpc.patternsWithClass.useQuery()
 
   return (
     <motion.div
@@ -58,12 +58,6 @@ const Sidebar = () => {
       }}
     >
       <Chevvy onClick={toggleOpen} open={open} />
-      {/* <ColoredRow color="red" />
-      <ColoredRow color="green" />
-      <ColoredRow color="blue" />
-      <ColoredRow color="pink" />
-      <ColoredRow color="black" />
-      <ColoredRow color="yellow" /> */}
       {pipe(
         patternClasses,
         A.map((patternClass) => (
@@ -72,9 +66,7 @@ const Sidebar = () => {
             patternClass={patternClass}
             patterns={pipe(
               patterns,
-              pipeLog,
-              A.filter((pattern) => pattern.class.name === patternClass.name),
-              pipeLog
+              A.filter((pattern) => pattern.class.name === patternClass.name)
             )}
           />
         ))
