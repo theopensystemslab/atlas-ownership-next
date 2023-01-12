@@ -108,9 +108,7 @@ export const EntryLayout = (props: EntryLayoutProps) => {
     <div className="bg-white z-20 text-white fixed inset-0 max-w-4xl m-auto overflow-y-auto no-scrollbar">{}
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
-      <div className="bg-white h-96 place-items-center grid text-2xl">
-        <Chart showLabels={true} terms={entry?.terms} patterns={patterns} patternClasses={patternClasses} />
-      </div>
+      <Chart rollupToPatternClass={false} showLabels={true} terms={entry?.terms} patterns={patterns} patternClasses={patternClasses} />
       { entry?.location?.geopoint && <StaticMapImage {...entry}/>}
       {/* <Footer /> */}
     </div>
