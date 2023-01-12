@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LogoTwitter, LogoGithub } from '@carbon/icons-react';
+import { LogoTwitter, LogoGithub, ArrowRight } from '@carbon/icons-react';
 import Image from "next/image";
 
 const FooterLinks = () => {
@@ -44,7 +44,7 @@ const Discalimer = () => (
 );
 
 const SubmitButton = () => (
-  <button className="bg-white text-black py-1 px-14 col-span-2 col-end-7 mb-4">Submit an entry 	&#10132;</button>
+  <button className="bg-white text-black py-1 px-14 col-span-2 col-end-7 mb-4 flex items-center justify-center">Submit an entry 	<ArrowRight className="ml-2" size={16} /></button>
 );
 
 const Footer = () => (
