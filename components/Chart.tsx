@@ -80,6 +80,7 @@ const Chart = (props: Props) => {
     "Develop": "bg-develop",
     "Stewardship": "bg-stewardship",
     "Use": "bg-use",
+    "Access": "bg-access",
   };
 
   // added to match figma marker designs, but colored text doesn't look great? 
@@ -92,12 +93,13 @@ const Chart = (props: Props) => {
     "Develop": "text-develop",
     "Stewardship": "text-stewardship",
     "Use": "text-gray-400",
+    "Access": "text-access",
   };
 
-  // maps totalsByPatternClass avgRights & avgObligations values to tailwind percentage width
+  // maps pattern.strength values (0-5) to tailwind percentage width
   //   ref https://tailwindcss.com/docs/width#percentage-widths
   const percentageWidthClasses: any = {
-    "NaN": "w-0",
+    "NaN": "w-0", // possible when calculating average strength (divide by zero) for charts rolled up to patternClass
     "0": "w-0",
     "1": "w-1/5",
     "2": "w-2/5",

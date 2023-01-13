@@ -4,15 +4,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        rent: "#b196fe",
-        transfer: "#e2e2e2",
+        rent: "#B196FE",
+        transfer: "#87D4FF",
         administration: "#e2e2e2",
-        eligibility: "#ff6176",
-        security: "#ff776e",
-        develop: "#87d4ff",
-        stewardship: "#8def5f",
-        use: "#faff00",
-        access: "#ffa337",
+        eligibility: "#FF6176",
+        security: "#FF776F",
+        develop: "#D2F964",
+        stewardship: "#91EC66",
+        use: "#FAFF00",
+        access: "#FFA337",
       },
     },
   },
