@@ -1,8 +1,10 @@
+import { trpc } from "@/lib/trpc";
 import { Pattern, PatternClass } from "@/lib/types"
+import { LogoGithub } from "@carbon/icons-react";
+import clsx from "clsx";
 import { Dispatch, SetStateAction, useState } from "react";
 
 interface PatternsLayoutProps {
-  patterns?: Pattern[]
   patternClasses?: PatternClass[]
 }
 
@@ -18,7 +20,7 @@ const patternClassLookup: Record<string, string> = {
 } as const;
 
 const Header = () => (
-  <header className="bg-slate-50 p-8">
+  <header className="bg-slate-200 p-8">
     <h1 className="text-5xl mt-8 mb-8">Explore the patterns</h1>
     <h2 className="text-2xl mb-2">What is ownership?</h2>
     <p className="mb-8">Property is often described as a &quot;bundle&quot; of rights and obligations. We can unbundle these rights into 8 classes.</p>
@@ -41,24 +43,60 @@ const PatternNav = (props: { patternClasses: PatternClass[] | undefined, onClick
   </nav>
 );
 
-const PatternInfo = (props: { patternClass: PatternClass | undefined, patterns: Pattern[] | undefined }) => {
- const { patternClass, patterns } = props;
+const PatternList = (props: { patternClass: PatternClass | undefined }) => {
+  const { patternClass } = props;
+  const { data: patternInfo, error: patternInfoError } = trpc.patternInfo.useQuery({ patternClassName: patternClass?.name || null } )
+
+
  return (
   <section className="p-8">
-    <p>{patternClass?.description}</p>
+    <p className="mb-4">{patternClass?.description}</p>
+    <h3 className="text-lg mb-4">Rights</h3>
+     {patternInfo?.rights.map(pattern => (
+       <PatternItem key={pattern.name} pattern={pattern} patternClassName={patternClass?.name} highestCount={patternInfo?.rights[0].entryCount} />
+     ))}
+    <h3 className="text-lg mb-4">Obligations</h3>
+     {patternInfo?.obligations.map(pattern => (
+       <PatternItem key={pattern.name} pattern={pattern} patternClassName={patternClass?.name} reverse highestCount={patternInfo?.obligations[0].entryCount} />
+     ))}
   </section>
  )
 }
 
+const PatternItem = (props: { pattern: Pattern, patternClassName: string | undefined, reverse?: boolean, highestCount: number | undefined }) => {
+  const { pattern, patternClassName, reverse, highestCount } = props
+
+  return (
+    <div className={`flex mb-4 ${reverse ? "flex-row-reverse" : ""}`}>
+      <div className={clsx(`w-1/2 ${patternClassLookup[patternClassName!]} bg-opacity-40 flex items-center justify-center`)}>
+        <LogoGithub size={32} className="w-1/4 flex-center"/>       
+        <div className="p-4 w-3/4">
+          <p className="text-lg">{pattern.name}</p>
+          <p className="text-xs">{pattern.description}</p>
+        </div>
+      </div>
+      <div className="w-1/2 grid" style={{ gridTemplateColumns: `repeat(${highestCount}, minmax(0, 1fr))`, direction: reverse ? "rtl" : "ltr" }}>
+        <div className={clsx(`${patternClassLookup[patternClassName!]} bg-opacity-20 flex justify-center flex-col py-2 ${ reverse ? "pr-4" : "pl-4"}`)} style={{ gridColumn: `span ${pattern.entryCount}`}}>
+          <p className="text-xs">Appears in</p>
+          <p className="text-5xl py-2">{pattern.entryCount}</p>
+          <p className="text-xs">entries</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+
+
 export const PatternsLayout = (props: PatternsLayoutProps) => {
-  const { patterns, patternClasses } = props;
+  const { patternClasses } = props;
   const [ selectedPatternClass, setSelectedPatternClass ] = useState<PatternClass | undefined>(patternClasses?.[0]);
 
   return (
-    <div className="bg-white z-20 fixed inset-0">
+    <div className="bg-white z-20 fixed inset-0 overflow-y-auto">
       <Header/>
       <PatternNav patternClasses={patternClasses} onClick={setSelectedPatternClass} />
-      <PatternInfo patternClass={selectedPatternClass} patterns={patterns} />
+      <PatternList patternClass={selectedPatternClass} />
     </div>
   )
 }
