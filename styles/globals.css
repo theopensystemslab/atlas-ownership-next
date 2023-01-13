@@ -58,3 +58,12 @@ a {
     background: black;
   }
 } */
+
+.mapboxgl-popup-content {
+  border-radius: 0;
+}
+
+.mapboxgl-popup-close-button {
+  font-size: x-large;
+  padding-right: 6px;
+}

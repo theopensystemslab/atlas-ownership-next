@@ -1,13 +1,12 @@
 import Link from "next/link"
-import { useEffect, useState } from "react"
-import { Marker } from "react-map-gl"
-import { useDebounce } from "use-debounce"
-import { subscribeKey } from "valtio/utils"
-import { hypot } from "../lib/fp"
+import { useState } from "react"
+import { MapboxEvent, Marker, Popup } from "react-map-gl"
 import { useGetEntryFromSlug } from "../lib/queries"
 import store from "../lib/store"
 import { trpc } from "../lib/trpc"
 import { Entry } from "../lib/types"
+import Chart from "./Chart"
+import { ArrowRight } from "@carbon/icons-react"
 
 type Props = {
   entry: Entry
@@ -20,13 +19,7 @@ const GlobeEntry = (props: Props) => {
 
   const { lat, lng } = props.entry.location!.geopoint
 
-  const [markerState, setMarkerState] = useState<number>(0)
-  const [debouncedMarkerState] = useDebounce(markerState, 50)
-
-  const zoomThreshold = 4
-
-  const deltaThreshold1 = 11
-  const deltaThreshold2 = 3
+  const [showPopup, setShowPopup] = useState<boolean>(false);
 
   const getEntry = useGetEntryFromSlug()
   const entry = getEntry(slug?.current)
@@ -35,80 +28,48 @@ const GlobeEntry = (props: Props) => {
   const { data: patternClasses, error: patternClassesError } =
     trpc.patternClasses.useQuery()
 
-  useEffect(
-    () =>
-      subscribeKey(store, "viewState", () => {
-        const { latitude, longitude, zoom } = store.viewState
-        if (zoom < zoomThreshold) {
-          if (debouncedMarkerState !== 0) setMarkerState(0)
-          return
-        }
+  const onMarkerClick = (e: MapboxEvent<MouseEvent>) => {
+    store.map?.flyTo({ center: { lat, lng}, padding: { top: 500, bottom: 0, left: 0, right: 0 }, zoom: 18 });
+    e.originalEvent.stopPropagation();
+    setShowPopup(!showPopup);
+  }
 
-        const dx = lat - latitude
-        const dy = lng - longitude
-        const d = hypot(dx, dy) * zoom
-
-        switch (true) {
-          case d >= deltaThreshold1:
-            setMarkerState(0)
-            break
-          case d < deltaThreshold1 && d >= deltaThreshold2:
-            setMarkerState(1)
-            break
-          case d < deltaThreshold2:
-            setMarkerState(2)
-            break
-        }
-      }),
-    [debouncedMarkerState, lat, lng, markerState]
+  const PopupContent = () => (
+    <div className="w-[500px]">
+      <h2 className="text-2xl">{name}</h2>
+      <Chart 
+        rollupToPatternClass={true} 
+        showLabels={true} 
+        terms={entry?.terms} 
+        patterns={patterns} 
+        patternClasses={patternClasses} 
+      />
+      <Link href={`/entry/${slug?.current}`}>
+        <a className="flex justify-end items-center text-lg" onClick={() => setShowPopup(false)} >
+          Find out more 
+          <ArrowRight className="ml-2" size={20} />
+        </a>
+      </Link>
+    </div>
   )
 
   return (
-    <Marker key={slug?.current} longitude={lng} latitude={lat} anchor="center">
-      {debouncedMarkerState === 0 ? (
-        <Link href={`/entry/${slug?.current}`}>
-          <a>
-            <div className="marker absolute bg-white w-2 h-2 rounded-full" />
-          </a>
-        </Link>
-      ) : debouncedMarkerState === 1 ? (
-        <Link href={`/entry/${slug?.current}`}>
-          <a>
-            <div
-              style={{
-                transform: `translate(-50%, -50%)`,
-                fontFamily: "Inter",
-              }}
-              className="marker absolute bg-white bg-opacity-75 p-1 text-sm font-bold"
-              onClick={() => {
-                store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
-              }}
-            >
-              {name}
-            </div>
-          </a>
-        </Link>
-      ) : (
-        <Link href={`/entry/${slug?.current}`}>
-          <a>
-            <div
-              className="marker absolute font-bold text-sm w-32"
-              style={{
-                transform: `translate(-50%, -50%)`,
-                fontFamily: "Inter",
-              }}
-              onClick={() => {
-                store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
-              }}
-            >
-              <div className="bg-white bg-opacity-75 font-extrabold p-1">
-                {name}
-              </div>
-            </div>
-          </a>
-        </Link>
-      )}
-    </Marker>
+    <>
+      <Marker key={slug?.current} longitude={lng} latitude={lat} onClick={onMarkerClick}></Marker>
+      {
+        showPopup &&
+        <Popup
+          className="z-50"
+          longitude={lng} 
+          latitude={lat} 
+          maxWidth="none"
+          anchor="bottom"
+          onClose={() => setShowPopup(false)}
+        >
+          <PopupContent />
+        </Popup>
+      }
+    </>
   )
 }
 
