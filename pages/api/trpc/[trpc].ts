@@ -1,6 +1,7 @@
 import { initTRPC } from "@trpc/server"
 import * as trpcNext from "@trpc/server/adapters/next"
-import { entriesQuery, patternsQuery, patternClassesQuery } from "../../../lib/queries"
+import { z } from "zod"
+import { entriesQuery, patternsQuery, patternClassesQuery, patternInfoQuery } from "../../../lib/queries"
 import { sanityClient } from "../../../lib/sanity.server"
 import { Entry, Pattern, PatternClass } from "../../../lib/types"
 
@@ -15,6 +16,13 @@ export const appRouter = t.router({
   ),
   patternClasses: t.procedure.query(
     (): Promise<PatternClass[]> => sanityClient.fetch(patternClassesQuery)
+  ),
+  patternInfo: t.procedure.input(
+    z.object({
+      patternClassName: z.string().nullable(),
+    })
+  ).query(
+    ({ input }): Promise<Record<"rights" | "obligations", Pattern[]>> => sanityClient.fetch(patternInfoQuery(input?.patternClassName))
   ),
 })
 

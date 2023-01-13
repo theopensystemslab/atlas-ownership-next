@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --color-rent: 177 150 254;
+    --color-transfer: 135 212 255;
+    --color-administration: 226 226 226;
+    --color-eligibility: 255 97 118;
+    --color-security: 255 119 111;
+    --color-develop: 210 249 100;
+    --color-stewardship: 145 236 102;
+    --color-use: 250 255 0;
+    --color-access: 255 163 55;
+  }
+}
+
 :root {
   font-family: "Inter", sans-serif;
 }

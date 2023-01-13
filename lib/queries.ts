@@ -18,3 +18,24 @@ export const useGetEntryFromSlug = () => {
       O.toNullable
     )
 }
+
+export const patternInfoQuery = (patternClassName: string | null) => (`
+  {
+    "rights": 
+      *[_type == "pattern"] { 
+        ..., 
+        class->, 
+        "entryCount": count(* [_type == "entry" && references(^._id)])
+      }
+      [class.name == "${patternClassName}" && type == "right" && entryCount > 0]
+      | order(entryCount desc),
+    "obligations": 
+      *[_type == "pattern"] {
+        ..., 
+        class->, 
+        "entryCount": count(* [_type == "entry" && references(^._id)])
+      }
+      [class.name == "${patternClassName}" && type == "obligation" && entryCount > 0]
+      | order(entryCount desc),
+  }
+`)

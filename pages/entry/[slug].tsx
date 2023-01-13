@@ -4,7 +4,6 @@ import { EntryLayout } from "../../components/layout/EntryLayout"
 import { useGetEntryFromSlug } from "../../lib/queries"
 import store from "../../lib/store"
 import { trpc } from "../../lib/trpc"
-import { Entry } from "../../lib/types"
 import { motion } from "framer-motion"
 
 const EntryPage = () => {
@@ -26,7 +25,7 @@ const EntryPage = () => {
   }, [entry])
 
   const { data: patterns, error: patternsError } = trpc.patterns.useQuery()
-  const { data: patternClasses, error: patternClaassesError } =
+  const { data: patternClasses, error: patternClassesError } =
     trpc.patternClasses.useQuery()
 
   return entry ? (
