@@ -13,8 +13,10 @@ import Map, {
   Source,
 } from "react-map-gl"
 import { ref } from "valtio"
-import { A } from "../../lib/fp"
+import { A, O, S } from "../../lib/fp"
 import store from "../../lib/store"
+import { useSubscribeKey } from "../../lib/valtio"
+import Markers from "./Markers"
 
 const MapboxGlobe = () => {
   const { data: entries = [] } = trpc.entries.useQuery()
@@ -49,7 +51,9 @@ const MapboxGlobe = () => {
                 entry.location.geopoint.lat,
               ],
             },
-            properties: {},
+            properties: {
+              slug: entry.slug?.current ?? null,
+            },
           })
     )
   )
@@ -99,6 +103,7 @@ const MapboxGlobe = () => {
       "circle-stroke-color": "#fff",
     },
   }
+
   const onClick = (event: MapLayerMouseEvent) => {
     const feature: any = event?.features?.[0]
     if (!feature) return
@@ -121,6 +126,21 @@ const MapboxGlobe = () => {
     })
   }
 
+  const updateMarkers = () =>
+    pipe(
+      store.map?.queryRenderedFeatures() ?? [],
+      A.partition((feature) => feature.properties?.cluster),
+      ({ left: unclustered, right: clustered }) => {
+        store.unclusteredSlugs = pipe(
+          unclustered,
+          A.filterMap((x) =>
+            x.properties?.slug ? O.some(x.properties.slug) : O.none
+          ),
+          A.uniq(S.Eq)
+        )
+      }
+    )
+
   return (
     <Map
       ref={(mapRef) => {
@@ -131,8 +151,10 @@ const MapboxGlobe = () => {
       initialViewState={store.viewState}
       interactiveLayerIds={[clusterLayer.id ?? ""]}
       projection={{ name: "globe" as any }}
-      onMove={({ viewState }) => void (store.viewState = viewState)}
-      reuseMaps
+      onMove={({ viewState }) => {
+        store.viewState = viewState
+      }}
+      onRender={updateMarkers}
       onClick={onClick}
     >
       <Source
@@ -150,6 +172,7 @@ const MapboxGlobe = () => {
         <Layer {...clusterCountLayer} />
         <Layer {...unclusteredPointLayer} />
       </Source>
+      <Markers entries={entries} />
     </Map>
   )
 }

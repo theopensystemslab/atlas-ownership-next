@@ -7,6 +7,7 @@ type Store = {
   map: MapboxMap | null
   viewState: ViewState
   lastBirdseyeViewState: ViewState
+  unclusteredSlugs: string[]
 }
 
 const initialViewState: ViewState = {
@@ -21,6 +22,7 @@ const store = proxy<Store>({
   map: null,
   viewState: initialViewState,
   lastBirdseyeViewState: initialViewState,
+  unclusteredSlugs: [],
 })
 
 export const useStore = () => useSnapshot(store) as typeof store
