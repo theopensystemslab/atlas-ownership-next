@@ -1,15 +1,17 @@
+import Link from "next/link";
+
 const AboutPage = () => {
   return (
     <div className="bg-black z-20 text-white max-w-full fixed inset-0 overflow-y-auto overflow-x-auto">
       <nav className="flex justify-between ml-8 mr-8 mt-3 h-12">
-        <a href="/">Atlas of Ownership</a>
-        <a href="/" className="text-lg">X</a>
+        <Link href="/">Atlas of Ownership</Link>
+        <Link href="/" className="text-lg">X</Link>
       </nav>
       <div className="m-8 w-1/3">
         <h1 className="text-5xl font-semibold mb-12">Other forms of <br />ownership are possible.</h1>
         <div className="flex flex-col w-3/4">
           <p className="mb-3">
-            What <em>is</em> ownership? The answer seems obvious, until you think about it. How is it possible for us to "own" a piece of the earth? Land was there long before us, and will be there long after us.
+            What <em>is</em> ownership? The answer seems obvious, until you think about it. How is it possible for us to &quot;own&quot; a piece of the earth? Land was there long before us, and will be there long after us.
           </p>
           <p className="mb-3">
             In truth, property is a piece of paper, a contract, giving you rights over a place.
@@ -18,7 +20,7 @@ const AboutPage = () => {
             Ownership of land is a form of power, and it always has been. And that power shapes almost everything about our lives, our society, our environment, and our economy. Your legal relationship with the place where you live defines your security, your wellbeing and your wealth.
           </p>
           <p className="mb-3">
-            Today, property (or "real estate") is the single largest form of wealth on the planet. Our property system underpins almost every crisis flooding across our timelines every day, from inequality to climate collapse and economic stagnation. And yet we don’t even really have the language to talk about it.
+            Today, property (or &quot;real estate&quot;) is the single largest form of wealth on the planet. Our property system underpins almost every crisis flooding across our timelines every day, from inequality to climate collapse and economic stagnation. And yet we don’t even really have the language to talk about it.
           </p>
           <p className="mb-3">
             This Atlas is an attempt to change that.
