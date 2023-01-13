@@ -19,3 +19,5 @@ export const getOrError =
     )
 
 export { A, RA, RR, O, abs, hypot, round }
+
+export const pipeLog = <T extends unknown>(x: T): T => (console.log(x), x)

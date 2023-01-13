@@ -1,7 +1,11 @@
-import React, { useState } from "react"
 import css from "@/styles/Sidebar.module.css"
+import { pipe } from "fp-ts/lib/function"
 import { motion } from "framer-motion"
+import { useState } from "react"
 import theme from "tailwindcss/defaultTheme"
+import { A, pipeLog } from "../../lib/fp"
+import { trpc } from "../../lib/trpc"
+import PatternClassAccordion from "./PatternClassAccordion"
 
 const ColoredRow = ({ color }: { color: string }) => (
   <div style={{ backgroundColor: color }}>
@@ -30,6 +34,9 @@ const Sidebar = () => {
   const [open, setOpen] = useState(false)
   const toggleOpen = () => void setOpen((p) => !p)
 
+  const { data: patternClasses = [] } = trpc.patternClasses.useQuery()
+  const { data: patterns = [] } = trpc.patternsWithClass.useQuery()
+
   return (
     <motion.div
       variants={{
@@ -51,12 +58,19 @@ const Sidebar = () => {
       }}
     >
       <Chevvy onClick={toggleOpen} open={open} />
-      <ColoredRow color="red" />
-      <ColoredRow color="green" />
-      <ColoredRow color="blue" />
-      <ColoredRow color="pink" />
-      <ColoredRow color="black" />
-      <ColoredRow color="yellow" />
+      {pipe(
+        patternClasses,
+        A.map((patternClass) => (
+          <PatternClassAccordion
+            key={patternClass.name}
+            patternClass={patternClass}
+            patterns={pipe(
+              patterns,
+              A.filter((pattern) => pattern.class.name === patternClass.name)
+            )}
+          />
+        ))
+      )}
     </motion.div>
   )
 }
