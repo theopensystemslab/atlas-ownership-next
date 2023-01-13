@@ -2,7 +2,7 @@ const AboutPage = () => {
   return (
     <div className="bg-black z-20 text-white max-w-full fixed inset-0 overflow-y-auto overflow-x-auto">
       <nav className="flex justify-between ml-8 mr-8 mt-3 h-12">
-        <a href="/">Atlas of Ownernship</a>
+        <a href="/">Atlas of Ownership</a>
         <a href="/" className="text-lg">X</a>
       </nav>
       <div className="m-8 w-1/3">
