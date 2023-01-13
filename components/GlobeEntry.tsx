@@ -29,7 +29,7 @@ const GlobeEntry = (props: Props) => {
     trpc.patternClasses.useQuery()
 
   const onMarkerClick = (e: MapboxEvent<MouseEvent>) => {
-    store.map?.flyTo({ center: { lat, lng}, padding: { top: 250, bottom: 0, left: 0, right: 0 }, zoom: 18 });
+    store.map?.flyTo({ center: { lat, lng}, padding: { top: 500, bottom: 0, left: 0, right: 0 }, zoom: 18 });
     e.originalEvent.stopPropagation();
     setShowPopup(!showPopup);
   }
@@ -37,14 +37,15 @@ const GlobeEntry = (props: Props) => {
   const PopupContent = () => (
     <div className="w-[500px]">
       <h2 className="text-2xl">{name}</h2>
-      <Chart
-        showLabels={true}
-        terms={entry?.terms}
-        patterns={patterns}
-        patternClasses={patternClasses}
+      <Chart 
+        rollupToPatternClass={true} 
+        showLabels={true} 
+        terms={entry?.terms} 
+        patterns={patterns} 
+        patternClasses={patternClasses} 
       />
       <Link href={`/entry/${slug?.current}`}>
-        <a className="flex justify-end items-center text-lg">
+        <a className="flex justify-end items-center text-lg" onClick={() => setShowPopup(false)} >
           Find out more 
           <ArrowRight className="ml-2" size={20} />
         </a>
