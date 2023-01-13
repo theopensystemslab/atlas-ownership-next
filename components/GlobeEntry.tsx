@@ -32,7 +32,7 @@ const GlobeEntry = (props: Props) => {
   const entry = getEntry(slug?.current)
 
   const { data: patterns, error: patternsError } = trpc.patterns.useQuery()
-  const { data: patternClasses, error: patternClaassesError } =
+  const { data: patternClasses, error: patternClassesError } =
     trpc.patternClasses.useQuery()
 
   useEffect(
