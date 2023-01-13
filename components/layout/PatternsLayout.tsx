@@ -1,6 +1,6 @@
 import { trpc } from "@/lib/trpc";
 import { Pattern, PatternClass } from "@/lib/types"
-import { LogoGithub } from "@carbon/icons-react";
+import { Hotel } from "@carbon/icons-react";
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useState } from "react";
 
@@ -68,7 +68,7 @@ const PatternItem = (props: { pattern: Pattern, patternClassName: string | undef
   return (
     <div className={`flex mb-4 ${reverse ? "flex-row-reverse" : ""}`}>
       <div className={clsx(`w-1/2 ${patternClassLookup[patternClassName!]} bg-opacity-40 flex items-center justify-center`)}>
-        <LogoGithub size={32} className="w-1/4 flex-center" />
+        <Hotel size={32} className="w-1/4 flex-center" />
         <div className="p-4 w-3/4">
           <p className="text-lg">{pattern.name}</p>
           <p className="text-xs">{pattern.description}</p>
