@@ -21,6 +21,7 @@ export type Pattern = {
   name: string
   description: string
   class: PatternClass
+  entryCount?: number
 }
 
 export type PatternClass = {
