@@ -1,4 +1,5 @@
 import { ArrowUpRight, Close } from "@carbon/icons-react"
+import Link from "next/link"
 import { Entry, Pattern, PatternClass, TenureType } from "../../lib/types"
 import Back from "../Back"
 import Chart from "../Chart"
@@ -12,7 +13,7 @@ interface EntryLayoutProps {
 interface EntryItemProps {
   heading: string
   className?: string
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 const EntryHeader = (entry?: Entry) => (
@@ -24,7 +25,7 @@ const EntryHeader = (entry?: Entry) => (
   >
     <nav className="flex justify-between">
       <Back>
-        <a>The Atlas of Ownership</a>
+        <Link href="/">Back to map</Link>
       </Back>
       <Back>
         <a>
@@ -38,7 +39,7 @@ const EntryHeader = (entry?: Entry) => (
 
 const EntryItem = ({ heading, className, children }: EntryItemProps) => (
   <section className={className}>
-    <div role="doc-subtitle" className="text-sm mb-1">
+    <div role="doc-subtitle" className={`mb-1 ${children ? 'text-sm' : 'text-2xl'}`}>
       {heading}
     </div>
     {children}
@@ -48,7 +49,7 @@ const EntryItem = ({ heading, className, children }: EntryItemProps) => (
 const References = (entry?: Entry) => (
   <>
     {entry?.references?.map((reference) => (
-      <a key={reference._key} href={reference.link} className="text-sm block">
+      <a key={reference._key} href={reference.link} className="text-sm text-gray-400 underline block">
         {reference.name} <ArrowUpRight className="ml-1 inline-flex" />
       </a>
     ))}
@@ -57,35 +58,30 @@ const References = (entry?: Entry) => (
 
 const EntryDetails = (entry?: Entry) => (
   <div className="bg-white text-black grid grid-cols-4 grid-rows-auto gap-x-4 gap-y-6 p-4">
-    <EntryItem heading="Tenure type" className="col-span-2">
-      <p className="text-2xl">{
-        entry?.tenureType 
-          ? entry.tenureType.map(type => TenureType[type]).join(" - ") 
-          : "Unknown"
-      }</p>
-    </EntryItem>
-    <EntryItem heading="Location">
-      <p className="text-2xl">{entry?.location?.region}</p>
-    </EntryItem>
-    <EntryItem heading="Dates">
-      {entry?.dates?.start ? (
-        <p className="text-2xl">
-          {new Date(Date.parse(entry?.dates.start)).getFullYear() + " - "}
-          {entry?.dates.end &&
-            new Date(Date.parse(entry?.dates.end)).getFullYear()}
-        </p>
-      ) : (
-        <p className="text-2xl">Unknown</p>
-      )}
-    </EntryItem>
-    <EntryItem heading="Description" className="col-span-2">
-      <p className="text-sm">{entry?.description}</p>
+    <EntryItem 
+      className="col-span-2"
+      heading={entry?.tenureType ? 
+        entry.tenureType.map(type => TenureType[type]).join(" - ") 
+        : "Unknown tenure type"
+      }
+    />
+    <EntryItem heading={entry?.location?.region || "Unknown location"} />
+    <EntryItem 
+      heading={entry?.dates?.start ? 
+        new Date(Date.parse(entry?.dates.start)).getFullYear() + " - " + (entry?.dates.end ? new Date(Date.parse(entry?.dates.end)).getFullYear() : "")
+        : "Unknown dates"
+    }/>
+    <EntryItem heading="" className="col-span-4">
+      <p className="text-sm mb-2">{entry?.description}</p>
     </EntryItem>
     {entry?.references?.length && (
-      <EntryItem heading="References" className="col-span-2">
+      <EntryItem heading="More information" className="col-span-3">
         <References {...entry} />
       </EntryItem>
     )}
+    <EntryItem heading="Entry status" className="col-span-1">
+      <p className="text-gray-400">{entry?.status || "Unknown status"}</p>
+    </EntryItem>
   </div>
 )
 
@@ -104,7 +100,7 @@ export const EntryLayout = (props: EntryLayoutProps) => {
   const { entry, patterns, patternClasses } = props
 
   return (
-    <div className="bg-white z-20 text-white fixed inset-0 max-w-4xl m-auto overflow-y-auto no-scrollbar">{}
+    <div className="bg-white z-20 text-white fixed inset-y-0 right-0 max-w-4xl overflow-y-auto no-scrollbar">{}
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
       <Chart rollupToPatternClass={false} showLabels={true} terms={entry?.terms} patterns={patterns} patternClasses={patternClasses} />
