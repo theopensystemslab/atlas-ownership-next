@@ -3,15 +3,9 @@ import { pipe } from "fp-ts/lib/function"
 import { motion } from "framer-motion"
 import { useState } from "react"
 import theme from "tailwindcss/defaultTheme"
-import { A, pipeLog } from "../../lib/fp"
+import { A } from "../../lib/fp"
 import { trpc } from "../../lib/trpc"
 import PatternClassAccordion from "./PatternClassAccordion"
-
-const ColoredRow = ({ color }: { color: string }) => (
-  <div style={{ backgroundColor: color }}>
-    {`lalalalalalalalalalalalalalalalalalalalalalalalalalalalala`}
-  </div>
-)
 
 const Chevvy = (props: any) => (
   <div className={css.chevvy} {...props}>

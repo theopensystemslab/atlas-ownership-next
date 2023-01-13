@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app"
-import GlobeLayout from "../components/GlobeLayout"
+import GlobeLayout from "../components/layout/GlobeLayout"
 import { trpc } from "../lib/trpc"
 import "../styles/globals.css"
 
