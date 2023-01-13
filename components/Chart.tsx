@@ -1,16 +1,9 @@
 import _ from "lodash"
-import Highcharts from "highcharts"
-import HighchartsAccessibility from "highcharts/modules/accessibility"
-import HighchartsReact from "highcharts-react-official"
 
 import { Pattern, PatternClass, Term } from "../lib/types"
 
-// https://github.com/highcharts/highcharts-react#highcharts-with-nextjs
-if (typeof Highcharts === "object") {
-  HighchartsAccessibility(Highcharts)
-}
-
 type Props = {
+  rollupToPatternClass: boolean,
   showLabels: boolean,
   terms?: Term[]
   patterns?: Pattern[]
@@ -18,7 +11,26 @@ type Props = {
 }
 
 const Chart = (props: Props) => {
-  const { showLabels, terms = [], patterns = [], patternClasses = [] } = props
+  const { rollupToPatternClass, showLabels, terms = [], patterns = [], patternClasses = [] } = props;
+
+  // Format the list of individual terms that apply to this entry
+  let formattedTerms = _(terms)
+    .map((term: any) => ({
+      pattern: _.find(patterns, ['_id', term.pattern._ref]),
+      patternName: _.find(patterns, ['_id', term.pattern._ref])?.name,
+      type: term.rightsIntensity > 0 ? "Right" : "Obligation", // because pattern.type is not consistently populated
+      strength: term.strength, // 1-5
+    }))
+    .map((term: any) => ({
+      meta: term.pattern,
+      name: term.patternName,
+      patternClassName: _.find(patternClasses, ['_id', term.pattern.class._ref])?.name,
+      patternClassOrder: _.find(patternClasses, ['_id', term.pattern.class._ref])?.order,
+      type: term.type,
+      strength: term.strength,
+    }))
+    .sortBy('patternClassOrder', 'name')
+    .value();
 
   // Group terms by pattern
   let totalsByPattern = _(terms)
@@ -29,144 +41,112 @@ const Chart = (props: Props) => {
       sumRights: _.sumBy(term, 'rightsIntensity'),
       sumObligations: _.sumBy(term, 'obligationIntensity')
     }))
-    .value()
+    .value();
 
   // Rollup to pattern class, taking the average rights & obligations from each pattern rounded to nearest integer
   let totalsByPatternClass = _(totalsByPattern)
     .groupBy('pattern.class._ref')
     .map((pattern: any) => ({
-      patternClass: _.find(patternClasses, ['_id', pattern[0].pattern.class._ref]),
-      patternClassName: _.find(patternClasses, ['_id', pattern[0].pattern.class._ref])?.name,
+      meta: _.find(patternClasses, ['_id', pattern[0].pattern.class._ref]),
+      name: _.find(patternClasses, ['_id', pattern[0].pattern.class._ref])?.name,
       avgRights: _.round(_.meanBy(pattern, 'sumRights')),
       avgObligations: _.round(_.meanBy(pattern, 'sumObligations')),
     }))
-    .sortBy('patternClass.order')
-    .value()
+    .sortBy('meta.order')
+    .value();
 
   // Ensure totalsByPatternClass has an entry for **every** pattern class, insert one if it doesn't
   if (totalsByPatternClass.length !== patternClasses.length) {
     patternClasses.forEach(globalPatternClass => {
-      if (!_.find(totalsByPatternClass, ['patternClassName', globalPatternClass.name])) {
+      if (!_.find(totalsByPatternClass, ['name', globalPatternClass.name])) {
         totalsByPatternClass.push({
-          patternClass: globalPatternClass,
-          patternClassName: globalPatternClass.name,
+          meta: globalPatternClass,
+          name: globalPatternClass.name,
           avgRights: 0,
           avgObligations: 0,
         });
       }
     });
   }
-  
-  // Highcharts config
-  const categories: string[] = patternClasses.map(patternClass => patternClass.name)
-  const categoryColors: string[] = patternClasses.map(patternClass => patternClass.color.hex)
-  const series = [
-    { name: "Obligations", data: totalsByPatternClass.map(total => -Math.abs(total.avgObligations) || 0) }, // represent as negative, replace NaN with 0
-    { name: "Rights", data: totalsByPatternClass.map(total => total.avgRights || 0) },
-  ]
 
-  const options = {
-    chart: {
-      type: "bar",
-      animation: false,
-      backgroundColor: "transparent",
-      height: "50%", // set height as % of container width to preserve aspect ratio
-      style: {
-        fontFamily: "inherit",
-        fontWeight: 700,
-      },
-    },
-    plotOptions: {
-      series: {
-        stacking: "normal",
-        borderWidth: 0,
-        pointPadding: 0,
-        groupPadding: 0,
-        animation: false,
-        enableMouseTracking: false,
-        colorByPoint: true,
-      },
-    },
-    series: series,
-    colors: categoryColors,
-    xAxis: [{
-      categories: categories,
-      lineColor: "transparent",
-      reversed: true,
-      labels: {
-        enabled: showLabels,
-        style: {
-          color: "black",
-          fontSize: "1em",
-        },
-      },
-      accessibility: {
-        description: "Obligations"
-      },
-    }, { // mirror axis on right side
-      opposite: true,
-      reversed: true,
-      linkedTo: 0,
-      visible: false,
-      accessibility: {
-        description: "Rights"
-      },
-    }],
-    yAxis: [{
-      title: {
-        text: ""
-      },
-      labels: {
-        enabled: false,
-      },
-      accessibility: {
-        description: "Intensity of Rights or Obligations",
-        rangeDescription: "0-5",
-      },
-      maxPadding: 0,
-      visible: true, // visible = true to show plotLines, but essentially hidden
-      min: -5,
-      max: 5,
-      tickInterval: 1,
-      gridLineColor: "transparent",
-      plotLines: [{
-        value: 0,
-        color: "#000",
-        width: 4,
-        zIndex: 999,
-      }],
-    }],
-    title: { text: "" },
-    tooltip: { enabled: false },
-    legend: { enabled: false },
-    credits: { enabled: false },
-    accessibility: {
-      point: {
-        valueDescriptionFormat: "{xDescription} ranks {value}/5 in"
-      }
-    },
-    responsive: {
-      rules: [{
-        condition: {
-          maxWidth: 400,
-        },
-        chartOptions: {
-          xAxis: [{
-            labels: {
-              enabled: false, // overwrites showLabels prop when condition is met
-            },
-          }],
-        },
-      }],
-    },
-  }
+  // maps patternClass.name to custom color keys defined in tailwind.config.js
+  //  tailwind doesn't support templated class names, hence we need to use this lookup
+  const backgroundColorClasses: any = {
+    "Rent": "bg-rent",
+    "Transfer": "bg-transfer",
+    "Administration": "bg-administration",
+    "Eligibility": "bg-eligibility",
+    "Security of tenure": "bg-security",
+    "Develop": "bg-develop",
+    "Stewardship": "bg-stewardship",
+    "Use": "bg-use",
+    "Access": "bg-access",
+  };
 
-  return (
-    <HighchartsReact
-      highcharts={Highcharts}
-      options={options}
-    />
-  )
+  // added to match figma marker designs, but colored text doesn't look great? 
+  const textColorClasses: any = {
+    "Rent": "text-rent",
+    "Transfer": "text-transfer",
+    "Administration": "text-administration",
+    "Eligibility": "text-eligibility",
+    "Security of tenure": "text-security",
+    "Develop": "text-develop",
+    "Stewardship": "text-stewardship",
+    "Use": "text-gray-400",
+    "Access": "text-access",
+  };
+
+  // maps pattern.strength values (0-5) to tailwind percentage width
+  //   ref https://tailwindcss.com/docs/width#percentage-widths
+  const percentageWidthClasses: any = {
+    "NaN": "w-0", // possible when calculating average strength (divide by zero) for charts rolled up to patternClass
+    "0": "w-0",
+    "1": "w-1/5",
+    "2": "w-2/5",
+    "3": "w-3/5",
+    "4": "w-4/5",
+    "5": "w-5/5", // w-full
+  };
+
+  return rollupToPatternClass ? (
+    <div className="m-4" id="chart-container">
+      <div className="flex" id="row-header">
+        {showLabels ? <div className="flex-1 h-10"></div> : ``}
+        <div className="flex-1 h-10 text-lg text-center text-gray-600">Obligations</div>
+        <div className="flex-1 h-10 text-lg text-center text-gray-600">Rights</div>
+      </div>
+      {totalsByPatternClass.map(patternClass => (
+        <div className="flex" key={`row-${patternClass.name}`}>
+          {showLabels ? <div className="flex-1 h-10 text-base text-right mr-3 text-black" id="label">{patternClass.name}</div> : ``}
+          <div className={`flex-1 h-10 border-r-white border-r-2 ${patternClass.name ? backgroundColorClasses[patternClass.name] : 'bg-gray-400'}`} id={`obligations-${patternClass.name}`}>
+            <div className={`h-10 bg-white ${patternClass.avgObligations > 0 ? percentageWidthClasses[(5 - patternClass.avgObligations).toString()] : 'w-full'}`}></div>
+          </div>
+          <div className="flex-1 h-10 bg-white" id={`rights-${patternClass.name}`}>
+            <div className={`h-10 ${percentageWidthClasses[patternClass.avgRights.toString()]} ${patternClass.name ? backgroundColorClasses[patternClass.name] : 'bg-gray-400'}`}></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <div className="m-4" id="chart-container">
+      <div className="flex" id="row-header">
+        {showLabels ? <div className="flex-1 h-10"></div> : ``}
+        <div className="flex-1 h-10 text-lg text-center text-gray-600">Obligations</div>
+        <div className="flex-1 h-10 text-lg text-center text-gray-600">Rights</div>
+      </div>
+      {formattedTerms.map(term => (
+        <div className="flex" key={`row-${term.name}`}>
+          {showLabels ? <div className="flex-1 h-10 text-sm text-right mr-3 text-black" id="label">{term.name}</div> : ``}
+          <div className={`flex-1 h-10 border-r-white border-r-2 ${term.patternClassName ? backgroundColorClasses[term.patternClassName] : 'bg-gray-400'}`} id={`obligations-${term.name}`}>
+            <div className={`h-10 bg-white ${term.type === "Obligation" && term.strength > 0 ? percentageWidthClasses[(5 - term.strength).toString()] : 'w-full'}`}></div>
+          </div>
+          <div className="flex-1 h-10 bg-white" id={`rights-${term.name}`}>
+            <div className={`h-10 ${term.type === "Right" && term.strength > 0 ? percentageWidthClasses[term.strength.toString()] : 'w-0'} ${term.patternClassName ? backgroundColorClasses[term.patternClassName] : 'bg-gray-400'}`}></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default Chart
