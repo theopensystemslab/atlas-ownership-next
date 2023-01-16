@@ -1,17 +1,77 @@
 import { pipe } from "fp-ts/lib/function"
 import Link from "next/link"
 import React, { Fragment } from "react"
-import { Marker } from "react-map-gl"
 import { A, NEA } from "../../lib/fp"
 import store, { useStore } from "../../lib/store"
 import { Entry } from "../../lib/types"
 import Chart from "../Chart"
+import { useState } from "react"
+import { MapboxEvent, Marker as MapboxMarker, Popup } from "react-map-gl"
+import { ArrowRight } from "@carbon/icons-react"
+import { useGetEntryFromSlug } from "@/lib/queries"
 
-type Props = {
+type MarkersProps = {
   entries: Entry[]
 }
 
-const Markers = (props: Props) => {
+type MarkerProps = {
+  slug: string
+  lat: number
+  lng: number
+}
+
+const Marker = (props: MarkerProps) => {
+  const { lat, lng, slug } = props;
+
+  const getEntry = useGetEntryFromSlug()
+  const entry = getEntry(slug)
+
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+
+  const onMarkerClick = (e: MapboxEvent<MouseEvent>) => {
+    store.map?.flyTo({ center: { lat, lng }, padding: { top: 500, bottom: 0, left: 0, right: 0 }, zoom: 18 });
+    e.originalEvent.stopPropagation();
+    setShowPopup(!showPopup);
+  }
+
+  const PopupContent = () => (
+    <div className="w-[500px]">
+      <h2 className="text-2xl">{entry?.name}</h2>
+      <Chart
+        rollupToPatternClass={true}
+        showLabels={true}
+        terms={entry?.terms}
+      />
+      <Link href={`/entry/${slug}`}>
+        <a className="flex justify-end items-center text-lg" onClick={() => setShowPopup(false)} >
+          Find out more
+          <ArrowRight className="ml-2" size={20} />
+        </a>
+      </Link>
+    </div>
+  )
+
+  return (
+    <>
+      <MapboxMarker key={slug} longitude={lng} latitude={lat} onClick={onMarkerClick}/>
+      {
+        showPopup &&
+        <Popup
+          className="z-50"
+          longitude={lng}
+          latitude={lat}
+          maxWidth="none"
+          anchor="bottom"
+          onClose={() => setShowPopup(false)}
+        >
+          <PopupContent />
+        </Popup>
+      }
+    </>
+  )
+}
+
+const Markers = (props: MarkersProps) => {
   const { entries = [] } = props
 
   const slugEntries = pipe(
@@ -31,39 +91,11 @@ const Markers = (props: Props) => {
         unclusteredSlugs,
         A.map((slug) => {
           const entry = slugEntries[slug][0]
-          const { location, name } = entry
           const {
             geopoint: { lat, lng },
-          } = location ?? { geopoint: { lat: 0, lng: 0 } }
+          } = entry.location ?? { geopoint: { lat: 0, lng: 0 } }
 
-          return (
-            <Marker key={slug} longitude={lng} latitude={lat} anchor="center">
-              <Link href={`/entry/${slug}`}>
-                <a>
-                  <div
-                    className="marker absolute font-bold text-sm w-32"
-                    style={{
-                      transform: `translate(-50%, -50%)`,
-                      fontFamily: "Inter",
-                    }}
-                    onClick={() => {
-                      store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
-                    }}
-                  >
-                    {/* <Chart
-                      showLabels={false}
-                      terms={entry?.terms}
-                      patterns={patterns}
-                      patternClasses={patternClasses}
-                    /> */}
-                    <div className="bg-white bg-opacity-75 font-extrabold p-1">
-                      {name}
-                    </div>
-                  </div>
-                </a>
-              </Link>
-            </Marker>
-          )
+          return <Marker key={slug} lat={lat} lng={lng} slug={slug}/>
         })
       )}
     </Fragment>
