@@ -1,4 +1,5 @@
 import _ from "lodash"
+import { useState } from "react"
 
 import { Pattern, PatternClass, Term } from "../lib/types"
 
@@ -11,6 +12,9 @@ type Props = {
 }
 
 const Chart = (props: Props) => {
+  const [open, setOpen] = useState(false);
+  const [openIndex, setOpenIndex] = useState(0);
+
   const { rollupToPatternClass, showLabels, terms = [], patterns = [], patternClasses = [] } = props;
 
   // Format the list of individual terms that apply to this entry
@@ -24,8 +28,8 @@ const Chart = (props: Props) => {
     .map((term: any) => ({
       meta: term.pattern,
       name: term.patternName,
-      patternClassName: _.find(patternClasses, ['_id', term.pattern.class._ref])?.name,
-      patternClassOrder: _.find(patternClasses, ['_id', term.pattern.class._ref])?.order,
+      patternClassName: _.find(patternClasses, ['_id', term.pattern?.class._ref])?.name,
+      patternClassOrder: _.find(patternClasses, ['_id', term.pattern?.class._ref])?.order,
       type: term.type,
       strength: term.strength,
     }))
@@ -83,6 +87,30 @@ const Chart = (props: Props) => {
     "Access": "bg-access",
   };
 
+  const descriptionBackgroundColorClasses: any = {
+    "Rent": "bg-rent/20",
+    "Transfer": "bg-transfer/20",
+    "Administration": "bg-administration/20",
+    "Eligibility": "bg-eligibility/20",
+    "Security of tenure": "bg-security/20",
+    "Develop": "bg-develop/20",
+    "Stewardship": "bg-stewardship/20",
+    "Use": "bg-use/20",
+    "Access": "bg-access/20",
+  };
+
+  const hoverColorClasses: any = {
+    "Rent": "hover:bg-rent/70",
+    "Transfer": "hover:bg-transfer/70",
+    "Administration": "hover:bg-administration/70",
+    "Eligibility": "hover:bg-eligibility/70",
+    "Security of tenure": "hover:bg-security/70",
+    "Develop": "hover:bg-develop/70",
+    "Stewardship": "hover:bg-stewardship/70",
+    "Use": "hover:bg-use/70",
+    "Access": "hover:bg-access/70",
+  };
+
   // added to match figma marker designs, but colored text doesn't look great? 
   const textColorClasses: any = {
     "Rent": "text-rent",
@@ -134,15 +162,44 @@ const Chart = (props: Props) => {
         <div className="flex-1 h-10 text-lg text-center text-gray-600">Obligations</div>
         <div className="flex-1 h-10 text-lg text-center text-gray-600">Rights</div>
       </div>
-      {formattedTerms.map((term, i )=> (
-        <div className="flex" key={`row-${term.name}-${i}`}>
-          {showLabels ? <div className="flex-1 h-10 text-sm text-right mr-3 text-black" id="label">{term.name}</div> : ``}
-          <div className={`flex-1 h-10 border-r-white border-r-2 ${term.patternClassName ? backgroundColorClasses[term.patternClassName] : 'bg-gray-400'}`} id={`obligations-${term.name}`}>
-            <div className={`h-10 bg-white ${term.type === "Obligation" && term.strength > 0 ? percentageWidthClasses[(5 - term.strength).toString()] : 'w-full'}`}></div>
+      {formattedTerms.map((term, i) => (
+        <div className="flex flex-col" key={`row-${term.name}-i`}>
+          <div className="flex" id="row-chart-data">
+            {showLabels? <div className="flex-1 h-10 text-sm text-right mr-3 text-black" id="labels">{term.name}</div> : ``}
+            <div 
+              className={`flex-1 h-10 ${term.patternClassName ? backgroundColorClasses[term.patternClassName] : 'bg-gray-400'} ${term.patternClassName ? hoverColorClasses[term.patternClassName] : 'hover:bg-gray-400/70'}`} 
+              id={`obligations-${term.name}`}
+              onClick={() => {
+                setOpen(!open);
+                setOpenIndex(i);
+              }}
+            >
+              <div className={`h-10 bg-white ${term.type === "Obligation" && term.strength > 0 ? percentageWidthClasses[(5 - term.strength).toString()] : 'w-full'}`}></div>
+            </div>
+            <div className="flex-1 h-10 bg-white" id={`rights-${term.name}`}>
+              <div 
+                className={`h-10 ${term.type === "Right" && term.strength > 0 ? percentageWidthClasses[term.strength.toString()] : 'w-0'} ${term.patternClassName ? backgroundColorClasses[term.patternClassName] : 'bg-gray-400'} ${term.patternClassName ? hoverColorClasses[term.patternClassName] : 'hover:bg-gray-400/70'}`}
+                onClick={() => {
+                  setOpen(!open);
+                  setOpenIndex(i);
+                }}
+              >
+              </div>
+            </div>
           </div>
-          <div className="flex-1 h-10 bg-white" id={`rights-${term.name}`}>
-            <div className={`h-10 ${term.type === "Right" && term.strength > 0 ? percentageWidthClasses[term.strength.toString()] : 'w-0'} ${term.patternClassName ? backgroundColorClasses[term.patternClassName] : 'bg-gray-400'}`}></div>
-          </div>
+          {
+            open && openIndex === i ? 
+              <div 
+                className={`flex flex-col p-4 h-fit w-full text-gray-600 ${term.patternClassName ? descriptionBackgroundColorClasses[term.patternClassName] : 'bg-gray-200'}`} 
+                id="row-expandable-description"
+                onClick={() => setOpen(false)}
+              >
+                <p className="text-xs text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
+                <h2 className="text-sm mb-1">{term.name}</h2>
+                <p className="text-xs">{term.meta?.description}</p>
+              </div>
+              : ``
+          }
         </div>
       ))}
     </div>
