@@ -22,7 +22,6 @@ const PatternClassAccordionPattern = ({ pattern }: Props) => {
               (x) => x !== pattern.name
             )
           }
-
           console.log(selection.patternNames)
         }}
         checked={patternNames.includes(pattern.name)}

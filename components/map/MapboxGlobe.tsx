@@ -13,9 +13,8 @@ import Map, {
   Source,
 } from "react-map-gl"
 import { ref } from "valtio"
-import { A, O, S } from "../../lib/fp"
+import { A, S } from "../../lib/fp"
 import store from "../../lib/store"
-import { useSubscribeKey } from "../../lib/valtio"
 import Markers from "./Markers"
 
 const MapboxGlobe = () => {
@@ -66,16 +65,8 @@ const MapboxGlobe = () => {
     source: sourceId,
     filter: ["has", "point_count"],
     paint: {
-      "circle-color": [
-        "step",
-        ["get", "point_count"],
-        "#51bbd6",
-        100,
-        "#f1f075",
-        750,
-        "#f28cb1",
-      ],
-      "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40],
+      "circle-color": "#ffffff",
+      "circle-radius": 18,
     },
   }
 
@@ -86,7 +77,7 @@ const MapboxGlobe = () => {
     filter: ["has", "point_count"],
     layout: {
       "text-field": "{point_count_abbreviated}",
-      "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+      // "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
       "text-size": 12,
     },
   }
@@ -97,10 +88,10 @@ const MapboxGlobe = () => {
     source: sourceId,
     filter: ["!", ["has", "point_count"]],
     paint: {
-      "circle-color": "#11b4da",
-      "circle-radius": 4,
-      "circle-stroke-width": 1,
-      "circle-stroke-color": "#fff",
+      "circle-color": "#fff",
+      "circle-radius": 0,
+      // "circle-stroke-width": 1,
+      // "circle-stroke-color": "#fff",
     },
   }
 
@@ -126,20 +117,20 @@ const MapboxGlobe = () => {
     })
   }
 
-  const updateMarkers = () =>
+  const updateMarkers = () => {
     pipe(
-      store.map?.queryRenderedFeatures() ?? [],
-      A.partition((feature) => feature.properties?.cluster),
-      ({ left: unclustered, right: clustered }) => {
-        store.unclusteredSlugs = pipe(
-          unclustered,
-          A.filterMap((x) =>
-            x.properties?.slug ? O.some(x.properties.slug) : O.none
-          ),
-          A.uniq(S.Eq)
-        )
+      store.map?.querySourceFeatures(sourceId) ?? [],
+      A.filterMap((feature) =>
+        !feature.properties?.cluster && feature.properties?.slug
+          ? some(feature.properties.slug as string)
+          : none
+      ),
+      A.uniq(S.Eq),
+      (unclustered) => {
+        store.unclusteredSlugs = unclustered
       }
     )
+  }
 
   return (
     <Map
@@ -156,6 +147,7 @@ const MapboxGlobe = () => {
       }}
       onRender={updateMarkers}
       onClick={onClick}
+      reuseMaps
     >
       <Source
         id={sourceId}
@@ -166,7 +158,7 @@ const MapboxGlobe = () => {
         }}
         cluster={true}
         clusterMaxZoom={14}
-        clusterRadius={50}
+        clusterRadius={150}
       >
         <Layer {...clusterLayer} />
         <Layer {...clusterCountLayer} />

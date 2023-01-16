@@ -24,6 +24,7 @@ const Markers = (props: Props) => {
   )
 
   const { unclusteredSlugs } = useStore()
+
   return (
     <Fragment>
       {pipe(
