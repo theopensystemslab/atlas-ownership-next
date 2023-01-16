@@ -5,7 +5,7 @@ import { useGetEntryFromSlug } from "../lib/queries"
 import store from "../lib/store"
 import { trpc } from "../lib/trpc"
 import { Entry } from "../lib/types"
-import Chart from "./Chart"
+import { Chart } from "./Chart"
 import { ArrowRight } from "@carbon/icons-react"
 
 type Props = {

@@ -5,7 +5,7 @@ import { Marker } from "react-map-gl"
 import { A, NEA } from "../../lib/fp"
 import store, { useStore } from "../../lib/store"
 import { Entry } from "../../lib/types"
-import Chart from "../Chart"
+import { Chart } from "../Chart"
 
 type Props = {
   entries: Entry[]
