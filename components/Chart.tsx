@@ -134,8 +134,8 @@ const Chart = (props: Props) => {
         <div className="flex-1 h-10 text-lg text-center text-gray-600">Obligations</div>
         <div className="flex-1 h-10 text-lg text-center text-gray-600">Rights</div>
       </div>
-      {formattedTerms.map(term => (
-        <div className="flex" key={`row-${term.name}`}>
+      {formattedTerms.map((term, i )=> (
+        <div className="flex" key={`row-${term.name}-${i}`}>
           {showLabels ? <div className="flex-1 h-10 text-sm text-right mr-3 text-black" id="label">{term.name}</div> : ``}
           <div className={`flex-1 h-10 border-r-white border-r-2 ${term.patternClassName ? backgroundColorClasses[term.patternClassName] : 'bg-gray-400'}`} id={`obligations-${term.name}`}>
             <div className={`h-10 bg-white ${term.type === "Obligation" && term.strength > 0 ? percentageWidthClasses[(5 - term.strength).toString()] : 'w-full'}`}></div>

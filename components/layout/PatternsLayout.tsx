@@ -51,12 +51,12 @@ const PatternList = (props: { patternClass: PatternClass | undefined }) => {
     <section className="p-8">
       <p className="mb-4">{patternClass?.description}</p>
       <h3 className="text-lg mb-4">Rights</h3>
-      {patternInfo?.rights.map(pattern => (
-        <PatternItem key={pattern.name} pattern={pattern} patternClassName={patternClass?.name} highestCount={patternInfo?.rights[0].entryCount} />
+      {patternInfo?.rights.map((pattern, i) => (
+        <PatternItem key={`${pattern.name}-${i}`} pattern={pattern} patternClassName={patternClass?.name} highestCount={patternInfo?.rights[0].entryCount} />
       ))}
       <h3 className="text-lg mb-4">Obligations</h3>
-      {patternInfo?.obligations.map(pattern => (
-        <PatternItem key={pattern.name} pattern={pattern} patternClassName={patternClass?.name} reverse highestCount={patternInfo?.obligations[0].entryCount} />
+      {patternInfo?.obligations.map((pattern, i) => (
+        <PatternItem key={`${pattern.name}-${i}`} pattern={pattern} patternClassName={patternClass?.name} reverse highestCount={patternInfo?.obligations[0].entryCount} />
       ))}
     </section>
   )
@@ -75,10 +75,10 @@ const PatternItem = (props: { pattern: Pattern, patternClassName: string | undef
         </div>
       </div>
       <div className="w-1/2 grid" style={{ gridTemplateColumns: `repeat(${highestCount}, minmax(0, 1fr))`, direction: reverse ? "rtl" : "ltr" }}>
-        <div className={clsx(`${patternClassLookup[patternClassName!]} bg-opacity-20 flex justify-center flex-col py-2 ${reverse ? "pr-4" : "pl-4"}`)} style={{ gridColumn: `span ${pattern.entryCount}` }}>
+        <div className={clsx(`${patternClassLookup[patternClassName!]} bg-opacity-20 flex justify-center flex-col py-2 px-4`)} style={{ gridColumn: `span ${pattern.entryCount}` }}>
           <p className="text-xs">Appears in</p>
           <p className="text-5xl py-2">{pattern.entryCount}</p>
-          <p className="text-xs">entries</p>
+          <p className="text-xs">{pattern?.entryCount || 0 > 1 ? "entries" : "entry"}</p>
         </div>
       </div>
     </div>
