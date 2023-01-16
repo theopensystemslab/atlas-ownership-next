@@ -8,6 +8,7 @@ type Store = {
   viewState: ViewState
   lastBirdseyeViewState: ViewState
   unclusteredSlugs: string[]
+  isSidebarOpen: boolean
 }
 
 const initialViewState: ViewState = {
@@ -23,7 +24,10 @@ const store = proxy<Store>({
   viewState: initialViewState,
   lastBirdseyeViewState: initialViewState,
   unclusteredSlugs: [],
+  isSidebarOpen: false,
 })
+
+export const toggleSidebar = () => store.isSidebarOpen = !store.isSidebarOpen;
 
 export const useStore = () => useSnapshot(store) as typeof store
 

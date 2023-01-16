@@ -18,6 +18,7 @@ export type Term = {
 }
 
 export type Pattern = {
+  _id: string
   name: string
   description: string
   class: PatternClass

@@ -1,0 +1,7 @@
+.root {
+  @apply w-64 px-2 py-2 block cursor-pointer;
+}
+
+.header {
+  @apply flex items-center justify-between
+}
