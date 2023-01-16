@@ -1,0 +1,19 @@
+.root {
+  @apply flex items-center py-2
+}
+
+.label {
+  @apply  w-full whitespace-nowrap text-sm text-left flex cursor-pointer justify-between
+}
+
+.labelText {
+  @apply flex justify-between items-center text-ellipsis overflow-hidden mr-2
+}
+
+.icon {
+  @apply mr-4 shrink-0
+}
+
+.checkbox {
+  @apply cursor-pointer shrink-0
+}
