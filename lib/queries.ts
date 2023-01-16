@@ -4,7 +4,6 @@ import { trpc } from "./trpc"
 import { Entry } from "./types"
 
 export const entriesQuery = `*[_type == "entry"]{...,  mainImage {..., file {..., asset-> } } }`
-export const entryBySlugQuery = `*[slug.current == $slug]`
 export const patternsQuery = `*[_type == "pattern"]`
 export const patternClassesQuery = `*[_type == "patternClass"] | order(order)`
 export const patternsWithClassQuery = `*[_type == "pattern"]{..., class -> }`
