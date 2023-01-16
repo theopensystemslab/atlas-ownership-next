@@ -6,7 +6,6 @@
 .chevvy {
   @apply bg-white;
   @apply cursor-pointer;
-  /* @apply py-2; */
 }
 
 .chevvy > div {

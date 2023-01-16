@@ -17,14 +17,14 @@ const PatternClassAccordionPattern = ({ pattern }: Props) => {
         <p>{pattern.name}</p>
         </div>
         {patternNames.includes(pattern.name) ?
-          <RadioButtonChecked size={24} className={css.checkbox} /> :
-          <RadioButton size={24} className={css.checkbox} />
+          <RadioButtonChecked size={24} className={css.checkbox} role="checkbox" aria-checked="true"/> :
+          <RadioButton size={24} className={css.checkbox} role="checkbox" aria-checked="false"/>
         }
       </label>
       <input
         id={pattern._id}
         type="checkbox"
-        className="hidden peer"
+        className="hidden"
         onChange={(e) => {
           if (e.target.checked && !patternNames.includes(pattern.name)) {
             selection.patternNames.push(pattern.name)
