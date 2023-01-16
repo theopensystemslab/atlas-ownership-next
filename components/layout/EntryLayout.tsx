@@ -2,7 +2,7 @@ import { ArrowUpRight, Close } from "@carbon/icons-react"
 import Link from "next/link"
 import { Entry, Pattern, PatternClass, TenureType } from "../../lib/types"
 import Back from "../Back"
-import Chart from "../Chart"
+import { Chart } from "../Chart"
 
 interface EntryLayoutProps {
   entry?: Entry
