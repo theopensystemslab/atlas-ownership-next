@@ -804,40 +804,45 @@
   dependencies:
     tslib "^2.4.0"
 
-"@tanstack/query-core@4.10.1":
-  version "4.10.1"
-  resolved "https://registry.npmjs.org/@tanstack/query-core/-/query-core-4.10.1.tgz"
-  integrity sha512-UZRYzjgQSfYhQ+cJX0CspAbzutf8p93gR1xFjQuH3OYcb/7t3WnHkdb/qC9mbqrfWXN/JAbBTJlTU/XQHc5HbA==
+"@tanstack/query-core@4.22.0":
+  version "4.22.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-4.22.0.tgz#7a786fcea64e229ed5d4308093dd644cdfaa895e"
+  integrity sha512-OeLyBKBQoT265f5G9biReijeP8mBxNFwY7ZUu1dKL+YzqpG5q5z7J/N1eT8aWyKuhyDTiUHuKm5l+oIVzbtrjw==
 
-"@tanstack/react-query@^4.10.1":
-  version "4.10.1"
-  resolved "https://registry.npmjs.org/@tanstack/react-query/-/react-query-4.10.1.tgz"
-  integrity sha512-6GaLYAsAu/4aX6HR4krpOej9qbKWXe0X0eccikpv5hAw4CoAAPG29Pydql1nTl9cYF2zd21unVm4yApklFY0AA==
+"@tanstack/react-query@^4.22.0":
+  version "4.22.0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-4.22.0.tgz#aaa4b41a6d306be6958018c74a8a3bb3e9f1924c"
+  integrity sha512-P9o+HjG42uB/xHR6dMsJaPhtZydSe4v0xdG5G/cEj1oHZAXelMlm67/rYJNQGKgBamKElKogj+HYGF+NY2yHYg==
   dependencies:
-    "@tanstack/query-core" "4.10.1"
+    "@tanstack/query-core" "4.22.0"
     use-sync-external-store "^1.2.0"
 
-"@trpc/client@^10.0.0-proxy-beta.15":
-  version "10.0.0-proxy-beta.15"
-  resolved "https://registry.npmjs.org/@trpc/client/-/client-10.0.0-proxy-beta.15.tgz"
-  integrity sha512-qS3FzGA5jLjALBdG6+fo0dO+qrPvAJ4yzEU5NdyerFDireRvz0DxpX5nyCf3Y5qsFI2derEAcNtGbq/XZr9+ig==
+"@trpc/client@^10.9.0":
+  version "10.9.0"
+  resolved "https://registry.yarnpkg.com/@trpc/client/-/client-10.9.0.tgz#c6c672ab1b8764ddb2f8f4d8884d5d4c156bc957"
+  integrity sha512-id6318qpgqllNOuBp7nuciXFPXCe+zae5d4r1hze6Eyp5fFFNO58TqA+4Q44KIcHgpfWyW2egs6iPeql3PrdKA==
 
-"@trpc/next@^10.0.0-proxy-beta.15":
-  version "10.0.0-proxy-beta.15"
-  resolved "https://registry.npmjs.org/@trpc/next/-/next-10.0.0-proxy-beta.15.tgz"
-  integrity sha512-qjcEqW4L0Mo9NVgDTSFc13u//f/sdOpSENjrhLTpUAp+Lt/SbjtQxaz2J/2EhjMo51DRtrSN6wFJtqTPmN64Tw==
+"@trpc/next@^10.9.0":
+  version "10.9.0"
+  resolved "https://registry.yarnpkg.com/@trpc/next/-/next-10.9.0.tgz#342242be9a3d0ee4ebe5c1e4f4a45c055100a730"
+  integrity sha512-h/W8VHMki/fw7vHNMs1Ku7bLqccjpiKCE1wkqbvHfBOO1ARDmarRbuK6dLqJilip/f7jkFXcrxwB+eNgK4+6Wg==
   dependencies:
     react-ssr-prepass "^1.5.0"
+
+"@trpc/react-query@^10.9.0":
+  version "10.9.0"
+  resolved "https://registry.yarnpkg.com/@trpc/react-query/-/react-query-10.9.0.tgz#b37c7bef6fbf5a8acec08d8d0532ba4060fa136b"
+  integrity sha512-I7xtdFj/AETwc9HfY2bGxKINij39r26LvfIiTBfz2pBj1ELrcgucWmPeI2eS6pon/uI1E9Nqa6fQCg/zkg764Q==
 
 "@trpc/react@^10.0.0-proxy-beta.15":
   version "10.0.0-proxy-beta.15"
   resolved "https://registry.npmjs.org/@trpc/react/-/react-10.0.0-proxy-beta.15.tgz"
   integrity sha512-oSe8/1O3AeKryiYf5a/SOwjxZMLdCLmkJEX3tl97BQt/xbWht/xYVuuoYHbJjZLC8E4mkrj5fTF1JFTDg9t4oA==
 
-"@trpc/server@^10.0.0-proxy-beta.15":
-  version "10.0.0-proxy-beta.15"
-  resolved "https://registry.npmjs.org/@trpc/server/-/server-10.0.0-proxy-beta.15.tgz"
-  integrity sha512-qG1qPT3PH9ylL6Bi82YIRVfD9J49mejCVt5E/Hw/ayoj635RI3GkRrTt2Q6MEE8n1yzlSB0KIUJ49F2s5SZ7Zg==
+"@trpc/server@^10.9.0":
+  version "10.9.0"
+  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-10.9.0.tgz#e470df429c823858d715b21acd564f9c6f17f0d9"
+  integrity sha512-5psyZgbvy29pJND32hwkWTMbv6s86IbsPOeDopsgNF0VegZT6Dsijmb7Ub/TDhuJVQVq5u4u5briMXi3SxmBkw==
 
 "@types/carbon__icons-react@^11.8.0":
   version "11.8.0"
@@ -3952,15 +3957,15 @@ type-fest@^0.21.3:
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.21.3.tgz"
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
 
-typescript@4.8.3:
-  version "4.8.3"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-4.8.3.tgz"
-  integrity sha512-goMHfm00nWPa8UvR/CPSvykqf6dVV8x/dp0c5mFTMTIu0u0FlGWRioyy7Nn0PGAdHxpJZnuO/ut+PpQ8UiHAig==
-
 typescript@^4.5.2:
   version "4.8.4"
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.8.4.tgz"
   integrity sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==
+
+typescript@^4.9.4:
+  version "4.9.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.4.tgz#a2a3d2756c079abda241d75f149df9d561091e78"
+  integrity sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"
@@ -4117,7 +4122,12 @@ yocto-queue@^0.1.0:
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zod@^3.11.6, zod@^3.19.1:
+zod@^3.11.6:
   version "3.19.1"
   resolved "https://registry.npmjs.org/zod/-/zod-3.19.1.tgz"
   integrity sha512-LYjZsEDhCdYET9ikFu6dVPGp2YH9DegXjdJToSzD9rO6fy4qiRYFoyEYwps88OseJlPyl2NOe2iJuhEhL7IpEA==
+
+zod@^3.20.2:
+  version "3.20.2"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.20.2.tgz#068606642c8f51b3333981f91c0a8ab37dfc2807"
+  integrity sha512-1MzNQdAvO+54H+EaK5YpyEy0T+Ejo/7YLHS93G3RnYWh5gaotGHwGeN/ZO687qEDU2y4CdStQYXVHIgrUl5UVQ==

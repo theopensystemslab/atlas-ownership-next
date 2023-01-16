@@ -157,7 +157,7 @@ const MapboxGlobe = () => {
           features,
         }}
         cluster={true}
-        clusterMaxZoom={14}
+        clusterMaxZoom={13}
         clusterRadius={150}
       >
         <Layer {...clusterLayer} />
