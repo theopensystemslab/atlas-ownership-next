@@ -24,10 +24,6 @@ const EntryPage = () => {
     store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
   }, [entry])
 
-  const { data: patterns, error: patternsError } = trpc.patterns.useQuery()
-  const { data: patternClasses, error: patternClassesError } =
-    trpc.patternClasses.useQuery()
-
   return entry ? (
     <motion.div
       initial={{ opacity: 0 }}
@@ -42,7 +38,7 @@ const EntryPage = () => {
         duration: 2,
       }}
     >
-      <EntryLayout entry={entry} patterns={patterns} patternClasses={patternClasses} />
+      <EntryLayout entry={entry} />
     </motion.div>
   ) : null
 }
