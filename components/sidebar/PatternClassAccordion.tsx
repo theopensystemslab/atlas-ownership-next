@@ -46,7 +46,7 @@ const PatternClassAccordion = (props: Props) => {
               patterns,
               A.map((pattern) => (
                 <PatternClassAccordionPattern
-                  key={pattern.name}
+                  key={pattern._id}
                   pattern={pattern}
                 />
               ))
