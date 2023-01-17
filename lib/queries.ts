@@ -3,7 +3,7 @@ import { O, RA } from "./fp"
 import { trpc } from "./trpc"
 import { Entry } from "./types"
 
-export const entriesQuery = `*[_type == "entry"]{...,  mainImage {..., file {..., asset-> } } }`
+export const entriesQuery = `*[_type == "entry"]{...,  entryRating-> { grade }, mainImage {..., file {..., asset-> } } }`
 export const patternsQuery = `*[_type == "pattern"]`
 export const patternClassesQuery = `*[_type == "patternClass"] | order(order)`
 export const patternsWithClassQuery = `*[_type == "pattern"]{..., class -> }[ count(*[_type == "entry" && references(^._id)]) > 0] | order(order)`

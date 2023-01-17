@@ -77,8 +77,8 @@ const EntryDetails = (entry?: Entry) => (
         <References {...entry} />
       </EntryItem>
     )}
-    <EntryItem heading="Entry status" className="col-span-1">
-      <p className="text-gray-400">{entry?.status || "Unknown status"}</p>
+    <EntryItem heading="Entry rating" className="col-span-1">
+      <p className="text-gray-400">{entry?.entryRating?.grade || "Draft"}</p>
     </EntryItem>
   </div>
 )
@@ -96,6 +96,7 @@ const StaticMapImage = (entry: Entry) => {
 
 export const EntryLayout = (props: EntryLayoutProps) => {
   const { entry } = props
+  console.log(entry)
 
   return (
     <div className="bg-white z-20 text-white fixed inset-y-0 right-0 max-w-4xl overflow-y-auto no-scrollbar">{}
