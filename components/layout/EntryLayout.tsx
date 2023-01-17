@@ -119,7 +119,7 @@ export const EntryLayout = (props: EntryLayoutProps) => {
       {}
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
-      <Chart rollupToPatternClass={false} showLabels={true} terms={entry?.terms} />
+      <Chart rollupToPatternClass={false} showLabels={true} terms={entry?.terms} patterns={patterns} patternClasses={patternClasses} entryId={entry?._id} />
       { entry?.tenureType && <Carousel data={carouselItems} title={`Other examples of ${getFormattedTenureTypes(entry?.tenureType)}`}/> }
       { entry?.location?.geopoint && <StaticMapImage {...entry}/>}
       {/* <Footer /> */}

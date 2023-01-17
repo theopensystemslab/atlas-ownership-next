@@ -1,26 +1,77 @@
 import { trpc } from "@/lib/trpc"
 import _ from "lodash"
 import { useState } from "react"
-
 import { Term } from "../lib/types"
+import { Carousel } from "./carousel/Carousel"
 
 type Props = {
   rollupToPatternClass: boolean,
   showLabels: boolean,
   terms?: Term[]
+  entryId?: string;
 }
 
+interface ExpandableRowProps {
+  term?: any
+  entryId?: string
+  onClick: () => void
+}
+
+const ExpandableRow = (props: ExpandableRowProps) => {
+  const { term, onClick, entryId } = props
+  const { data: carouselItems, error: carouselItemsError } = trpc.entriesByPatternId.useQuery({ patternId: term.meta._id, entryId })
+
+  return (
+      <div
+        className={`flex flex-col h-fit w-full text-gray-600 ${term.patternClassName ? descriptionBackgroundColorClasses[term.patternClassName] : 'bg-gray-200'}`}
+        id="row-expandable-description"
+        onClick={onClick}
+      >
+        <div className="p-4">
+        <p className="text-xs text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
+        <h2 className="text-sm mb-1">{term.name}</h2>
+        <p className="text-xs">{term.meta?.description}</p>
+        </div>
+        <Carousel data={carouselItems} title="Other places that use this pattern" />
+      </div>
+  )
+}
+
+// maps patternClass.name to custom color keys defined in tailwind.config.js
+//  tailwind doesn't support templated class names, hence we need to use this lookup
+const backgroundColorClasses: any = {
+  "Rent": "bg-rent",
+  "Transfer": "bg-transfer",
+  "Administration": "bg-administration",
+  "Eligibility": "bg-eligibility",
+  "Security of tenure": "bg-security",
+  "Develop": "bg-develop",
+  "Stewardship": "bg-stewardship",
+  "Use": "bg-use",
+  "Access": "bg-access",
+};
+
+const descriptionBackgroundColorClasses: any = {
+  "Rent": "bg-rent/20",
+  "Transfer": "bg-transfer/20",
+  "Administration": "bg-administration/20",
+  "Eligibility": "bg-eligibility/20",
+  "Security of tenure": "bg-security/20",
+  "Develop": "bg-develop/20",
+  "Stewardship": "bg-stewardship/20",
+  "Use": "bg-use/20",
+  "Access": "bg-access/20",
+};
+
 const Chart = (props: Props) => {
+  const { rollupToPatternClass, showLabels, terms = [], entryId } = props;
+
   const [open, setOpen] = useState(false);
   const [openIndex, setOpenIndex] = useState(0);
-
-  const { rollupToPatternClass, showLabels, terms = [], } = props;
 
   const { data: patterns, error: patternsError } = trpc.patterns.useQuery()
   const { data: patternClasses, error: patternClassesError } =
     trpc.patternClasses.useQuery()
-
-
   // Format the list of individual terms that apply to this entry
   let formattedTerms = _(terms)
     .map((term: any) => ({
@@ -76,32 +127,6 @@ const Chart = (props: Props) => {
       }
     });
   }
-
-  // maps patternClass.name to custom color keys defined in tailwind.config.js
-  //  tailwind doesn't support templated class names, hence we need to use this lookup
-  const backgroundColorClasses: any = {
-    "Rent": "bg-rent",
-    "Transfer": "bg-transfer",
-    "Administration": "bg-administration",
-    "Eligibility": "bg-eligibility",
-    "Security of tenure": "bg-security",
-    "Develop": "bg-develop",
-    "Stewardship": "bg-stewardship",
-    "Use": "bg-use",
-    "Access": "bg-access",
-  };
-
-  const descriptionBackgroundColorClasses: any = {
-    "Rent": "bg-rent/20",
-    "Transfer": "bg-transfer/20",
-    "Administration": "bg-administration/20",
-    "Eligibility": "bg-eligibility/20",
-    "Security of tenure": "bg-security/20",
-    "Develop": "bg-develop/20",
-    "Stewardship": "bg-stewardship/20",
-    "Use": "bg-use/20",
-    "Access": "bg-access/20",
-  };
 
   const hoverColorClasses: any = {
     "Rent": "hover:bg-rent/70",
@@ -169,9 +194,9 @@ const Chart = (props: Props) => {
       {formattedTerms.map((term, i) => (
         <div className="flex flex-col" key={`row-${term.name}-${i}`}>
           <div className="flex" id="row-chart-data">
-            {showLabels? <div className="flex-1 h-10 text-sm text-right mr-3 text-black" id="labels">{term.name}</div> : ``}
-            <div 
-              className={`flex-1 h-10 ${term.patternClassName ? backgroundColorClasses[term.patternClassName] : 'bg-gray-400'} ${term.patternClassName ? hoverColorClasses[term.patternClassName] : 'hover:bg-gray-400/70'}`} 
+            {showLabels ? <div className="flex-1 h-10 text-sm text-right mr-3 text-black" id="labels">{term.name}</div> : ``}
+            <div
+              className={`flex-1 h-10 ${term.patternClassName ? backgroundColorClasses[term.patternClassName] : 'bg-gray-400'} ${term.patternClassName ? hoverColorClasses[term.patternClassName] : 'hover:bg-gray-400/70'}`}
               id={`obligations-${term.name}`}
               onClick={() => {
                 setOpen(!open);
@@ -181,7 +206,7 @@ const Chart = (props: Props) => {
               <div className={`h-10 bg-white ${term.type === "Obligation" && term.strength > 0 ? percentageWidthClasses[(5 - term.strength).toString()] : 'w-full'}`}></div>
             </div>
             <div className="flex-1 h-10 bg-white" id={`rights-${term.name}`}>
-              <div 
+              <div
                 className={`h-10 ${term.type === "Right" && term.strength > 0 ? percentageWidthClasses[term.strength.toString()] : 'w-0'} ${term.patternClassName ? backgroundColorClasses[term.patternClassName] : 'bg-gray-400'} ${term.patternClassName ? hoverColorClasses[term.patternClassName] : 'hover:bg-gray-400/70'}`}
                 onClick={() => {
                   setOpen(!open);
@@ -192,17 +217,8 @@ const Chart = (props: Props) => {
             </div>
           </div>
           {
-            open && openIndex === i ? 
-              <div 
-                className={`flex flex-col p-4 h-fit w-full text-gray-600 ${term.patternClassName ? descriptionBackgroundColorClasses[term.patternClassName] : 'bg-gray-200'}`} 
-                id="row-expandable-description"
-                onClick={() => setOpen(false)}
-              >
-                <p className="text-xs text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
-                <h2 className="text-sm mb-1">{term.name}</h2>
-                <p className="text-xs">{term.meta?.description}</p>
-              </div>
-              : ``
+            open && openIndex === i &&
+            <ExpandableRow term={term} onClick={() => setOpen(false)} entryId={entryId} />
           }
         </div>
       ))}

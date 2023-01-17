@@ -3,6 +3,7 @@ import { procedure, router } from "../trpc"
 import { sanityClient } from "@/lib/sanity.server"
 import {
   entriesQuery,
+  entriesByPatternIdQuery,
   patternClassesQuery,
   patternInfoQuery,
   patternsQuery,
@@ -45,6 +46,17 @@ export const appRouter = router({
     .query(
       ({ input }): Promise<CarouselItem[]> => 
         sanityClient.fetch(tenureTypeQuery(input.tenureTypes, input.id))
+    ),
+  entriesByPatternId: procedure
+    .input(
+      z.object({
+        patternId: z.string().optional(),
+        entryId: z.string().optional(),
+      })
+    )
+    .query(
+      ({ input }): Promise<CarouselItem[]> =>
+        sanityClient.fetch(entriesByPatternIdQuery(input.patternId, input.entryId))
     ),
 })
 
