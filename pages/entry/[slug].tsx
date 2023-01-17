@@ -1,10 +1,9 @@
+import { motion } from "framer-motion"
 import { useRouter } from "next/router"
-import { useEffect, useMemo } from "react"
+import { ReactElement, useEffect, useMemo } from "react"
 import { EntryLayout } from "../../components/layout/EntryLayout"
 import { useGetEntryFromSlug } from "../../lib/queries"
 import store from "../../lib/store"
-import { trpc } from "../../lib/trpc"
-import { motion } from "framer-motion"
 
 const EntryPage = () => {
   const router = useRouter()
@@ -42,5 +41,7 @@ const EntryPage = () => {
     </motion.div>
   ) : null
 }
+
+EntryPage.getLayout = (page: ReactElement) => page
 
 export default EntryPage
