@@ -2,7 +2,7 @@ import { trpc } from "@/lib/trpc"
 import clsx from "clsx"
 import _ from "lodash"
 import { useState } from "react"
-import { Term } from "../lib/types"
+import { Pattern, PatternClass, Term } from "../lib/types"
 import { Carousel } from "./carousel/Carousel"
 
 // TODO: Move to style utils
