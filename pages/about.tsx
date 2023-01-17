@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ReactElement } from "react"
+import NoopLayout from "../components/layout/NoopLayout"
 
 const AboutPage = () => {
   return (
@@ -74,6 +74,6 @@ const AboutPage = () => {
   )
 }
 
-AboutPage.getLayout = (page: ReactElement) => page
+AboutPage.getLayout = NoopLayout
 
 export default AboutPage
