@@ -1,35 +1,39 @@
+import { trpc } from "@/lib/trpc"
 import _ from "lodash"
 import { useState } from "react"
 
-import { Pattern, PatternClass, Term } from "../lib/types"
+import { Term } from "../lib/types"
 
 type Props = {
   rollupToPatternClass: boolean,
   showLabels: boolean,
   terms?: Term[]
-  patterns?: Pattern[]
-  patternClasses?: PatternClass[]
 }
 
 const Chart = (props: Props) => {
   const [open, setOpen] = useState(false);
   const [openIndex, setOpenIndex] = useState(0);
 
-  const { rollupToPatternClass, showLabels, terms = [], patterns = [], patternClasses = [] } = props;
+  const { rollupToPatternClass, showLabels, terms = [], } = props;
+
+  const { data: patterns, error: patternsError } = trpc.patterns.useQuery()
+  const { data: patternClasses, error: patternClassesError } =
+    trpc.patternClasses.useQuery()
+
 
   // Format the list of individual terms that apply to this entry
   let formattedTerms = _(terms)
     .map((term: any) => ({
-      pattern: _.find(patterns, ['_id', term.pattern._ref]),
-      patternName: _.find(patterns, ['_id', term.pattern._ref])?.name,
+      pattern: _.find(patterns, ['_id', term.pattern?._ref]),
+      patternName: _.find(patterns, ['_id', term.pattern?._ref])?.name,
       type: term.rightsIntensity > 0 ? "Right" : "Obligation", // because pattern.type is not consistently populated
       strength: term.strength, // 1-5
     }))
     .map((term: any) => ({
       meta: term.pattern,
       name: term.patternName,
-      patternClassName: _.find(patternClasses, ['_id', term.pattern?.class._ref])?.name,
-      patternClassOrder: _.find(patternClasses, ['_id', term.pattern?.class._ref])?.order,
+      patternClassName: _.find(patternClasses, ['_id', term.pattern?.class?._ref])?.name,
+      patternClassOrder: _.find(patternClasses, ['_id', term.pattern?.class?._ref])?.order,
       type: term.type,
       strength: term.strength,
     }))
@@ -51,8 +55,8 @@ const Chart = (props: Props) => {
   let totalsByPatternClass = _(totalsByPattern)
     .groupBy('pattern.class._ref')
     .map((pattern: any) => ({
-      meta: _.find(patternClasses, ['_id', pattern[0].pattern.class._ref]),
-      name: _.find(patternClasses, ['_id', pattern[0].pattern.class._ref])?.name,
+      meta: _.find(patternClasses, ['_id', pattern[0].pattern?.class._ref]),
+      name: _.find(patternClasses, ['_id', pattern[0].pattern?.class._ref])?.name,
       avgRights: _.round(_.meanBy(pattern, 'sumRights')),
       avgObligations: _.round(_.meanBy(pattern, 'sumObligations')),
     }))
@@ -60,8 +64,8 @@ const Chart = (props: Props) => {
     .value();
 
   // Ensure totalsByPatternClass has an entry for **every** pattern class, insert one if it doesn't
-  if (totalsByPatternClass.length !== patternClasses.length) {
-    patternClasses.forEach(globalPatternClass => {
+  if (totalsByPatternClass.length !== patternClasses?.length) {
+    patternClasses?.forEach(globalPatternClass => {
       if (!_.find(totalsByPatternClass, ['name', globalPatternClass.name])) {
         totalsByPatternClass.push({
           meta: globalPatternClass,

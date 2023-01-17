@@ -1,13 +1,11 @@
 import { ArrowUpRight, Close } from "@carbon/icons-react"
 import Link from "next/link"
-import { Entry, Pattern, PatternClass, TenureType } from "../../lib/types"
+import { Entry, TenureType } from "../../lib/types"
 import Back from "../Back"
 import Chart from "../Chart"
 
 interface EntryLayoutProps {
   entry?: Entry
-  patterns?:  Pattern[]
-  patternClasses?: PatternClass[]
 }
 
 interface EntryItemProps {
@@ -97,13 +95,13 @@ const StaticMapImage = (entry: Entry) => {
 };
 
 export const EntryLayout = (props: EntryLayoutProps) => {
-  const { entry, patterns, patternClasses } = props
+  const { entry } = props
 
   return (
     <div className="bg-white z-20 text-white fixed inset-y-0 right-0 max-w-4xl overflow-y-auto no-scrollbar">{}
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
-      <Chart rollupToPatternClass={false} showLabels={true} terms={entry?.terms} patterns={patterns} patternClasses={patternClasses} />
+      <Chart rollupToPatternClass={false} showLabels={true} terms={entry?.terms} />
       { entry?.location?.geopoint && <StaticMapImage {...entry}/>}
       {/* <Footer /> */}
     </div>
