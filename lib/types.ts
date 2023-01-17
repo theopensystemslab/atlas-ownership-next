@@ -41,6 +41,11 @@ export type Reference = {
   _key: string
 }
 
+export type Tag = {
+  label: string
+  value: string
+}
+
 export type Entry = {
   name?: string
   description?: string
@@ -67,6 +72,7 @@ export type Entry = {
   entryRating?: {
     grade: string
   }
+  tags?: Tag[]
 }
 
 export enum TenureType {
