@@ -1,0 +1,15 @@
+.root {
+  @apply p-4 bg-black
+}
+
+.container {
+  @apply bg-slate-200 w-full flex flex-1 overflow-auto
+}
+
+.carousel {
+  @apply bg-slate-600 mt-4 flex gap-4
+}
+
+.card {
+  @apply bg-slate-800 text-white h-24 w-24
+}

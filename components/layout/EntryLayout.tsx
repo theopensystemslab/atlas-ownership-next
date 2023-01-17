@@ -2,6 +2,7 @@ import { ArrowUpRight, Close } from "@carbon/icons-react"
 import Link from "next/link"
 import { Entry, TenureType } from "../../lib/types"
 import Back from "../Back"
+import { Carousel } from "../carosuel/Carousel"
 import Chart from "../Chart"
 import { Tag } from "./ui/Tag"
 
@@ -129,12 +130,9 @@ export const EntryLayout = (props: EntryLayoutProps) => {
       {}
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
-      <Chart
-        rollupToPatternClass={false}
-        showLabels={true}
-        terms={entry?.terms}
-      />
-      {entry?.location?.geopoint && <StaticMapImage {...entry} />}
+      <Chart rollupToPatternClass={false} showLabels={true} terms={entry?.terms} />
+      <Carousel/>
+      { entry?.location?.geopoint && <StaticMapImage {...entry}/>}
       {/* <Footer /> */}
     </div>
   )
