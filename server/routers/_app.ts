@@ -1,3 +1,4 @@
+import { CarouselItem } from './../../lib/types';
 import { procedure, router } from "../trpc"
 import { sanityClient } from "@/lib/sanity.server"
 import {
@@ -6,6 +7,7 @@ import {
   patternInfoQuery,
   patternsQuery,
   patternsWithClassQuery,
+  tenureTypeQuery,
 } from "@/lib/queries"
 import { Entry, Pattern, PatternClass } from "@/lib/types"
 import { z } from "zod"
@@ -32,6 +34,17 @@ export const appRouter = router({
     .query(
       ({ input }): Promise<Record<"rights" | "obligations", Pattern[]>> =>
         sanityClient.fetch(patternInfoQuery(input?.patternClassName))
+    ),
+  tenureType: procedure
+    .input(
+      z.object({
+        tenureTypes: z.array(z.string()).optional(),
+        id: z.string().optional(),
+      })
+    )
+    .query(
+      ({ input }): Promise<CarouselItem[]> => 
+        sanityClient.fetch(tenureTypeQuery(input.tenureTypes, input.id))
     ),
 })
 

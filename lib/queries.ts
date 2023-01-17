@@ -39,3 +39,9 @@ export const patternInfoQuery = (patternClassName: string | null) => (`
       | order(entryCount desc),
   }
 `)
+
+export const tenureTypeQuery = (tenureTypes: string[] | undefined, id: string | undefined) => (`
+  *[_type == "entry" && count((tenureType)
+  [@ in ${JSON.stringify(tenureTypes)}]) > 0 && _id != "${id}"]
+  { dates, slug, location, name, _id }
+`)

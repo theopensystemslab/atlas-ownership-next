@@ -3,7 +3,7 @@
 }
 
 .title {
-  @apply text-black text-sm
+  @apply text-black
 }
 
 .container {
@@ -15,5 +15,5 @@
 }
 
 .card {
-  @apply bg-slate-800 h-32 w-64 p-2 flex flex-col justify-between
+  @apply bg-gray-200 h-32 w-64 p-2 flex flex-col justify-between text-black cursor-pointer
 }

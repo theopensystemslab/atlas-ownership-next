@@ -1,3 +1,4 @@
+import { Carousel } from './../components/carousel/Carousel';
 export type Geopoint = {
   lat: number
   lng: number
@@ -47,6 +48,7 @@ export type Tag = {
 }
 
 export type Entry = {
+  _id?: string
   name?: string
   description?: string
   location?: Location
@@ -83,4 +85,7 @@ export enum TenureType {
   communityLandTrust = "Community Land Trust",
   collectiveOwnership = "Collective Ownership",
   other = "Other",
+  collectiveOwnership = "Collective Ownership"
 }
+
+export type CarouselItem = Pick<Entry, "dates" | "location" | "name" | "slug">

@@ -23,6 +23,11 @@ const EntryPage = () => {
     store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
   }, [entry])
 
+  const { data: patterns, error: patternsError } = trpc.patterns.useQuery()
+  const { data: patternClasses, error: patternClassesError } =
+    trpc.patternClasses.useQuery()
+  const { data: carouselItems, error: carouselItemsError } = trpc.tenureType.useQuery({ tenureTypes: entry?.tenureType, id: entry?._id })
+
   return entry ? (
     <motion.div
       initial={{ opacity: 0 }}
@@ -37,7 +42,7 @@ const EntryPage = () => {
         duration: 2,
       }}
     >
-      <EntryLayout entry={entry} />
+      <EntryLayout entry={entry} patterns={patterns} patternClasses={patternClasses} carouselItems={carouselItems} />
     </motion.div>
   ) : null
 }
