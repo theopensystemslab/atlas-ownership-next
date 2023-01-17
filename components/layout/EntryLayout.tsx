@@ -2,7 +2,7 @@ import { ArrowUpRight, Close } from "@carbon/icons-react"
 import Link from "next/link"
 import { Entry, TenureType } from "../../lib/types"
 import Back from "../Back"
-import { Carousel } from "../carosuel/Carousel"
+import { Carousel, CarouselProps } from "../carosuel/Carousel"
 import Chart from "../Chart"
 import { Tag } from "./ui/Tag"
 
@@ -122,8 +122,35 @@ const StaticMapImage = (entry: Entry) => {
 
 export const EntryLayout = (props: EntryLayoutProps) => {
   const { entry } = props
-  console.log(entry)
-  console.log(entry?.tags)
+  const mockCarouselData: CarouselProps = {
+    data: [
+      {
+        title: "test 1",
+        location: "London, UK",
+        date: "2020",
+      },
+      {
+        title: "test 2",
+        location: "Birmingham, UK",
+        date: "2021",
+      },
+      {
+        title: "test 3",
+        location: "Manchester, UK",
+        date: "2022",
+      },
+      {
+        title: "test 4",
+        location: "Glasgow",
+        date: "2022",
+      },
+      {
+        title: "test 4",
+        location: "Edinburgh",
+        date: "2022",
+      }
+    ]
+  }
 
   return (
     <div className="bg-white z-20 text-white fixed inset-y-0 right-0 max-w-4xl overflow-y-auto no-scrollbar">
@@ -131,7 +158,7 @@ export const EntryLayout = (props: EntryLayoutProps) => {
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
       <Chart rollupToPatternClass={false} showLabels={true} terms={entry?.terms} />
-      <Carousel/>
+      <Carousel data={mockCarouselData.data}/>
       { entry?.location?.geopoint && <StaticMapImage {...entry}/>}
       {/* <Footer /> */}
     </div>
