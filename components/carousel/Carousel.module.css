@@ -15,5 +15,5 @@
 }
 
 .card {
-  @apply bg-gray-200 h-32 w-64 p-2 flex flex-col justify-between text-black cursor-pointer
+  @apply h-32 w-64 p-2 flex flex-col justify-between text-black cursor-pointer
 }

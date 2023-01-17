@@ -1,42 +1,11 @@
 import { trpc } from "@/lib/trpc"
+import clsx from "clsx"
 import _ from "lodash"
 import { useState } from "react"
 import { Term } from "../lib/types"
 import { Carousel } from "./carousel/Carousel"
 
-type Props = {
-  rollupToPatternClass: boolean,
-  showLabels: boolean,
-  terms?: Term[]
-  entryId?: string;
-}
-
-interface ExpandableRowProps {
-  term?: any
-  entryId?: string
-  onClick: () => void
-}
-
-const ExpandableRow = (props: ExpandableRowProps) => {
-  const { term, onClick, entryId } = props
-  const { data: carouselItems, error: carouselItemsError } = trpc.entriesByPatternId.useQuery({ patternId: term.meta._id, entryId })
-
-  return (
-      <div
-        className={`flex flex-col h-fit w-full text-gray-600 ${term.patternClassName ? descriptionBackgroundColorClasses[term.patternClassName] : 'bg-gray-200'}`}
-        id="row-expandable-description"
-        onClick={onClick}
-      >
-        <div className="p-4">
-        <p className="text-xs text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
-        <h2 className="text-sm mb-1">{term.name}</h2>
-        <p className="text-xs">{term.meta?.description}</p>
-        </div>
-        <Carousel data={carouselItems} title="Other places that use this pattern" />
-      </div>
-  )
-}
-
+// TODO: Move to style utils
 // maps patternClass.name to custom color keys defined in tailwind.config.js
 //  tailwind doesn't support templated class names, hence we need to use this lookup
 const backgroundColorClasses: any = {
@@ -62,6 +31,43 @@ const descriptionBackgroundColorClasses: any = {
   "Use": "bg-use/20",
   "Access": "bg-access/20",
 };
+
+
+type Props = {
+  rollupToPatternClass: boolean,
+  showLabels: boolean,
+  terms?: Term[]
+  patterns?: Pattern[]
+  patternClasses?: PatternClass[]
+  entryId?: string;
+}
+
+interface ExpandableRowProps {
+  term?: any
+  entryId?: string
+  onClick: () => void
+}
+
+const ExpandableRow = (props: ExpandableRowProps) => {
+  const { term, onClick, entryId } = props
+  const { data: carouselItems, error: carouselItemsError } = trpc.entriesByPatternId.useQuery({ patternId: term.meta._id, entryId })
+  const showCarousel = carouselItems && carouselItems.length > 0
+
+  return (
+    <div
+      className={`flex flex-col h-fit w-full text-gray-600 ${term.patternClassName ? descriptionBackgroundColorClasses[term.patternClassName] : 'bg-gray-200'}`}
+      id="row-expandable-description"
+      onClick={onClick}
+    >
+      <div className="p-4">
+        <p className="text-xs text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
+        <h2 className="text-sm mb-1">{term.name}</h2>
+        <p className="text-xs">{term.meta?.description}</p>
+      </div>
+      {showCarousel && <Carousel data={carouselItems} title="Other places that use this pattern" cardClassNames={clsx(`${backgroundColorClasses[term.patternClassName]} bg-opacity-20`)} />}
+    </div>
+  )
+}
 
 const Chart = (props: Props) => {
   const { rollupToPatternClass, showLabels, terms = [], entryId } = props;
