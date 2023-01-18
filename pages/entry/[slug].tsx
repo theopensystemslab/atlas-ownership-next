@@ -24,28 +24,7 @@ const EntryPage = () => {
     store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
   }, [entry])
 
-  const { data: patterns, error: patternsError } = trpc.patterns.useQuery()
-  const { data: patternClasses, error: patternClassesError } =
-    trpc.patternClasses.useQuery()
-  const { data: carouselItems, error: carouselItemsError } = trpc.tenureType.useQuery({ tenureTypes: entry?.tenureType, id: entry?._id })
-
-  return entry ? (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{
-        opacity: 1,
-        transition: {
-          delay: 1,
-        },
-      }}
-      exit={{ opacity: 0 }}
-      transition={{
-        duration: 2,
-      }}
-    >
-      <EntryLayout entry={entry} patterns={patterns} patternClasses={patternClasses} carouselItems={carouselItems} />
-    </motion.div>
-  ) : null
+  return entry ? <EntryLayout entry={entry} /> : null
 }
 
 export default EntryPage
