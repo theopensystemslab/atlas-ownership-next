@@ -23,15 +23,15 @@ const PatternClassAccordion = (props: Props) => {
   const [isOpen, setOpen] = useState(false)
 
   return (
-    <details style={{ backgroundColor: hex }} className={css.root}>
-      <motion.summary
+    <div style={{ backgroundColor: hex }} className={css.root}>
+      <motion.header
         className={css.header}
         initial={false}
         onClick={() => setOpen(!isOpen)}
       >
         {name}
         {isOpen ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-      </motion.summary>
+      </motion.header>
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.section
@@ -57,7 +57,7 @@ const PatternClassAccordion = (props: Props) => {
           </motion.section>
         )}
       </AnimatePresence>
-    </details>
+    </div>
   )
 }
 
