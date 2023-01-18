@@ -1,9 +1,11 @@
+import css from "./PatternClassAccordion.module.css"
 import { pipe } from "fp-ts/lib/function"
 import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react"
 import { A } from "../../lib/fp"
 import { Pattern, PatternClass } from "../../lib/types"
 import PatternClassAccordionPattern from "./PatternClassAccordionPattern"
+import { ChevronDown, ChevronUp } from "@carbon/icons-react"
 
 type Props = {
   patternClass: PatternClass
@@ -21,14 +23,15 @@ const PatternClassAccordion = (props: Props) => {
   const [isOpen, setOpen] = useState(false)
 
   return (
-    <div style={{ backgroundColor: hex }} className="w-64">
-      <motion.header
-        className="h-8"
+    <details style={{ backgroundColor: hex }} className={css.root}>
+      <motion.summary
+        className={css.header}
         initial={false}
         onClick={() => setOpen(!isOpen)}
       >
-        {name}
-      </motion.header>
+        <span>{name}</span>
+        {isOpen ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+      </motion.summary>
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.section
@@ -54,7 +57,7 @@ const PatternClassAccordion = (props: Props) => {
           </motion.section>
         )}
       </AnimatePresence>
-    </div>
+    </details>
   )
 }
 

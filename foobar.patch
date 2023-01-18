@@ -1,0 +1,66 @@
+diff --git a/components/sidebar/PatternClassAccordion.module.css b/components/sidebar/PatternClassAccordion.module.css
+index c95e62a..9c6f3b1 100644
+--- a/components/sidebar/PatternClassAccordion.module.css
++++ b/components/sidebar/PatternClassAccordion.module.css
+@@ -1,7 +1,8 @@
+ .root {
+-  @apply w-64 px-2 py-2 block cursor-pointer
++  @apply w-64;
++  /* px-2 py-2 block cursor-pointer; */
+ }
+ 
+ .header {
+-  @apply flex items-center justify-between
+-}
+\ No newline at end of file
++  @apply flex items-center justify-between;
++}
+diff --git a/components/sidebar/PatternClassAccordion.tsx b/components/sidebar/PatternClassAccordion.tsx
+index ff32e1d..2de338c 100644
+--- a/components/sidebar/PatternClassAccordion.tsx
++++ b/components/sidebar/PatternClassAccordion.tsx
+@@ -1,9 +1,11 @@
++import css from "./PatternClassAccordion.module.css"
+ import { pipe } from "fp-ts/lib/function"
+ import { AnimatePresence, motion } from "framer-motion"
+ import { useState } from "react"
+ import { A } from "../../lib/fp"
+ import { Pattern, PatternClass } from "../../lib/types"
+ import PatternClassAccordionPattern from "./PatternClassAccordionPattern"
++import { ChevronDown, ChevronUp } from "@carbon/icons-react"
+ 
+ type Props = {
+   patternClass: PatternClass
+@@ -21,14 +23,18 @@ const PatternClassAccordion = (props: Props) => {
+   const [isOpen, setOpen] = useState(false)
+ 
+   return (
+-    <div style={{ backgroundColor: hex }} className="w-64">
+-      <motion.header
+-        className="h-8"
++    <details
++      style={{ backgroundColor: hex }}
++      // className={css.root}
++    >
++      <motion.summary
++        // className={css.header}
+         initial={false}
+         onClick={() => setOpen(!isOpen)}
+       >
+-        {name}
+-      </motion.header>
++        <span>{name}</span>
++        {isOpen ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
++      </motion.summary>
+       <AnimatePresence initial={false}>
+         {isOpen && (
+           <motion.section
+@@ -54,7 +60,7 @@ const PatternClassAccordion = (props: Props) => {
+           </motion.section>
+         )}
+       </AnimatePresence>
+-    </div>
++    </details>
+   )
+ }
+ 
