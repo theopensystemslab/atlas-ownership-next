@@ -1,6 +1,6 @@
-import { trpc } from "../lib/trpc"
 import { PatternsLayout } from "@/components/layout/PatternsLayout"
-import { ReactElement } from "react"
+import NoopLayout from "../components/layout/NoopLayout"
+import { trpc } from "../lib/trpc"
 
 const PatternsPage = () => {
   const { data: patternClasses, error: patternClassesError } =
@@ -9,6 +9,6 @@ const PatternsPage = () => {
   return <PatternsLayout patternClasses={patternClasses} />
 }
 
-PatternsPage.getLayout = (page: ReactElement) => page
+PatternsPage.getLayout = NoopLayout
 
 export default PatternsPage

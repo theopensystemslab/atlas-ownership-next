@@ -37,7 +37,10 @@ const EntryHeader = (entry?: Entry) => (
 
 const EntryItem = ({ heading, className, children }: EntryItemProps) => (
   <section className={className}>
-    <div role="doc-subtitle" className={`mb-1 ${children ? 'text-sm' : 'text-2xl'}`}>
+    <div
+      role="doc-subtitle"
+      className={`mb-1 ${children ? "text-sm" : "text-2xl"}`}
+    >
       {heading}
     </div>
     {children}
@@ -47,7 +50,11 @@ const EntryItem = ({ heading, className, children }: EntryItemProps) => (
 const References = (entry?: Entry) => (
   <>
     {entry?.references?.map((reference) => (
-      <a key={reference._key} href={reference.link} className="text-sm text-gray-400 underline block">
+      <a
+        key={reference._key}
+        href={reference.link}
+        className="text-sm text-gray-400 underline block"
+      >
         {reference.name} <ArrowUpRight className="ml-1 inline-flex" />
       </a>
     ))}
@@ -56,19 +63,26 @@ const References = (entry?: Entry) => (
 
 const EntryDetails = (entry?: Entry) => (
   <div className="bg-white text-black grid grid-cols-4 grid-rows-auto gap-x-4 gap-y-6 p-4">
-    <EntryItem 
+    <EntryItem
       className="col-span-2"
-      heading={entry?.tenureType ? 
-        entry.tenureType.map(type => TenureType[type]).join(" - ") 
-        : "Unknown tenure type"
+      heading={
+        entry?.tenureType
+          ? entry.tenureType.map((type) => TenureType[type]).join(" - ")
+          : "Unknown tenure type"
       }
     />
     <EntryItem heading={entry?.location?.region || "Unknown location"} />
-    <EntryItem 
-      heading={entry?.dates?.start ? 
-        new Date(Date.parse(entry?.dates.start)).getFullYear() + " - " + (entry?.dates.end ? new Date(Date.parse(entry?.dates.end)).getFullYear() : "")
-        : "Unknown dates"
-    }/>
+    <EntryItem
+      heading={
+        entry?.dates?.start
+          ? new Date(Date.parse(entry?.dates.start)).getFullYear() +
+            " - " +
+            (entry?.dates.end
+              ? new Date(Date.parse(entry?.dates.end)).getFullYear()
+              : "")
+          : "Unknown dates"
+      }
+    />
     <EntryItem heading="" className="col-span-4">
       <p className="text-sm mb-2">{entry?.description}</p>
     </EntryItem>
@@ -91,19 +105,24 @@ const StaticMapImage = (entry: Entry) => {
       style={{ backgroundImage: `url("${staticMapImageURL}")` }}
       className="h-80 p-4 pt-2 flex flex-col justify-between bg-center bg-cover"
     ></div>
-  );
-};
+  )
+}
 
 export const EntryLayout = (props: EntryLayoutProps) => {
   const { entry } = props
   console.log(entry)
 
   return (
-    <div className="bg-white z-20 text-white fixed inset-y-0 right-0 max-w-4xl overflow-y-auto no-scrollbar">{}
+    <div className="bg-white z-20 text-white fixed inset-y-0 right-0 max-w-4xl overflow-y-auto no-scrollbar">
+      {}
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
-      <Chart rollupToPatternClass={false} showLabels={true} terms={entry?.terms} />
-      { entry?.location?.geopoint && <StaticMapImage {...entry}/>}
+      <Chart
+        rollupToPatternClass={false}
+        showLabels={true}
+        terms={entry?.terms}
+      />
+      {entry?.location?.geopoint && <StaticMapImage {...entry} />}
       {/* <Footer /> */}
     </div>
   )

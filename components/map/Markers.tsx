@@ -21,17 +21,21 @@ type MarkerProps = {
 }
 
 const Marker = (props: MarkerProps) => {
-  const { lat, lng, slug } = props;
+  const { lat, lng, slug } = props
 
   const getEntry = useGetEntryFromSlug()
   const entry = getEntry(slug)
 
-  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [showPopup, setShowPopup] = useState<boolean>(false)
 
   const onMarkerClick = (e: MapboxEvent<MouseEvent>) => {
-    store.map?.flyTo({ center: { lat, lng }, padding: { top: 500, bottom: 0, left: 0, right: 0 }, zoom: 18 });
-    e.originalEvent.stopPropagation();
-    setShowPopup(!showPopup);
+    store.map?.flyTo({
+      center: { lat, lng },
+      padding: { top: 500, bottom: 0, left: 0, right: 0 },
+      zoom: 18,
+    })
+    e.originalEvent.stopPropagation()
+    setShowPopup(!showPopup)
   }
 
   const PopupContent = () => (
@@ -42,10 +46,16 @@ const Marker = (props: MarkerProps) => {
         showLabels={true}
         terms={entry?.terms}
       />
-      <Link href={`/entry/${slug}`}>
-        <a className="flex justify-end items-center text-lg" onClick={() => setShowPopup(false)} >
-          Find out more
-          <ArrowRight className="ml-2" size={20} />
+      <Link
+        href={`/entry/${encodeURIComponent(slug)}`}
+        className="flex justify-end items-center text-lg"
+        legacyBehavior
+      >
+        <a>
+          <div onClick={() => setShowPopup(false)}>
+            Find out more
+            <ArrowRight className="ml-2" size={20} />
+          </div>
         </a>
       </Link>
     </div>
@@ -53,9 +63,13 @@ const Marker = (props: MarkerProps) => {
 
   return (
     <>
-      <MapboxMarker key={slug} longitude={lng} latitude={lat} onClick={onMarkerClick}/>
-      {
-        showPopup &&
+      <MapboxMarker
+        key={slug}
+        longitude={lng}
+        latitude={lat}
+        onClick={onMarkerClick}
+      />
+      {showPopup && (
         <Popup
           className="z-50"
           longitude={lng}
@@ -66,7 +80,7 @@ const Marker = (props: MarkerProps) => {
         >
           <PopupContent />
         </Popup>
-      }
+      )}
     </>
   )
 }
@@ -95,7 +109,7 @@ const Markers = (props: MarkersProps) => {
             geopoint: { lat, lng },
           } = entry.location ?? { geopoint: { lat: 0, lng: 0 } }
 
-          return <Marker key={slug} lat={lat} lng={lng} slug={slug}/>
+          return <Marker key={slug} lat={lat} lng={lng} slug={slug} />
         })
       )}
     </Fragment>
