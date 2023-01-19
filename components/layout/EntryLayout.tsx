@@ -1,5 +1,5 @@
 import { getFormattedEntryDates, getFormattedTenureTypes } from "@/lib/entry"
-import { ArrowUpRight, Close } from "@carbon/icons-react"
+import { ArrowRight, ArrowUpRight, Close } from "@carbon/icons-react"
 import Link from "next/link"
 import { Fragment } from "react"
 import { CarouselItem, Entry, Pattern, PatternClass } from "../../lib/types"
@@ -108,23 +108,10 @@ const EntryDetails = (entry?: Entry) => (
   </div>
 )
 
-const StaticMapImage = (entry: Entry) => {
-  const { lat, lng } = entry.location?.geopoint!
-  const staticMapImageURL = `https://api.mapbox.com/styles/v1/mapbox/satellite-v9/static/pin-l+555555(${lng},${lat})/${lng},${lat},12,0/1280x400?access_token=pk.eyJ1IjoibXlzdGVyeWJlYXIiLCJhIjoiY2t6bzV6b2I3MzVybTJubzA1OWVqNGFhcCJ9.qHUcoQV2DBtX3qpCQytRTA`
-  return (
-    <div
-      style={{ backgroundImage: `url("${staticMapImageURL}")` }}
-      className="h-80 p-4 pt-2 flex flex-col justify-between bg-center bg-cover"
-    ></div>
-  )
-}
-
 export const EntryLayout = (props: EntryLayoutProps) => {
-  const { entry, patterns, patternClasses, carouselItems } = props
+  const { entry, carouselItems } = props
   return (
-    <Fragment>
-      {/* <div className="bg-white z-20 text-white fixed inset-y-0 right-0 max-w-4xl overflow-y-auto no-scrollbar"> */}
-      {}
+    <div className="text-white">
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
       <Chart
@@ -142,9 +129,10 @@ export const EntryLayout = (props: EntryLayoutProps) => {
           cardClassNames="bg-gray-200"
         />
       )}
-      {entry?.location?.geopoint && <StaticMapImage {...entry} />}
-      {/* <Footer /> */}
-      {/* </div> */}
-    </Fragment>
+      <a className="w-full bg-black flex py-4 justify-center" href="#">
+        Suggest an improvement to this entry
+        <ArrowRight className="pl-2" size={24} />
+      </a>
+    </div>
   )
 }
