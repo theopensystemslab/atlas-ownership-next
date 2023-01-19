@@ -21,9 +21,9 @@ const Header = () => (
     <div className="p-10 w-1/3 text-white">
       <h1 className="text-4xl fill-black">The Atlas of Ownership</h1>
       <h2 className="text-xl">
-        A library of land ownership and tenure models across time and geography
+        A map of property rights and obligations across time and space
       </h2>
-      <a className="text-xl text-gray-500">Find out more &or;</a>
+      <a className="text-xl text-gray-500">Why?</a>
     </div>
     <Search />
   </header>
