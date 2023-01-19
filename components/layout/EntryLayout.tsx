@@ -3,6 +3,7 @@ import Link from "next/link"
 import { Entry, TenureType } from "../../lib/types"
 import Back from "../Back"
 import Chart from "../Chart"
+import { Tag } from "./ui/Tag"
 
 interface EntryLayoutProps {
   entry?: Entry
@@ -31,7 +32,10 @@ const EntryHeader = (entry?: Entry) => (
         </a>
       </Back>
     </nav>
-    <h1 className="text-5xl w-1/2">{entry?.name}</h1>
+    <div className="flex flex-row justify-between items-center">
+      <h1 className="text-5xl w-1/2">{entry?.name}</h1>
+      <Tag>{entry?.type}</Tag>
+    </div>
   </div>
 )
 
