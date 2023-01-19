@@ -53,9 +53,7 @@ const Discalimer = () => (
 
 const SubmitButton = () => (
   <a href="https://airtable.com/shru3ZGjdyhEGTzx6" target="_blank" rel="noreferrer" className="bg-white text-black py-1 px-14 col-span-2 col-end-7 mb-4 flex items-center justify-center">
-    <button>
-      Submit an entry <ArrowRight className="ml-2" size={16} />
-    </button>
+    Submit an entry <ArrowRight className="ml-2" size={16} />
   </a>
 )
 
