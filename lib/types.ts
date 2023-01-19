@@ -83,9 +83,10 @@ export enum TenureType {
   freehold = "Freehold",
   renting = "Renting",
   communityLandTrust = "Community Land Trust",
-  collectiveOwnership = "Collective Ownership",
   other = "Other",
-  collectiveOwnership = "Collective Ownership"
+  collectiveOwnership = "Collective Ownership",
+  indigenousRecognition = "Indigenous Recognition",
+  commons = "Commons",
 }
 
 export type CarouselItem = Pick<Entry, "dates" | "location" | "name" | "slug">
