@@ -1,6 +1,7 @@
 import { AnimatePresence } from "framer-motion"
 import { PropsWithChildren, ReactElement } from "react"
 import Footer from "../Footer"
+import Header from "../Header"
 import MapboxGlobe from "../map/MapboxGlobe"
 import Sidebar from "../sidebar/Sidebar"
 
@@ -11,7 +12,7 @@ const GlobeLayoutComponent = (props: Props) => {
 
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <Sidebar />
       <div className="absolute w-full h-3/4">
         <MapboxGlobe />
