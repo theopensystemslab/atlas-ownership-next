@@ -17,6 +17,7 @@ const PatternClassAccordion = (props: Props) => {
     patternClass: {
       color: { hex },
       name,
+      description
     },
     patterns,
   } = props
@@ -45,6 +46,7 @@ const PatternClassAccordion = (props: Props) => {
             }}
             transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
           >
+            <p className="text-xs mt-2 mb-4">{description}</p>
             {pipe(
               patterns,
               A.map((pattern) => (
