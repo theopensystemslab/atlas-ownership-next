@@ -31,7 +31,7 @@ const Header = () => (
 );
 
 const PatternNav = (props: { patternClasses: PatternClass[] | undefined, onClick: Dispatch<SetStateAction<PatternClass | undefined>>, selectedPatternClass: PatternClass | undefined }) => (
-    <nav className="columns-8 h-10 gap-0">
+    <nav className="columns-9 h-10 gap-0">
       {props.patternClasses && props.patternClasses.map(patternClass =>
         <button
           key={patternClass.name}
