@@ -52,7 +52,7 @@ const Marker = (props: MarkerProps) => {
         legacyBehavior
       >
         <a>
-          <div onClick={() => setShowPopup(false)}>
+          <div className="flex justify-end text-sm" onClick={() => setShowPopup(false)}>
             Find out more
             <ArrowRight className="ml-2" size={20} />
           </div>
