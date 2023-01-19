@@ -1,3 +1,4 @@
+import { trpc } from "@/lib/trpc"
 import { motion } from "framer-motion"
 import { useRouter } from "next/router"
 import { useEffect, useMemo } from "react"
