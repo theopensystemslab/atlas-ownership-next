@@ -73,6 +73,7 @@ export type Entry = {
     grade: string
   }
   tags?: Tag[]
+  type?: string
 }
 
 export enum TenureType {
