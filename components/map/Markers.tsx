@@ -68,7 +68,9 @@ const Marker = (props: MarkerProps) => {
         longitude={lng}
         latitude={lat}
         onClick={onMarkerClick}
-      />
+      >
+      <div className="bg-white rounded-full h-7 w-7 flex justify-center items-center">1</div>
+      </MapboxMarker>
       {showPopup && (
         <Popup
           className="z-50"
