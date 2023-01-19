@@ -6,5 +6,5 @@ interface TagProps {
 }
 
 export const Tag = (props: TagProps) => (
-  <div className={clsx(`rounded-full px-4 text-sm py-1 capitalize bg-white text-black ${props.className}`)}>{props.children}</div>
+  <div className={clsx(`rounded-full w-fit px-4 text-sm py-1 capitalize bg-white text-black ${props.className}`)}>{props.children}</div>
 )

@@ -91,12 +91,19 @@ const EntryDetails = (entry?: Entry) => (
       <p className="text-sm mb-2 whitespace-pre-wrap">{entry?.description}</p>
     </EntryItem>
     {entry?.references?.length && (
-      <EntryItem heading="More information" className="col-span-3">
+      <EntryItem heading="More information" className="col-span-2">
         <References {...entry} />
       </EntryItem>
     )}
-    <EntryItem heading="Entry rating" className="col-span-1">
-      <p className="text-gray-400">{entry?.entryRating?.grade || "Draft"}</p>
+    <EntryItem heading="Rating" className="col-span-2">
+      <>
+        <p>This entry is <span className="text-gray-400 lowercase">{entry?.entryRating?.grade || "a draft"}</span></p>
+        <div className="">
+          {entry?.tags && entry.tags.map(entryTag => (
+            <Tag key={entryTag.value} className={"bg-gray-200 mt-2"}>{entryTag.label}</Tag>
+          ))}
+        </div>
+      </>
     </EntryItem>
   </div>
 )
@@ -115,6 +122,7 @@ const StaticMapImage = (entry: Entry) => {
 export const EntryLayout = (props: EntryLayoutProps) => {
   const { entry } = props
   console.log(entry)
+  console.log(entry?.tags)
 
   return (
     <div className="bg-white z-20 text-white fixed inset-y-0 right-0 max-w-4xl overflow-y-auto no-scrollbar">
