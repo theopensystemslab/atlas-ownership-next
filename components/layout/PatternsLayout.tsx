@@ -21,7 +21,7 @@ const patternClassLookup: Record<string, string> = {
 } as const;
 
 const Header = () => (
-  <header className="bg-slate-200 p-8">
+  <header className="bg-gray-200 p-8">
     <h1 className="text-5xl mt-8 mb-8">Explore the patterns</h1>
     <h2 className="text-2xl mb-2">What is ownership?</h2>
     <p className="mb-8">Property is often described as a &quot;bundle&quot; of rights and obligations. We can unbundle these rights into 8 classes.</p>

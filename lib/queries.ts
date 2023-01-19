@@ -39,3 +39,14 @@ export const patternInfoQuery = (patternClassName: string | null) => (`
       | order(entryCount desc),
   }
 `)
+
+export const tenureTypeQuery = (tenureTypes: string[] | undefined, id: string | undefined) => (`
+  *[_type == "entry" && count((tenureType)
+  [@ in ${JSON.stringify(tenureTypes)}]) > 0 && _id != "${id}"]
+  { dates, slug, location, name, _id }
+`)
+
+export const entriesByPatternIdQuery = (patternId: string | undefined, entryId: string | undefined) => (`
+    *[_type == "entry" && references("${patternId}") && _id != "${entryId}"]
+    { dates, slug, location, name, _id }
+`)

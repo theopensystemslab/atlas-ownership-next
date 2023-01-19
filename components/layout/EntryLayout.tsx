@@ -1,12 +1,18 @@
+import { getFormattedEntryDates, getFormattedTenureTypes } from "@/lib/entry"
+import { trpc } from "@/lib/trpc"
 import { ArrowUpRight, Close } from "@carbon/icons-react"
 import Link from "next/link"
-import { Entry, TenureType } from "../../lib/types"
+import { CarouselItem, Entry, Pattern, PatternClass, TenureType } from "../../lib/types"
 import Back from "../Back"
+import { Carousel } from "../carousel/Carousel"
 import Chart from "../Chart"
 import { Tag } from "./ui/Tag"
 
 interface EntryLayoutProps {
   entry?: Entry
+  patterns?:  Pattern[]
+  patternClasses?: PatternClass[]
+  carouselItems?: CarouselItem[]
 }
 
 interface EntryItemProps {
@@ -69,24 +75,11 @@ const EntryDetails = (entry?: Entry) => (
   <div className="bg-white text-black grid grid-cols-4 grid-rows-auto gap-x-4 gap-y-6 p-4">
     <EntryItem
       className="col-span-2"
-      heading={
-        entry?.tenureType
-          ? entry.tenureType.map((type) => TenureType[type]).join(" - ")
-          : "Unknown tenure type"
-      }
+      heading={getFormattedTenureTypes(entry?.tenureType)}
     />
     <EntryItem heading={entry?.location?.region || "Unknown location"} />
-    <EntryItem
-      heading={
-        entry?.dates?.start
-          ? new Date(Date.parse(entry?.dates.start)).getFullYear() +
-            " - " +
-            (entry?.dates.end
-              ? new Date(Date.parse(entry?.dates.end)).getFullYear()
-              : "")
-          : "Unknown dates"
-      }
-    />
+    <EntryItem 
+      heading={getFormattedEntryDates(entry?.dates)}/>
     <EntryItem heading="" className="col-span-4">
       <p className="text-sm mb-2 whitespace-pre-wrap">{entry?.description}</p>
     </EntryItem>
@@ -120,21 +113,15 @@ const StaticMapImage = (entry: Entry) => {
 }
 
 export const EntryLayout = (props: EntryLayoutProps) => {
-  const { entry } = props
-  console.log(entry)
-  console.log(entry?.tags)
-
+  const { entry, patterns, patternClasses, carouselItems } = props
   return (
     <div className="bg-white z-20 text-white fixed inset-y-0 right-0 max-w-4xl overflow-y-auto no-scrollbar">
       {}
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
-      <Chart
-        rollupToPatternClass={false}
-        showLabels={true}
-        terms={entry?.terms}
-      />
-      {entry?.location?.geopoint && <StaticMapImage {...entry} />}
+      <Chart rollupToPatternClass={false} showLabels={true} terms={entry?.terms} patterns={patterns} patternClasses={patternClasses} entryId={entry?._id} />
+      { entry?.tenureType && <Carousel data={carouselItems} title={`Other examples of ${getFormattedTenureTypes(entry?.tenureType)}`} cardClassNames="bg-gray-200"/> }
+      { entry?.location?.geopoint && <StaticMapImage {...entry}/>}
       {/* <Footer /> */}
     </div>
   )
