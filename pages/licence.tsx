@@ -1,10 +1,10 @@
 import NoopLayout from "../components/layout/NoopLayout"
 
-const LicensePage = () => {
+const LicencePage = () => {
   return (
     <div className="w-1/3">
       <h1 className="text-5xl font-semibold mb-12">
-        License
+        Licence
       </h1>
       <div className="flex flex-col w-3/4">
         <p className="mb-3">
@@ -15,6 +15,6 @@ const LicensePage = () => {
   )
 }
 
-LicensePage.getLayout = NoopLayout
+LicencePage.getLayout = NoopLayout
 
-export default LicensePage
+export default LicencePage
