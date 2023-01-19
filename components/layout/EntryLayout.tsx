@@ -1,8 +1,8 @@
 import { getFormattedEntryDates, getFormattedTenureTypes } from "@/lib/entry"
-import { trpc } from "@/lib/trpc"
 import { ArrowUpRight, Close } from "@carbon/icons-react"
 import Link from "next/link"
-import { CarouselItem, Entry, Pattern, PatternClass, TenureType } from "../../lib/types"
+import { Fragment } from "react"
+import { CarouselItem, Entry, Pattern, PatternClass } from "../../lib/types"
 import Back from "../Back"
 import { Carousel } from "../carousel/Carousel"
 import Chart from "../Chart"
@@ -10,7 +10,7 @@ import { Tag } from "./ui/Tag"
 
 interface EntryLayoutProps {
   entry?: Entry
-  patterns?:  Pattern[]
+  patterns?: Pattern[]
   patternClasses?: PatternClass[]
   carouselItems?: CarouselItem[]
 }
@@ -78,8 +78,7 @@ const EntryDetails = (entry?: Entry) => (
       heading={getFormattedTenureTypes(entry?.tenureType)}
     />
     <EntryItem heading={entry?.location?.region || "Unknown location"} />
-    <EntryItem 
-      heading={getFormattedEntryDates(entry?.dates)}/>
+    <EntryItem heading={getFormattedEntryDates(entry?.dates)} />
     <EntryItem heading="" className="col-span-4">
       <p className="text-sm mb-2 whitespace-pre-wrap">{entry?.description}</p>
     </EntryItem>
@@ -90,11 +89,19 @@ const EntryDetails = (entry?: Entry) => (
     )}
     <EntryItem heading="Rating" className="col-span-2">
       <>
-        <p>This entry is <span className="text-gray-400 lowercase">{entry?.entryRating?.grade || "a draft"}</span></p>
+        <p>
+          This entry is{" "}
+          <span className="text-gray-400 lowercase">
+            {entry?.entryRating?.grade || "a draft"}
+          </span>
+        </p>
         <div className="">
-          {entry?.tags && entry.tags.map(entryTag => (
-            <Tag key={entryTag.value} className={"bg-gray-200 mt-2"}>{entryTag.label}</Tag>
-          ))}
+          {entry?.tags &&
+            entry.tags.map((entryTag) => (
+              <Tag key={entryTag.value} className={"bg-gray-200 mt-2"}>
+                {entryTag.label}
+              </Tag>
+            ))}
         </div>
       </>
     </EntryItem>
@@ -115,14 +122,29 @@ const StaticMapImage = (entry: Entry) => {
 export const EntryLayout = (props: EntryLayoutProps) => {
   const { entry, patterns, patternClasses, carouselItems } = props
   return (
-    <div className="bg-white z-20 text-white fixed inset-y-0 right-0 max-w-4xl overflow-y-auto no-scrollbar">
+    <Fragment>
+      {/* <div className="bg-white z-20 text-white fixed inset-y-0 right-0 max-w-4xl overflow-y-auto no-scrollbar"> */}
       {}
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
-      <Chart rollupToPatternClass={false} showLabels={true} terms={entry?.terms} entryId={entry?._id} />
-      { entry?.tenureType && <Carousel data={carouselItems} title={`Other examples of ${getFormattedTenureTypes(entry?.tenureType)}`} cardClassNames="bg-gray-200"/> }
-      { entry?.location?.geopoint && <StaticMapImage {...entry}/>}
+      <Chart
+        rollupToPatternClass={false}
+        showLabels={true}
+        terms={entry?.terms}
+        entryId={entry?._id}
+      />
+      {entry?.tenureType && (
+        <Carousel
+          data={carouselItems}
+          title={`Other examples of ${getFormattedTenureTypes(
+            entry?.tenureType
+          )}`}
+          cardClassNames="bg-gray-200"
+        />
+      )}
+      {entry?.location?.geopoint && <StaticMapImage {...entry} />}
       {/* <Footer /> */}
-    </div>
+      {/* </div> */}
+    </Fragment>
   )
 }

@@ -1,4 +1,5 @@
-import { AnimatePresence } from "framer-motion"
+import { motion } from "framer-motion"
+import { useRouter } from "next/router"
 import { PropsWithChildren, ReactElement } from "react"
 import Footer from "../Footer"
 import Header from "../Header"
@@ -10,14 +11,34 @@ type Props = PropsWithChildren<{}>
 const GlobeLayoutComponent = (props: Props) => {
   const { children } = props
 
+  const router = useRouter()
+  const entryOpen = router.pathname.startsWith(`/entry/`)
+
   return (
     <>
       <Header />
       <Sidebar />
       <div className="absolute w-full h-3/4">
         <MapboxGlobe />
-        <AnimatePresence>{children}</AnimatePresence>
       </div>
+      <motion.div
+        className="h-full w-1/2 absolute top-0 right-0 bg-white overflow-y-auto no-scrollbar z-50"
+        variants={{
+          open: {
+            x: "0%",
+          },
+          closed: {
+            x: "100%",
+          },
+        }}
+        animate={entryOpen ? "open" : "closed"}
+        initial="closed"
+        transition={{
+          duration: 1,
+        }}
+      >
+        {children}
+      </motion.div>
       <Footer />
     </>
   )
