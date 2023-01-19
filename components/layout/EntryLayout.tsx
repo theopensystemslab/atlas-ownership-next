@@ -84,7 +84,7 @@ const EntryDetails = (entry?: Entry) => (
       }
     />
     <EntryItem heading="" className="col-span-4">
-      <p className="text-sm mb-2">{entry?.description}</p>
+      <p className="text-sm mb-2 whitespace-pre-wrap">{entry?.description}</p>
     </EntryItem>
     {entry?.references?.length && (
       <EntryItem heading="More information" className="col-span-3">
