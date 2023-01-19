@@ -10,6 +10,7 @@ interface PatternsLayoutProps {
 
 const patternClassLookup: Record<string, string> = {
   Rent: "bg-rent",
+  Access: "bg-access",
   Transfer: "bg-transfer",
   Administration: "bg-administration",
   Eligibility: "bg-eligibility",
