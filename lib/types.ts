@@ -80,5 +80,6 @@ export enum TenureType {
   freehold = "Freehold",
   renting = "Renting",
   communityLandTrust = "Community Land Trust",
+  collectiveOwnership = "Collective Ownership",
   other = "Other",
 }

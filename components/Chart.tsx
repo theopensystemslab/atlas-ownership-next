@@ -167,7 +167,7 @@ const Chart = (props: Props) => {
         <div className="flex-1 h-10 text-lg text-center text-gray-600">Rights</div>
       </div>
       {formattedTerms.map((term, i) => (
-        <div className="flex flex-col" key={`row-${term.name}-i`}>
+        <div className="flex flex-col" key={`row-${term.name}-${i}`}>
           <div className="flex" id="row-chart-data">
             {showLabels? <div className="flex-1 h-10 text-sm text-right mr-3 text-black" id="labels">{term.name}</div> : ``}
             <div 
