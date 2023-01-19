@@ -1,11 +1,18 @@
+import { getFormattedEntryDates, getFormattedTenureTypes } from "@/lib/entry"
 import { ArrowUpRight, Close } from "@carbon/icons-react"
 import Link from "next/link"
-import { Entry, TenureType } from "../../lib/types"
+import { Fragment } from "react"
+import { CarouselItem, Entry, Pattern, PatternClass } from "../../lib/types"
 import Back from "../Back"
+import { Carousel } from "../carousel/Carousel"
 import Chart from "../Chart"
+import { Tag } from "./ui/Tag"
 
 interface EntryLayoutProps {
   entry?: Entry
+  patterns?: Pattern[]
+  patternClasses?: PatternClass[]
+  carouselItems?: CarouselItem[]
 }
 
 interface EntryItemProps {
@@ -31,7 +38,10 @@ const EntryHeader = (entry?: Entry) => (
         </a>
       </Back>
     </nav>
-    <h1 className="text-5xl w-1/2">{entry?.name}</h1>
+    <div className="flex flex-row justify-between items-center">
+      <h1 className="text-5xl w-1/2">{entry?.name}</h1>
+      <Tag>{entry?.type}</Tag>
+    </div>
   </div>
 )
 
@@ -65,34 +75,35 @@ const EntryDetails = (entry?: Entry) => (
   <div className="bg-white text-black grid grid-cols-4 grid-rows-auto gap-x-4 gap-y-6 p-4">
     <EntryItem
       className="col-span-2"
-      heading={
-        entry?.tenureType
-          ? entry.tenureType.map((type) => TenureType[type]).join(" - ")
-          : "Unknown tenure type"
-      }
+      heading={getFormattedTenureTypes(entry?.tenureType)}
     />
     <EntryItem heading={entry?.location?.region || "Unknown location"} />
-    <EntryItem
-      heading={
-        entry?.dates?.start
-          ? new Date(Date.parse(entry?.dates.start)).getFullYear() +
-            " - " +
-            (entry?.dates.end
-              ? new Date(Date.parse(entry?.dates.end)).getFullYear()
-              : "")
-          : "Unknown dates"
-      }
-    />
+    <EntryItem heading={getFormattedEntryDates(entry?.dates)} />
     <EntryItem heading="" className="col-span-4">
-      <p className="text-sm mb-2">{entry?.description}</p>
+      <p className="text-sm mb-2 whitespace-pre-wrap">{entry?.description}</p>
     </EntryItem>
     {entry?.references?.length && (
-      <EntryItem heading="More information" className="col-span-3">
+      <EntryItem heading="More information" className="col-span-2">
         <References {...entry} />
       </EntryItem>
     )}
-    <EntryItem heading="Entry rating" className="col-span-1">
-      <p className="text-gray-400">{entry?.entryRating?.grade || "Draft"}</p>
+    <EntryItem heading="Rating" className="col-span-2">
+      <>
+        <p>
+          This entry is{" "}
+          <span className="text-gray-400 lowercase">
+            {entry?.entryRating?.grade || "a draft"}
+          </span>
+        </p>
+        <div className="">
+          {entry?.tags &&
+            entry.tags.map((entryTag) => (
+              <Tag key={entryTag.value} className={"bg-gray-200 mt-2"}>
+                {entryTag.label}
+              </Tag>
+            ))}
+        </div>
+      </>
     </EntryItem>
   </div>
 )
@@ -109,11 +120,10 @@ const StaticMapImage = (entry: Entry) => {
 }
 
 export const EntryLayout = (props: EntryLayoutProps) => {
-  const { entry } = props
-  console.log(entry)
-
+  const { entry, patterns, patternClasses, carouselItems } = props
   return (
-    <div className="bg-white z-20 text-white fixed inset-y-0 right-0 max-w-4xl overflow-y-auto no-scrollbar">
+    <Fragment>
+      {/* <div className="bg-white z-20 text-white fixed inset-y-0 right-0 max-w-4xl overflow-y-auto no-scrollbar"> */}
       {}
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
@@ -121,9 +131,22 @@ export const EntryLayout = (props: EntryLayoutProps) => {
         rollupToPatternClass={false}
         showLabels={true}
         terms={entry?.terms}
+        patterns={patterns}
+        patternClasses={patternClasses}
+        entryId={entry?._id}
       />
+      {entry?.tenureType && (
+        <Carousel
+          data={carouselItems}
+          title={`Other examples of ${getFormattedTenureTypes(
+            entry?.tenureType
+          )}`}
+          cardClassNames="bg-gray-200"
+        />
+      )}
       {entry?.location?.geopoint && <StaticMapImage {...entry} />}
       {/* <Footer /> */}
-    </div>
+      {/* </div> */}
+    </Fragment>
   )
 }

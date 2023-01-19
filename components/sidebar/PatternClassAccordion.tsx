@@ -17,21 +17,22 @@ const PatternClassAccordion = (props: Props) => {
     patternClass: {
       color: { hex },
       name,
+      description
     },
     patterns,
   } = props
   const [isOpen, setOpen] = useState(false)
 
   return (
-    <details style={{ backgroundColor: hex }} className={css.root}>
-      <motion.summary
+    <div style={{ backgroundColor: hex }} className={css.root}>
+      <motion.header
         className={css.header}
         initial={false}
         onClick={() => setOpen(!isOpen)}
       >
         {name}
         {isOpen ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-      </motion.summary>
+      </motion.header>
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.section
@@ -45,6 +46,7 @@ const PatternClassAccordion = (props: Props) => {
             }}
             transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
           >
+            <p className="text-xs mt-2 mb-4">{description}</p>
             {pipe(
               patterns,
               A.map((pattern) => (
@@ -57,7 +59,7 @@ const PatternClassAccordion = (props: Props) => {
           </motion.section>
         )}
       </AnimatePresence>
-    </details>
+    </div>
   )
 }
 

@@ -6,7 +6,6 @@ const FooterLinks = () => {
   const links = [
     { title: "About", path: "/about" },
     { title: "Explore the patterns", path: "/patterns" },
-    { title: "Submit an entry", path: "/submit" },
     { title: "Licence", path: "/licence" },
     { title: "Terms of use", path: "/terms-of-use" },
   ]
@@ -53,9 +52,9 @@ const Discalimer = () => (
 )
 
 const SubmitButton = () => (
-  <button className="bg-white text-black py-1 px-14 col-span-2 col-end-7 mb-4 flex items-center justify-center">
+  <a href="https://airtable.com/shru3ZGjdyhEGTzx6" target="_blank" rel="noreferrer" className="bg-white text-black py-1 px-14 col-span-2 col-end-7 mb-4 flex items-center justify-center">
     Submit an entry <ArrowRight className="ml-2" size={16} />
-  </button>
+  </a>
 )
 
 const Footer = () => (

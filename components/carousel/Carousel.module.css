@@ -1,0 +1,19 @@
+.root {
+  @apply p-4
+}
+
+.title {
+  @apply text-black
+}
+
+.container {
+  @apply w-full flex flex-1 overflow-auto
+}
+
+.carousel {
+  @apply mt-4 flex gap-4
+}
+
+.card {
+  @apply h-32 w-64 p-2 flex flex-col justify-between text-black cursor-pointer
+}
