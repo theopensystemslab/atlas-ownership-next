@@ -110,14 +110,14 @@ const ExpandableRow = (props: ExpandableRowProps) => {
 
   return (
     <div
-      className={`flex flex-col h-fit w-full text-gray-600 ${term.patternClassName ? descriptionBackgroundColorClasses[term.patternClassName] : 'bg-gray-200'}`}
+      className={`flex flex-col h-fit w-full text-black ${term.patternClassName ? descriptionBackgroundColorClasses[term.patternClassName] : 'bg-gray-200'}`}
       id="row-expandable-description"
       onClick={onClick}
     >
       <div className="p-4">
-        <p className="text-xs text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
-        <h2 className="text-sm mb-1">{term.name}</h2>
-        <p className="text-xs">{term.meta?.description}</p>
+        <p className="text-sm text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
+        <h2 className="text-base mb-1">{term.name}</h2>
+        <p className="text-sm">{term.meta?.description}</p>
       </div>
       {showCarousel && <Carousel data={carouselItems} title="Other places that use this pattern" cardClassNames={clsx(`${backgroundColorClasses[term.patternClassName]} bg-opacity-20`)} />}
     </div>
