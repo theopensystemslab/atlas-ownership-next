@@ -1,10 +1,15 @@
 import { trpc } from "@/lib/trpc"
 import { pipe } from "fp-ts/lib/function"
 import { none, some } from "fp-ts/lib/Option"
-import { Feature, GeoJsonProperties, Geometry } from "geojson"
+import {
+  Feature,
+  FeatureCollection,
+  GeoJsonProperties,
+  Geometry,
+} from "geojson"
 import "mapbox-gl/dist/mapbox-gl.css"
 import { useRouter } from "next/router"
-import React, { useCallback, useEffect } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import Map, {
   GeoJSONSource,
   Layer,
@@ -15,6 +20,7 @@ import Map, {
 import { ref } from "valtio"
 import { A, S } from "../../lib/fp"
 import store from "../../lib/store"
+import { useSelection } from "../sidebar/selection"
 import Markers from "./Markers"
 
 const MapboxGlobe = () => {
@@ -36,26 +42,45 @@ const MapboxGlobe = () => {
       void router.events.off("beforeHistoryChange", handleRouteChange)
   }, [handleRouteChange, router, router.events])
 
-  const features: Array<Feature<Geometry, GeoJsonProperties>> = pipe(
-    entries,
-    A.filterMap((entry) =>
-      !entry.location?.geopoint
-        ? none
-        : some({
-            type: "Feature",
-            geometry: {
-              type: "Point",
-              coordinates: [
-                entry.location.geopoint.lng,
-                entry.location.geopoint.lat,
-              ],
-            },
-            properties: {
-              slug: entry.slug?.current ?? null,
-            },
-          })
+  const { patternNames } = useSelection()
+
+  const data = useMemo<FeatureCollection<Geometry, GeoJsonProperties>>(() => {
+    const features: Array<Feature<Geometry, GeoJsonProperties>> = pipe(
+      entries,
+      A.filter((entry) => {
+        if (patternNames.length === 0) return true
+        const patternNames2: string[] =
+          entry.patterns?.map((pattern) => pattern.name) ?? []
+
+        return patternNames.reduce((acc, v) => {
+          const foo = patternNames2.includes(v)
+          return acc && foo
+        }, true)
+      }),
+      A.filterMap((entry) =>
+        !entry.location?.geopoint
+          ? none
+          : some({
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [
+                  entry.location.geopoint.lng,
+                  entry.location.geopoint.lat,
+                ],
+              },
+              properties: {
+                slug: entry.slug?.current ?? null,
+              },
+            })
+      )
     )
-  )
+
+    return {
+      type: "FeatureCollection",
+      features,
+    }
+  }, [entries, patternNames])
 
   const sourceId = "entries"
 
@@ -152,10 +177,7 @@ const MapboxGlobe = () => {
       <Source
         id={sourceId}
         type={"geojson"}
-        data={{
-          type: "FeatureCollection",
-          features,
-        }}
+        data={data}
         cluster={true}
         clusterMaxZoom={13}
         clusterRadius={150}
