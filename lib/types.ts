@@ -1,4 +1,4 @@
-import { Carousel } from './../components/carousel/Carousel';
+import { Carousel } from "./../components/carousel/Carousel"
 export type Geopoint = {
   lat: number
   lng: number
@@ -9,7 +9,7 @@ export type Location = {
   region: string
 }
 
-export type IntensityRange = 0|1|2|3|4|5
+export type IntensityRange = 0 | 1 | 2 | 3 | 4 | 5
 
 export type Term = {
   description: string
@@ -69,8 +69,9 @@ export type Entry = {
   slug?: {
     current: string
   }
-  terms?: Term[],
-  tenureType?: Array<keyof typeof TenureType>;
+  terms?: Term[]
+  patterns?: Pattern[]
+  tenureType?: Array<keyof typeof TenureType>
   entryRating?: {
     grade: string
   }
