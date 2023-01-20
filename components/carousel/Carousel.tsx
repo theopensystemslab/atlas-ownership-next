@@ -18,9 +18,9 @@ const CarouselItem = (props: { item: CarouselItem, cardClassNames: string | unde
         <div className="flex flex-col justify-between">
           <div className="flex justify-between w-full">
             <p>{props.item.name}</p>
-            <ArrowRight size={24}/>
+            <ArrowRight size={24} />
           </div>
-        <p className="text-xs">{props.item.location?.region}</p>
+          <p className="text-xs">{props.item.location?.region}</p>
         </div>
         <p className="text-xs">{getFormattedEntryDates(props.item?.dates)}</p>
       </a>
@@ -28,13 +28,13 @@ const CarouselItem = (props: { item: CarouselItem, cardClassNames: string | unde
   )
 }
 
-export const Carousel = (props: CarouselProps ) => (
+export const Carousel = (props: CarouselProps) => (
   <div className={css.root}>
     <p className={css.title}>{props.title}</p>
-    <div className={css.container}>  
+    <div className={css.container}>
       <div className={css.carousel}>
-        { props.data?.map((item, i) => (
-          <CarouselItem key={`${item}-${i}`} item={item} cardClassNames={props.cardClassNames}/>
+        {props.data?.map((item, i) => (
+          <CarouselItem key={`${item}-${i}`} item={item} cardClassNames={props.cardClassNames} />
         ))}
       </div>
     </div>

@@ -1,9 +1,9 @@
 import { trpc } from "@/lib/trpc";
 import { Pattern, PatternClass } from "@/lib/types"
-import { ArrowLeft, Hotel } from "@carbon/icons-react";
+import { Hotel } from "@carbon/icons-react";
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useState } from "react";
-import Back from "../Back";
+import { PageNavbar } from "../PageNavbar";
 
 interface PatternsLayoutProps {
   patternClasses?: PatternClass[]
@@ -22,10 +22,7 @@ const patternClassLookup: Record<string, string> = {
 } as const;
 
 const Header = () => (
-  <header className="bg-gray-200 p-8">
-    <Back>
-      <ArrowLeft size={32} className="cursor-pointer" />
-    </Back>
+  <header className="bg-gray-200 px-8 pb-8">
     <h1 className="text-5xl mt-8 mb-8">Explore the patterns</h1>
     <h2 className="text-2xl mb-2">What is ownership?</h2>
     <p className="mb-8">Property is often described as a &quot;bundle&quot; of rights and obligations. We can unbundle these rights into 8 classes.</p>
@@ -52,7 +49,7 @@ const PatternList = (props: { patternClass: PatternClass | undefined }) => {
   const { patternClass } = props;
   const { data: patternInfo, error: patternInfoError } = trpc.patternInfo.useQuery({ patternClassName: patternClass?.name || null })
   return (
-    <section className="p-8">
+    <section className="p-8 bg-white">
       <p className="mb-4">{patternClass?.description}</p>
       <h3 className="text-lg mb-4">Rights</h3>
       {patternInfo?.rights.map((pattern, i) => (
@@ -94,7 +91,8 @@ export const PatternsLayout = (props: PatternsLayoutProps) => {
   const [selectedPatternClass, setSelectedPatternClass] = useState<PatternClass | undefined>(patternClasses?.[0]);
 
   return (
-    <div className="bg-white z-20 fixed inset-0 overflow-y-auto">
+    <div className="bg-gray-200 text-black z-20 fixed inset-0 overflow-y-auto">
+      <PageNavbar variant="light" />
       <Header />
       <PatternNav patternClasses={patternClasses} onClick={setSelectedPatternClass} selectedPatternClass={selectedPatternClass} />
       <PatternList patternClass={selectedPatternClass} />
