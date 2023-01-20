@@ -131,8 +131,6 @@ export const EntryLayout = (props: EntryLayoutProps) => {
         rollupToPatternClass={false}
         showLabels={true}
         terms={entry?.terms}
-        patterns={patterns}
-        patternClasses={patternClasses}
         entryId={entry?._id}
       />
       {entry?.tenureType && (

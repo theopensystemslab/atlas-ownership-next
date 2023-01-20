@@ -2,7 +2,7 @@ import { trpc } from "@/lib/trpc"
 import clsx from "clsx"
 import _ from "lodash"
 import { useState } from "react"
-import { Pattern, PatternClass, Term } from "../lib/types"
+import { PatternClass, Term } from "../lib/types"
 import { Carousel } from "./carousel/Carousel"
 
 // TODO: Move to style utils
@@ -18,6 +18,18 @@ const backgroundColorClasses: any = {
   "Stewardship": "bg-stewardship",
   "Use": "bg-use",
   "Access": "bg-access",
+};
+
+const hoverColorClasses: any = {
+  "Rent": "hover:bg-rent/70",
+  "Transfer": "hover:bg-transfer/70",
+  "Administration": "hover:bg-administration/70",
+  "Eligibility": "hover:bg-eligibility/70",
+  "Security of tenure": "hover:bg-security/70",
+  "Develop": "hover:bg-develop/70",
+  "Stewardship": "hover:bg-stewardship/70",
+  "Use": "hover:bg-use/70",
+  "Access": "hover:bg-access/70",
 };
 
 const descriptionBackgroundColorClasses: any = {
@@ -37,15 +49,58 @@ type Props = {
   rollupToPatternClass: boolean,
   showLabels: boolean,
   terms?: Term[]
-  patterns?: Pattern[]
-  patternClasses?: PatternClass[]
   entryId?: string;
+}
+
+interface PatternClassTotal {
+  name: string | undefined
+  meta: PatternClass | undefined
+  avgObligations: number
+  avgRights: number
+}
+
+interface DataRowProps {
+  patternClassTotal: PatternClassTotal
+  showLabels: boolean
 }
 
 interface ExpandableRowProps {
   term?: any
   entryId?: string
   onClick: () => void
+}
+
+interface BarChartByPatternClassProps {
+  data: PatternClassTotal[]
+  showLabels: boolean
+}
+
+interface ExpandableBarChartByPatternProps {
+  data: any
+  entryId: string | undefined
+  showLabels: boolean
+}
+
+const DataRow = (props: DataRowProps) => {
+  const { patternClassTotal: patternClass, showLabels } = props
+
+  return (
+    <div className="flex">
+      {showLabels ? (
+        <div className="w-1/5 h-10 text-black flex items-center justify-end mr-3">
+          {patternClass.name}
+        </div> 
+      ) : (``)}
+      <div className="flex-1 grid border-r-white border-r-2" style={{ gridTemplateColumns: `repeat(5, minmax(0, 1fr))`, direction: "rtl"}}>
+        <div className={`${patternClass.avgObligations > 0 && backgroundColorClasses[patternClass.name!]} h-10`} style={{ gridColumn: `span ${patternClass.avgObligations}` }}>
+        </div>
+      </div>
+      <div className="flex-1 grid" style={{ gridTemplateColumns: `repeat(5, minmax(0, 1fr))`, direction: "ltr" }}>
+        <div className={`${patternClass.avgRights > 0 && backgroundColorClasses[patternClass.name!]} h-10`} style={{ gridColumn: `span ${patternClass.avgRights}` }}>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 const ExpandableRow = (props: ExpandableRowProps) => {
@@ -69,15 +124,88 @@ const ExpandableRow = (props: ExpandableRowProps) => {
   )
 }
 
+const BarChartByPatternClass = (props: BarChartByPatternClassProps) => {
+  const { data: totalsByPatternClass, showLabels } = props
+
+  return (
+    <div className="m-4">
+      <div className="flex">
+        {showLabels ? <div className="w-1/5 h-10"></div> : ``}
+        <div className="flex-1 h-10 text-lg text-center text-gray-500">Obligations</div>
+        <div className="flex-1 h-10 text-lg text-center text-gray-500">Rights</div>
+      </div>
+      {totalsByPatternClass.map(patternClass => (
+        <DataRow patternClassTotal={patternClass} showLabels={showLabels} key={`data-row-${patternClass.name}`} />
+      ))}
+    </div>
+  )
+}
+
+const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) => {
+  const { data: formattedTerms, entryId, showLabels } = props
+
+  const [open, setOpen] = useState(false)
+  const [openIndex, setOpenIndex] = useState(0)
+
+  return (
+    <div className="m-4">
+      <div className="flex">
+        <div className="flex-1 h-10 text-lg text-center text-gray-500">Obligations</div>
+        <div className="flex-1 h-10 text-lg text-center text-gray-500">Rights</div>
+      </div>
+      {formattedTerms.map((term: any, i: number) => (
+        <div className="flex flex-col" key={`row-${term.name}-${i}`}>
+          <div className="flex">
+            {showLabels ? (
+              <div className="flex-1 h-10 text-black text-sm text-right flex items-center justify-end mr-3">
+                {term.type === "Obligation" && term.name}
+              </div>
+            ) : (``)}
+            <div className="flex-1 grid" style={{ gridTemplateColumns: `repeat(5, minmax(0, 1fr))`, direction: "rtl"}}>
+              <div 
+                className={`${term.type === "Obligation" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Obligation" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer`} 
+                style={{ gridColumn: `span ${term.strength}` }}
+                onClick={() => {
+                  setOpen(!open);
+                  setOpenIndex(i);
+                }}
+              >
+              </div>
+            </div>
+            <div className="flex-1 grid" style={{ gridTemplateColumns: `repeat(5, minmax(0, 1fr))`, direction: "ltr" }}>
+              <div 
+                className={`${term.type === "Right" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Right" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer`} 
+                style={{ gridColumn: `span ${term.strength}` }}
+                onClick={() => {
+                  setOpen(!open);
+                  setOpenIndex(i);
+                }}
+              >
+              </div>
+            </div>
+            {showLabels ? (
+              <div className="flex-1 h-10 text-black text-sm flex items-center justify-start ml-3">
+                {term.type === "Right" && term.name}
+              </div> 
+            ) : (``)}
+          </div>
+          {
+            open && openIndex === i &&
+            <ExpandableRow term={term} onClick={() => setOpen(false)} entryId={entryId} />
+          }
+        </div>
+      ))}
+    </div>
+  )
+}
+
 const Chart = (props: Props) => {
   const { rollupToPatternClass, showLabels, terms = [], entryId } = props;
-
-  const [open, setOpen] = useState(false);
-  const [openIndex, setOpenIndex] = useState(0);
 
   const { data: patterns, error: patternsError } = trpc.patterns.useQuery()
   const { data: patternClasses, error: patternClassesError } =
     trpc.patternClasses.useQuery()
+  
   // Format the list of individual terms that apply to this entry
   let formattedTerms = _(terms)
     .map((term: any) => ({
@@ -134,101 +262,21 @@ const Chart = (props: Props) => {
     });
   }
 
-  const hoverColorClasses: any = {
-    "Rent": "hover:bg-rent/70",
-    "Transfer": "hover:bg-transfer/70",
-    "Administration": "hover:bg-administration/70",
-    "Eligibility": "hover:bg-eligibility/70",
-    "Security of tenure": "hover:bg-security/70",
-    "Develop": "hover:bg-develop/70",
-    "Stewardship": "hover:bg-stewardship/70",
-    "Use": "hover:bg-use/70",
-    "Access": "hover:bg-access/70",
-  };
-
-  // added to match figma marker designs, but colored text doesn't look great? 
-  const textColorClasses: any = {
-    "Rent": "text-rent",
-    "Transfer": "text-transfer",
-    "Administration": "text-administration",
-    "Eligibility": "text-eligibility",
-    "Security of tenure": "text-security",
-    "Develop": "text-develop",
-    "Stewardship": "text-stewardship",
-    "Use": "text-gray-400",
-    "Access": "text-access",
-  };
-
-  // maps pattern.strength values (0-5) to tailwind percentage width
-  //   ref https://tailwindcss.com/docs/width#percentage-widths
-  const percentageWidthClasses: any = {
-    "NaN": "w-0", // possible when calculating average strength (divide by zero) for charts rolled up to patternClass
-    "0": "w-0",
-    "1": "w-1/5",
-    "2": "w-2/5",
-    "3": "w-3/5",
-    "4": "w-4/5",
-    "5": "w-5/5", // w-full
-  };
+  // Replace any NaNs with 0 and do a final sort
+  totalsByPatternClass = _(totalsByPatternClass)
+    .map((pattern: any) => ({
+      meta: pattern.meta,
+      name: pattern.name,
+      avgRights: pattern.avgRights > 0 ? pattern.avgRights : 0,
+      avgObligations: pattern.avgObligations > 0 ? pattern.avgObligations : 0,
+    }))
+    .sortBy('meta.order')
+    .value();
 
   return rollupToPatternClass ? (
-    <div className="m-4" id="chart-container">
-      <div className="flex" id="row-header">
-        {showLabels ? <div className="flex-1 h-10"></div> : ``}
-        <div className="flex-1 h-10 text-lg text-center text-gray-600">Obligations</div>
-        <div className="flex-1 h-10 text-lg text-center text-gray-600">Rights</div>
-      </div>
-      {totalsByPatternClass.map(patternClass => (
-        <div className="flex" key={`row-${patternClass.name}`}>
-          {showLabels ? <div className="flex-1 h-10 text-base text-right mr-3 text-black" id="label">{patternClass.name}</div> : ``}
-          <div className={`flex-1 h-10 border-r-white border-r-2 ${patternClass.name ? backgroundColorClasses[patternClass.name] : 'bg-gray-400'}`} id={`obligations-${patternClass.name}`}>
-            <div className={`h-10 bg-white ${patternClass.avgObligations > 0 ? percentageWidthClasses[(5 - patternClass.avgObligations).toString()] : 'w-full'}`}></div>
-          </div>
-          <div className="flex-1 h-10 bg-white" id={`rights-${patternClass.name}`}>
-            <div className={`h-10 ${percentageWidthClasses[patternClass.avgRights.toString()]} ${patternClass.name ? backgroundColorClasses[patternClass.name] : 'bg-gray-400'}`}></div>
-          </div>
-        </div>
-      ))}
-    </div>
+    <BarChartByPatternClass data={totalsByPatternClass} showLabels={showLabels} />
   ) : (
-    <div className="m-4" id="chart-container">
-      <div className="flex" id="row-header">
-        {showLabels ? <div className="flex-1 h-10"></div> : ``}
-        <div className="flex-1 h-10 text-lg text-center text-gray-600">Obligations</div>
-        <div className="flex-1 h-10 text-lg text-center text-gray-600">Rights</div>
-      </div>
-      {formattedTerms.map((term, i) => (
-        <div className="flex flex-col" key={`row-${term.name}-${i}`}>
-          <div className="flex" id="row-chart-data">
-            {showLabels ? <div className="flex-1 h-10 text-sm text-right mr-3 text-black" id="labels">{term.name}</div> : ``}
-            <div
-              className={`flex-1 h-10 ${term.patternClassName ? backgroundColorClasses[term.patternClassName] : 'bg-gray-400'} ${term.patternClassName ? hoverColorClasses[term.patternClassName] : 'hover:bg-gray-400/70'}`}
-              id={`obligations-${term.name}`}
-              onClick={() => {
-                setOpen(!open);
-                setOpenIndex(i);
-              }}
-            >
-              <div className={`h-10 bg-white ${term.type === "Obligation" && term.strength > 0 ? percentageWidthClasses[(5 - term.strength).toString()] : 'w-full'}`}></div>
-            </div>
-            <div className="flex-1 h-10 bg-white" id={`rights-${term.name}`}>
-              <div
-                className={`h-10 ${term.type === "Right" && term.strength > 0 ? percentageWidthClasses[term.strength.toString()] : 'w-0'} ${term.patternClassName ? backgroundColorClasses[term.patternClassName] : 'bg-gray-400'} ${term.patternClassName ? hoverColorClasses[term.patternClassName] : 'hover:bg-gray-400/70'}`}
-                onClick={() => {
-                  setOpen(!open);
-                  setOpenIndex(i);
-                }}
-              >
-              </div>
-            </div>
-          </div>
-          {
-            open && openIndex === i &&
-            <ExpandableRow term={term} onClick={() => setOpen(false)} entryId={entryId} />
-          }
-        </div>
-      ))}
-    </div>
+    <ExpandableBarChartByPattern data={formattedTerms} entryId={entryId} showLabels={showLabels} />
   );
 }
 
