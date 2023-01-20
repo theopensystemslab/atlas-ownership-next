@@ -127,7 +127,7 @@ export const EntryLayout = (props: EntryLayoutProps) => {
           cardClassNames="bg-gray-200"
         />
       )}
-      <a className="w-full bg-black flex py-4 justify-center" href="#">
+      <a className="w-full bg-black flex py-4 justify-center" href="https://airtable.com/shrl7X5UhiOHUaj3r" target="_blank" rel="noreferrer">
         Suggest an improvement to this entry
         <ArrowRight className="pl-2" size={24} />
       </a>
