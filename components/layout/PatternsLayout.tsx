@@ -1,8 +1,9 @@
 import { trpc } from "@/lib/trpc";
 import { Pattern, PatternClass } from "@/lib/types"
-import { Hotel } from "@carbon/icons-react";
+import { ArrowLeft, Hotel } from "@carbon/icons-react";
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useState } from "react";
+import Back from "../Back";
 
 interface PatternsLayoutProps {
   patternClasses?: PatternClass[]
@@ -22,6 +23,9 @@ const patternClassLookup: Record<string, string> = {
 
 const Header = () => (
   <header className="bg-gray-200 p-8">
+    <Back>
+      <ArrowLeft size={32} className="cursor-pointer" />
+    </Back>
     <h1 className="text-5xl mt-8 mb-8">Explore the patterns</h1>
     <h2 className="text-2xl mb-2">What is ownership?</h2>
     <p className="mb-8">Property is often described as a &quot;bundle&quot; of rights and obligations. We can unbundle these rights into 8 classes.</p>
@@ -31,23 +35,22 @@ const Header = () => (
 );
 
 const PatternNav = (props: { patternClasses: PatternClass[] | undefined, onClick: Dispatch<SetStateAction<PatternClass | undefined>>, selectedPatternClass: PatternClass | undefined }) => (
-    <nav className="columns-9 h-10 gap-0">
-      {props.patternClasses && props.patternClasses.map(patternClass =>
-        <button
-          key={patternClass.name}
-          className={`block w-full h-full text-left pl-2 text-sm hover:underline ${patternClass.name === props.selectedPatternClass?.name ? "bg-white" : patternClassLookup[patternClass.name]}`}
-          onClick={() => props.onClick(patternClass)}
-        >
-          {patternClass.name}
-        </button>
-      )}
-    </nav>
+  <nav className="columns-9 h-10 gap-0">
+    {props.patternClasses && props.patternClasses.map(patternClass =>
+      <button
+        key={patternClass.name}
+        className={`block w-full h-full text-left pl-2 text-sm hover:underline ${patternClass.name === props.selectedPatternClass?.name ? "bg-white" : patternClassLookup[patternClass.name]}`}
+        onClick={() => props.onClick(patternClass)}
+      >
+        {patternClass.name}
+      </button>
+    )}
+  </nav>
 );
 
 const PatternList = (props: { patternClass: PatternClass | undefined }) => {
   const { patternClass } = props;
   const { data: patternInfo, error: patternInfoError } = trpc.patternInfo.useQuery({ patternClassName: patternClass?.name || null })
-
   return (
     <section className="p-8">
       <p className="mb-4">{patternClass?.description}</p>
