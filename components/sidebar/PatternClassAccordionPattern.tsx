@@ -13,13 +13,24 @@ const PatternClassAccordionPattern = ({ pattern }: Props) => {
     <div key={pattern.name} className={css.root}>
       <label className={css.label} htmlFor={pattern._id}>
         <div className={css.labelText}>
-        <Hotel size={24} className={css.icon} />
-        <p>{pattern.name}</p>
+          <Hotel size={24} className={css.icon} />
+          <p>{pattern.name}</p>
         </div>
-        {patternNames.includes(pattern.name) ?
-          <RadioButtonChecked size={24} className={css.checkbox} role="checkbox" aria-checked="true"/> :
-          <RadioButton size={24} className={css.checkbox} role="checkbox" aria-checked="false"/>
-        }
+        {patternNames.includes(pattern.name) ? (
+          <RadioButtonChecked
+            size={24}
+            className={css.checkbox}
+            role="checkbox"
+            aria-checked="true"
+          />
+        ) : (
+          <RadioButton
+            size={24}
+            className={css.checkbox}
+            role="checkbox"
+            aria-checked="false"
+          />
+        )}
       </label>
       <input
         id={pattern._id}
@@ -33,7 +44,6 @@ const PatternClassAccordionPattern = ({ pattern }: Props) => {
               (x) => x !== pattern.name
             )
           }
-          console.log(selection.patternNames)
         }}
         checked={patternNames.includes(pattern.name)}
       />
