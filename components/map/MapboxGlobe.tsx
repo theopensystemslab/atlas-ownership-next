@@ -20,7 +20,10 @@ import Map, {
 import { ref } from "valtio"
 import { A, O, S } from "../../lib/fp"
 import store from "../../lib/store"
+<<<<<<< HEAD
 import { Entry } from "../../lib/types"
+=======
+>>>>>>> 7d55d84 (wip first pass)
 import { useSelection } from "../sidebar/selection"
 import Markers from "./Markers"
 
@@ -43,6 +46,7 @@ const MapboxGlobe = () => {
       void router.events.off("beforeHistoryChange", handleRouteChange)
   }, [handleRouteChange, router, router.events])
 
+<<<<<<< HEAD
   const { patternNames: selectedPatternNames } = useSelection()
 
   const entryToFeature = (entry: Entry): O.Option<Feature> =>
@@ -61,10 +65,14 @@ const MapboxGlobe = () => {
             slug: entry.slug?.current ?? null,
           },
         })
+=======
+  const { patternNames } = useSelection()
+>>>>>>> 7d55d84 (wip first pass)
 
   const data = useMemo<FeatureCollection<Geometry, GeoJsonProperties>>(() => {
     const features: Array<Feature<Geometry, GeoJsonProperties>> = pipe(
       entries,
+<<<<<<< HEAD
       A.filterMap((entry) => {
         if (selectedPatternNames.length === 0) return entryToFeature(entry)
 
@@ -77,13 +85,46 @@ const MapboxGlobe = () => {
         if (match) return entryToFeature(entry)
         else return O.none
       })
+=======
+      A.filter((entry) => {
+        if (patternNames.length === 0) return true
+        const patternNames2: string[] =
+          entry.patterns?.map((pattern) => pattern.name) ?? []
+
+        return patternNames.reduce((acc, v) => {
+          const foo = patternNames2.includes(v)
+          return acc && foo
+        }, true)
+      }),
+      A.filterMap((entry) =>
+        !entry.location?.geopoint
+          ? none
+          : some({
+              type: "Feature",
+              geometry: {
+                type: "Point",
+                coordinates: [
+                  entry.location.geopoint.lng,
+                  entry.location.geopoint.lat,
+                ],
+              },
+              properties: {
+                slug: entry.slug?.current ?? null,
+              },
+            })
+      )
+>>>>>>> 7d55d84 (wip first pass)
     )
 
     return {
       type: "FeatureCollection",
       features,
     }
+<<<<<<< HEAD
   }, [entries, selectedPatternNames])
+=======
+  }, [entries, patternNames])
+>>>>>>> 7d55d84 (wip first pass)
 
   const sourceId = "entries"
 
