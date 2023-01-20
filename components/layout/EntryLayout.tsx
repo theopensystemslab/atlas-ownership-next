@@ -10,8 +10,6 @@ import { Tag } from "./ui/Tag"
 
 interface EntryLayoutProps {
   entry?: Entry
-  patterns?: Pattern[]
-  patternClasses?: PatternClass[]
   carouselItems?: CarouselItem[]
 }
 

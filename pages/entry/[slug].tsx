@@ -1,3 +1,4 @@
+import { trpc } from "@/lib/trpc"
 import { useRouter } from "next/router"
 import { useEffect, useMemo } from "react"
 import { EntryLayout } from "../../components/layout/EntryLayout"
@@ -22,7 +23,10 @@ const EntryPage = () => {
     store.map?.flyTo({ center: { lat, lng }, zoom: 18 })
   }, [entry])
 
-  return entry ? <EntryLayout entry={entry} /> : null
+
+  const { data: carouselItems, error: carouselItemsError } = trpc.tenureType.useQuery({ tenureTypes: entry?.tenureType, id: entry?._id })
+
+  return entry ? <EntryLayout entry={entry} carouselItems={carouselItems} /> : null
 }
 
 export default EntryPage
