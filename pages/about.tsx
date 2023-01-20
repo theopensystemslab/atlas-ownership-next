@@ -66,7 +66,7 @@ const AboutPage = () => {
       </div>
       <div className="w-2/3 relative flex items-center justify-center">
         <Image
-          src="/images/real_estate_value_diagram.svg"
+          src="/images/real-estate-value-diagram.svg"
           alt="Real estate value comparison diagram"
           layout="fill" // parent must have position set
           style={{ WebkitFilter: "invert(100%)", filter: "invert(100%)" }}
