@@ -89,9 +89,9 @@ const EntryDetails = (entry?: Entry) => (
     )}
     <EntryItem heading="Rating" className="col-span-2">
       <>
-        <p>
+        <p className="text-sm">
           This entry is{" "}
-          <span className="text-gray-400 lowercase">
+          <span className="text-gray-400 text-sm lowercase">
             {entry?.entryRating?.grade || "a draft"}
           </span>
         </p>
