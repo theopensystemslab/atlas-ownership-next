@@ -87,7 +87,7 @@ const DataRow = (props: DataRowProps) => {
   return (
     <div className="flex">
       {showLabels ? (
-        <div className="w-1/5 h-10 text-black flex items-center justify-end mr-3">
+        <div className="w-1/5 h-10 text-black text-right flex items-center justify-end mr-3">
           {patternClass.name}
         </div> 
       ) : (``)}
@@ -211,7 +211,7 @@ const Chart = (props: Props) => {
     .map((term: any) => ({
       pattern: _.find(patterns, ['_id', term.pattern?._ref]),
       patternName: _.find(patterns, ['_id', term.pattern?._ref])?.name,
-      type: term.rightsIntensity > 0 ? "Right" : "Obligation", // because pattern.type is not consistently populated
+      type: _.capitalize(_.find(patterns, ['id', term.pattern?._ref])?.type) || term.rightsIntensity > 0 ? "Right" : "Obligation", // because pattern.type is not consistently populated
       strength: term.strength, // 1-5
     }))
     .map((term: any) => ({
@@ -225,25 +225,15 @@ const Chart = (props: Props) => {
     .sortBy('patternClassOrder', 'name')
     .value();
 
-  // Group terms by pattern
-  let totalsByPattern = _(terms)
-    .groupBy('pattern._ref')
-    .map((term: any) => ({
-      pattern: _.find(patterns, ['_id', term[0].pattern._ref]),
-      patternName: _.find(patterns, ['_id', term[0].pattern._ref])?.name,
-      sumRights: _.sumBy(term, 'rightsIntensity'),
-      sumObligations: _.sumBy(term, 'obligationIntensity')
-    }))
-    .value();
-
-  // Rollup to pattern class, taking the average rights & obligations from each pattern rounded to nearest integer
-  let totalsByPatternClass = _(totalsByPattern)
-    .groupBy('pattern.class._ref')
-    .map((pattern: any) => ({
-      meta: _.find(patternClasses, ['_id', pattern[0].pattern?.class._ref]),
-      name: _.find(patternClasses, ['_id', pattern[0].pattern?.class._ref])?.name,
-      avgRights: _.round(_.meanBy(pattern, 'sumRights')),
-      avgObligations: _.round(_.meanBy(pattern, 'sumObligations')),
+  // Rollup the individual terms by their pattern class
+  let totalsByPatternClass = _(formattedTerms)
+    .groupBy('patternClassName')
+    .map((terms: any) => ({
+      terms: terms,
+      meta: _.find(patternClasses, ['_id', terms[0].meta?.class._ref]),
+      name: terms[0].patternClassName,
+      avgRights: _(terms).filter({ type: "Right" }).meanBy("strength"),
+      avgObligations: _(terms).filter({ type: "Obligation" }).meanBy("strength"),
     }))
     .sortBy('meta.order')
     .value();
@@ -253,6 +243,7 @@ const Chart = (props: Props) => {
     patternClasses?.forEach(globalPatternClass => {
       if (!_.find(totalsByPatternClass, ['name', globalPatternClass.name])) {
         totalsByPatternClass.push({
+          terms: [],
           meta: globalPatternClass,
           name: globalPatternClass.name,
           avgRights: 0,
@@ -262,13 +253,14 @@ const Chart = (props: Props) => {
     });
   }
 
-  // Replace any NaNs with 0 and do a final sort
+  // Replace any NaNs with 0, round to nearest integer, and do a final sort
   totalsByPatternClass = _(totalsByPatternClass)
-    .map((pattern: any) => ({
-      meta: pattern.meta,
-      name: pattern.name,
-      avgRights: pattern.avgRights > 0 ? pattern.avgRights : 0,
-      avgObligations: pattern.avgObligations > 0 ? pattern.avgObligations : 0,
+    .map((patternClass: any) => ({
+      terms: patternClass.terms,
+      meta: patternClass.meta,
+      name: patternClass.name,
+      avgRights: patternClass.avgRights > 0 ? _.round(patternClass.avgRights) : 0,
+      avgObligations: patternClass.avgObligations > 0 ? _.round(patternClass.avgObligations) : 0,
     }))
     .sortBy('meta.order')
     .value();

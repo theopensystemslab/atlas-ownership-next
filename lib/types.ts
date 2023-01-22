@@ -1,4 +1,3 @@
-import { Carousel } from './../components/carousel/Carousel';
 export type Geopoint = {
   lat: number
   lng: number
@@ -16,6 +15,7 @@ export type Term = {
   pattern: Pattern
   rightsIntensity?: IntensityRange
   obligationIntensity?: IntensityRange
+  strength: IntensityRange
 }
 
 export type Pattern = {
@@ -24,6 +24,7 @@ export type Pattern = {
   description: string
   class: PatternClass
   entryCount?: number
+  type: "right" | "obligation"
 }
 
 export type PatternClass = {
