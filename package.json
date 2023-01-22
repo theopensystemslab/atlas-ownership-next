@@ -29,6 +29,7 @@
     "next": "12.3.0",
     "next-sanity": "^0.8.4",
     "react": "18.2.0",
+    "react-cool-portal": "^1.2.0",
     "react-dom": "18.2.0",
     "react-map-gl": "^7.0.19",
     "react-use": "^17.4.0",
