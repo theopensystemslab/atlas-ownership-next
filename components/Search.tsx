@@ -9,11 +9,21 @@ import { A } from "../lib/fp"
 import css from "./Search.module.css"
 import { toggleSidebar } from "../lib/store"
 import usePortal from "react-cool-portal"
+import Link from "next/link"
+import { truncate } from "lodash"
 
 const SearchResult = ({ entry }: { entry: Entry }) => {
   return (
     <div className={css.result}>
-      <pre>{JSON.stringify(entry, null, 2)}</pre>
+      <h1>{entry.name}</h1>
+      <p>{truncate(entry.description, { length: 128, separator: " " })}</p>
+      <div>
+        {entry.slug?.current && (
+          <Link href={`/entry/${entry.slug?.current}`}>
+            <a>{entry.slug?.current}</a>
+          </Link>
+        )}
+      </div>
     </div>
   )
 }
