@@ -1,8 +1,8 @@
 import { getFormattedEntryDates, getFormattedTenureTypes } from "@/lib/entry"
 import { ArrowRight, ArrowUpRight, Close } from "@carbon/icons-react"
 import Link from "next/link"
-import { Fragment } from "react"
-import { CarouselItem, Entry, Pattern, PatternClass } from "../../lib/types"
+import { useState } from "react"
+import { CarouselItem, Entry } from "../../lib/types"
 import Back from "../Back"
 import { Carousel } from "../carousel/Carousel"
 import Chart from "../Chart"
@@ -108,16 +108,47 @@ const EntryDetails = (entry?: Entry) => (
 
 export const EntryLayout = (props: EntryLayoutProps) => {
   const { entry, carouselItems } = props
+  const [ showRollup, setShowRollup ] = useState(true);
+
   return (
     <div className="text-white">
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
       <Chart
-        rollupToPatternClass={false}
+        rollupToPatternClass={showRollup}
         showLabels={true}
         terms={entry?.terms}
         entryId={entry?._id}
       />
+      <form className="flex m-3 p-3 bg-gray-200">
+        <div className="text-black text-sm mr-2">
+          Chart by:
+        </div>
+        <div className="radio text-black text-sm mr-3">
+          <label>
+            <input
+              type="radio"
+              value="patternClass"
+              checked={showRollup === true}
+              onChange={() => setShowRollup(!showRollup)}
+              className="mr-1 ml-1"
+            />
+            Pattern class
+          </label>
+        </div>
+        <div className="radio text-black text-sm mr-3">
+          <label>
+            <input
+              type="radio"
+              value="term"
+              checked={showRollup === false}
+              onChange={() => setShowRollup(!showRollup)}
+              className="mr-1 ml-1"
+            />
+            Terms
+          </label>
+        </div>
+      </form>
       {entry?.tenureType && (
         <Carousel
           data={carouselItems}

@@ -87,7 +87,7 @@ const DataRow = (props: DataRowProps) => {
   return (
     <div className="flex">
       {showLabels ? (
-        <div className="w-1/5 h-10 text-black flex items-center justify-end mr-3">
+        <div className="w-1/5 h-10 text-black text-right flex items-center justify-end mr-3">
           {patternClass.name}
         </div> 
       ) : (``)}
@@ -224,6 +224,8 @@ const Chart = (props: Props) => {
     }))
     .sortBy('patternClassOrder', 'name')
     .value();
+  
+  console.log(formattedTerms);
 
   // Group terms by pattern
   let totalsByPattern = _(terms)
@@ -272,6 +274,8 @@ const Chart = (props: Props) => {
     }))
     .sortBy('meta.order')
     .value();
+
+  console.log(totalsByPatternClass);
 
   return rollupToPatternClass ? (
     <BarChartByPatternClass data={totalsByPatternClass} showLabels={showLabels} />
