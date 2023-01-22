@@ -1,4 +1,4 @@
-import { Search as SearchIcon } from "@carbon/icons-react"
+import { Search as SearchIcon, SettingsAdjust } from "@carbon/icons-react"
 import { ChangeEvent, Fragment, useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
 import { trpc } from "../lib/trpc"
@@ -6,27 +6,16 @@ import { matchSorter } from "match-sorter"
 import { Entry } from "../lib/types"
 import { pipe } from "fp-ts/lib/function"
 import { A } from "../lib/fp"
+import css from "./Search.module.css"
+import { toggleSidebar } from "../lib/store"
+import usePortal from "react-cool-portal"
 
-// import { Search as SearchIcon, SettingsAdjust } from "@carbon/icons-react"
-// import { toggleSidebar } from "lib/store"
-
-// const Search = () => {
-//   return (
-//     <div className="flex items-stretch h-10 justify-center">
-//       <SearchIcon size={24} color={"white"} className="mt-2" />
-//       <input
-//         type="text"
-//         placeholder="Search the atlas"
-//         className="pl-2 bg-transparent text-white"
-//       />
-//       <SettingsAdjust size={24} className="text-white mt-2 mr-4 cursor-pointer" onClick={toggleSidebar}/>
-//       <button className="bg-white text-black px-6 h-auto">Search</button>
-//     </div>
-//   )
-// }
-
-const SearchResult = () => {
-  return null
+const SearchResult = ({ entry }: { entry: Entry }) => {
+  return (
+    <div className={css.result}>
+      <pre>{JSON.stringify(entry, null, 2)}</pre>
+    </div>
+  )
 }
 
 const Search = () => {
@@ -44,21 +33,36 @@ const Search = () => {
     100
   )
 
+  const { Portal } = usePortal()
+
   return (
     <Fragment>
-      <div>
-        <label className="bg-pink-500">
-          <SearchIcon size={24} color={"white"} className="mt-2" />
+      <div className={css.searchRoot}>
+        <label>
+          <SearchIcon size={24} color={"white"} />
         </label>
-        <input id="search" type="text" onChange={handler} />
+        <input
+          id="search"
+          type="text"
+          onChange={handler}
+          placeholder="Search the atlas"
+        />
+        <button>
+          <SettingsAdjust size={24} onClick={toggleSidebar} />
+        </button>
       </div>
+      {/* <button className="bg-white text-black px-6 h-auto">Search</button> */}
       {results.length > 0 && (
-        <div className="absolute z-50 w-1/3 h-1/3 inset-0 bg-red-500">
-          {pipe(
-            results,
-            A.map((result) => <SearchResult key={result._id} {...{}} />)
-          )}
-        </div>
+        <Portal>
+          <div className={css.resultsRoot}>
+            {pipe(
+              results,
+              A.map((result) => (
+                <SearchResult key={result._id} entry={result} />
+              ))
+            )}
+          </div>
+        </Portal>
       )}
     </Fragment>
   )

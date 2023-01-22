@@ -3471,6 +3471,11 @@ quickselect@^2.0.0:
   resolved "https://registry.npmjs.org/quickselect/-/quickselect-2.0.0.tgz"
   integrity sha512-RKJ22hX8mHe3Y6wH/N3wCM6BWtjaxIyyUIkpHOvfFnxdI4yD4tBXEBKSbriGujF6jnSVkJrffuo6vxACiSSxIw==
 
+react-cool-portal@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-cool-portal/-/react-cool-portal-1.2.0.tgz#f8b419d8163e2d3d2e3276e57b16e3436a4bbce3"
+  integrity sha512-g31UuCgV2sSqYmiVrrnOimLGJFTI8QmIqssnRfGdpjSdgjdjVOaq6V2MFLjud8Vw+9u/HTIJAXR+pgoArWqaMQ==
+
 react-dom@18.2.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
