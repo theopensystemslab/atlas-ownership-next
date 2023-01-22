@@ -1,4 +1,5 @@
 import { trpc } from "@/lib/trpc"
+import { Tree } from "@carbon/icons-react"
 import clsx from "clsx"
 import _ from "lodash"
 import { useState } from "react"
@@ -87,7 +88,7 @@ const DataRow = (props: DataRowProps) => {
   return (
     <div className="flex">
       {showLabels ? (
-        <div className="w-1/5 h-10 text-black flex items-center justify-end mr-3">
+        <div className="w-1/5 h-10 text-black text-right flex items-center justify-end mr-3">
           {patternClass.name}
         </div> 
       ) : (``)}
@@ -115,13 +116,18 @@ const ExpandableRow = (props: ExpandableRowProps) => {
       onClick={onClick}
     >
       <div className="p-4">
-        <p className="text-sm text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
-        <h2 className="text-lg">{term.name}</h2>
-        <p className="text-sm mb-6">{term.meta?.description}</p>
-        <div>
-          <h3>How it applies here</h3>
-          <p className="text-sm">{term?.description}</p>
+        <div className="flex justify-between items-start mb-4">
+          <Tree size={32} />
+          <p className="text-sm text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
         </div>
+        <h2 className="text-lg">{term.name}</h2>
+        <p className="text-sm mb-4">{term.meta?.description}</p>
+        {term?.description && (
+          <div>
+            <h3>How it applies here</h3>
+            <p className="text-sm">{term?.description}</p>
+          </div>
+        )}
       </div>
       {showCarousel && <Carousel data={carouselItems} title="Other places that use this pattern" cardClassNames={clsx(`${backgroundColorClasses[term.patternClassName]} bg-opacity-20`)} />}
     </div>
@@ -135,8 +141,8 @@ const BarChartByPatternClass = (props: BarChartByPatternClassProps) => {
     <div className="m-4">
       <div className="flex">
         {showLabels ? <div className="w-1/5 h-10"></div> : ``}
-        <div className="flex-1 h-10 text-lg text-center text-gray-500">Obligations</div>
-        <div className="flex-1 h-10 text-lg text-center text-gray-500">Rights</div>
+        <div className="flex-1 h-10 text-lg text-center text-black">Obligations</div>
+        <div className="flex-1 h-10 text-lg text-center text-black">Rights</div>
       </div>
       {totalsByPatternClass.map(patternClass => (
         <DataRow patternClassTotal={patternClass} showLabels={showLabels} key={`data-row-${patternClass.name}`} />
@@ -162,8 +168,8 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
   return (
     <div className="m-4">
       <div className="flex">
-        <div className="flex-1 h-10 text-lg text-center text-gray-500">Obligations</div>
-        <div className="flex-1 h-10 text-lg text-center text-gray-500">Rights</div>
+        <div className="flex-1 h-10 text-lg text-center text-black">Obligations</div>
+        <div className="flex-1 h-10 text-lg text-center text-black">Rights</div>
       </div>
       {formattedTerms.map((term: any, i: number) => (
         <div className="flex flex-col" key={`row-${term.name}-${i}`}>
@@ -175,18 +181,20 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
             ) : (``)}
             <div className="flex-1 grid" style={{ gridTemplateColumns: `repeat(5, minmax(0, 1fr))`, direction: "rtl"}}>
               <div 
-                className={`${term.type === "Obligation" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Obligation" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer`} 
+                className={`${term.type === "Obligation" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Obligation" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
                 style={{ gridColumn: `span ${term.strength}` }}
                 onClick={() => handleClick(i)}
               >
+                {term.type === "Obligation" && term.strength > 0 && <Tree size={16} color="black" className="ml-2" />}
               </div>
             </div>
             <div className="flex-1 grid" style={{ gridTemplateColumns: `repeat(5, minmax(0, 1fr))`, direction: "ltr" }}>
               <div 
-                className={`${term.type === "Right" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Right" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer`} 
+                className={`${term.type === "Right" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Right" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
                 style={{ gridColumn: `span ${term.strength}` }}
                 onClick={() => handleClick(i)}
               >
+                {term.type === "Right" && term.strength > 0 && <Tree size={16} color="black" className="mr-2" />}
               </div>
             </div>
             {showLabels ? (
@@ -217,7 +225,7 @@ const Chart = (props: Props) => {
     .map((term: any) => ({
       pattern: _.find(patterns, ['_id', term.pattern?._ref]),
       patternName: _.find(patterns, ['_id', term.pattern?._ref])?.name,
-      type: term.rightsIntensity > 0 ? "Right" : "Obligation", // because pattern.type is not consistently populated
+      type: _.capitalize(_.find(patterns, ['id', term.pattern?._ref])?.type) || term.rightsIntensity > 0 ? "Right" : "Obligation", // because pattern.type is not consistently populated
       strength: term.strength, // 1-5
       description: term.description,
     }))
@@ -233,25 +241,15 @@ const Chart = (props: Props) => {
     .sortBy('patternClassOrder', 'name')
     .value();
 
-  // Group terms by pattern
-  let totalsByPattern = _(terms)
-    .groupBy('pattern._ref')
-    .map((term: any) => ({
-      pattern: _.find(patterns, ['_id', term[0].pattern._ref]),
-      patternName: _.find(patterns, ['_id', term[0].pattern._ref])?.name,
-      sumRights: _.sumBy(term, 'rightsIntensity'),
-      sumObligations: _.sumBy(term, 'obligationIntensity')
-    }))
-    .value();
-
-  // Rollup to pattern class, taking the average rights & obligations from each pattern rounded to nearest integer
-  let totalsByPatternClass = _(totalsByPattern)
-    .groupBy('pattern.class._ref')
-    .map((pattern: any) => ({
-      meta: _.find(patternClasses, ['_id', pattern[0].pattern?.class._ref]),
-      name: _.find(patternClasses, ['_id', pattern[0].pattern?.class._ref])?.name,
-      avgRights: _.round(_.meanBy(pattern, 'sumRights')),
-      avgObligations: _.round(_.meanBy(pattern, 'sumObligations')),
+  // Rollup the individual terms by their pattern class
+  let totalsByPatternClass = _(formattedTerms)
+    .groupBy('patternClassName')
+    .map((terms: any) => ({
+      terms: terms,
+      meta: _.find(patternClasses, ['_id', terms[0].meta?.class._ref]),
+      name: terms[0].patternClassName,
+      avgRights: _(terms).filter({ type: "Right" }).meanBy("strength"),
+      avgObligations: _(terms).filter({ type: "Obligation" }).meanBy("strength"),
     }))
     .sortBy('meta.order')
     .value();
@@ -261,6 +259,7 @@ const Chart = (props: Props) => {
     patternClasses?.forEach(globalPatternClass => {
       if (!_.find(totalsByPatternClass, ['name', globalPatternClass.name])) {
         totalsByPatternClass.push({
+          terms: [],
           meta: globalPatternClass,
           name: globalPatternClass.name,
           avgRights: 0,
@@ -270,13 +269,14 @@ const Chart = (props: Props) => {
     });
   }
 
-  // Replace any NaNs with 0 and do a final sort
+  // Replace any NaNs with 0, round to nearest integer, and do a final sort
   totalsByPatternClass = _(totalsByPatternClass)
-    .map((pattern: any) => ({
-      meta: pattern.meta,
-      name: pattern.name,
-      avgRights: pattern.avgRights > 0 ? pattern.avgRights : 0,
-      avgObligations: pattern.avgObligations > 0 ? pattern.avgObligations : 0,
+    .map((patternClass: any) => ({
+      terms: patternClass.terms,
+      meta: patternClass.meta,
+      name: patternClass.name,
+      avgRights: patternClass.avgRights > 0 ? _.round(patternClass.avgRights) : 0,
+      avgObligations: patternClass.avgObligations > 0 ? _.round(patternClass.avgObligations) : 0,
     }))
     .sortBy('meta.order')
     .value();
