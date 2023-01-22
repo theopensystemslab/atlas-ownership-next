@@ -1,4 +1,5 @@
 import { trpc } from "@/lib/trpc"
+import { Tree } from "@carbon/icons-react"
 import clsx from "clsx"
 import _ from "lodash"
 import { useState } from "react"
@@ -115,7 +116,10 @@ const ExpandableRow = (props: ExpandableRowProps) => {
       onClick={onClick}
     >
       <div className="p-4">
-        <p className="text-sm text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
+        <div className="flex justify-between items-start mb-4">
+          <Tree size={32} />
+          <p className="text-sm text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
+        </div>
         <h2 className="text-base mb-1">{term.name}</h2>
         <p className="text-sm">{term.meta?.description}</p>
       </div>
