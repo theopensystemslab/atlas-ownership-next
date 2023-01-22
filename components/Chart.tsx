@@ -111,7 +111,7 @@ const ExpandableRow = (props: ExpandableRowProps) => {
 
   return (
     <div
-      className={`flex flex-col h-fit w-full text-black ${term.patternClassName ? descriptionBackgroundColorClasses[term.patternClassName] : 'bg-gray-200'}`}
+      className={`flex flex-col h-fit w-full text-black ${term.patternClassName ? descriptionBackgroundColorClasses[term.patternClassName] : 'bg-gray-200'} cursor-pointer`}
       id="row-expandable-description"
       onClick={onClick}
     >
@@ -120,8 +120,14 @@ const ExpandableRow = (props: ExpandableRowProps) => {
           <Tree size={32} />
           <p className="text-sm text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
         </div>
-        <h2 className="text-base mb-1">{term.name}</h2>
-        <p className="text-sm">{term.meta?.description}</p>
+        <h2 className="text-lg">{term.name}</h2>
+        <p className="text-sm mb-4">{term.meta?.description}</p>
+        {term?.description && (
+          <div>
+            <h3>How it applies here</h3>
+            <p className="text-sm">{term?.description}</p>
+          </div>
+        )}
       </div>
       {showCarousel && <Carousel data={carouselItems} title="Other places that use this pattern" cardClassNames={clsx(`${backgroundColorClasses[term.patternClassName]} bg-opacity-20`)} />}
     </div>
@@ -151,6 +157,14 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
   const [open, setOpen] = useState(false)
   const [openIndex, setOpenIndex] = useState(0)
 
+  const handleClick = (i: number) => {
+    if (open) {
+      setOpenIndex(i);
+    } else {
+      setOpen(!open);
+    }
+  }
+
   return (
     <div className="m-4">
       <div className="flex">
@@ -169,10 +183,7 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
               <div 
                 className={`${term.type === "Obligation" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Obligation" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
                 style={{ gridColumn: `span ${term.strength}` }}
-                onClick={() => {
-                  setOpen(!open);
-                  setOpenIndex(i);
-                }}
+                onClick={() => handleClick(i)}
               >
                 {term.type === "Obligation" && term.strength > 0 && <Tree size={16} color="black" className="ml-2" />}
               </div>
@@ -181,10 +192,7 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
               <div 
                 className={`${term.type === "Right" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Right" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
                 style={{ gridColumn: `span ${term.strength}` }}
-                onClick={() => {
-                  setOpen(!open);
-                  setOpenIndex(i);
-                }}
+                onClick={() => handleClick(i)}
               >
                 {term.type === "Right" && term.strength > 0 && <Tree size={16} color="black" className="mr-2" />}
               </div>
@@ -219,6 +227,7 @@ const Chart = (props: Props) => {
       patternName: _.find(patterns, ['_id', term.pattern?._ref])?.name,
       type: _.capitalize(_.find(patterns, ['id', term.pattern?._ref])?.type) || term.rightsIntensity > 0 ? "Right" : "Obligation", // because pattern.type is not consistently populated
       strength: term.strength, // 1-5
+      description: term.description,
     }))
     .map((term: any) => ({
       meta: term.pattern,
@@ -227,6 +236,7 @@ const Chart = (props: Props) => {
       patternClassOrder: _.find(patternClasses, ['_id', term.pattern?.class?._ref])?.order,
       type: term.type,
       strength: term.strength,
+      description: term.description,
     }))
     .sortBy('patternClassOrder', 'name')
     .value();
