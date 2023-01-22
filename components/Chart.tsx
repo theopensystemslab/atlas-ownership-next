@@ -1,4 +1,5 @@
 import { trpc } from "@/lib/trpc"
+import { Tree } from "@carbon/icons-react"
 import clsx from "clsx"
 import _ from "lodash"
 import { useState } from "react"
@@ -115,7 +116,10 @@ const ExpandableRow = (props: ExpandableRowProps) => {
       onClick={onClick}
     >
       <div className="p-4">
-        <p className="text-sm text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
+        <div className="flex justify-between items-start mb-4">
+          <Tree size={32} />
+          <p className="text-sm text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
+        </div>
         <h2 className="text-base mb-1">{term.name}</h2>
         <p className="text-sm">{term.meta?.description}</p>
       </div>
@@ -131,8 +135,8 @@ const BarChartByPatternClass = (props: BarChartByPatternClassProps) => {
     <div className="m-4">
       <div className="flex">
         {showLabels ? <div className="w-1/5 h-10"></div> : ``}
-        <div className="flex-1 h-10 text-lg text-center text-gray-500">Obligations</div>
-        <div className="flex-1 h-10 text-lg text-center text-gray-500">Rights</div>
+        <div className="flex-1 h-10 text-lg text-center text-black">Obligations</div>
+        <div className="flex-1 h-10 text-lg text-center text-black">Rights</div>
       </div>
       {totalsByPatternClass.map(patternClass => (
         <DataRow patternClassTotal={patternClass} showLabels={showLabels} key={`data-row-${patternClass.name}`} />
@@ -150,8 +154,8 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
   return (
     <div className="m-4">
       <div className="flex">
-        <div className="flex-1 h-10 text-lg text-center text-gray-500">Obligations</div>
-        <div className="flex-1 h-10 text-lg text-center text-gray-500">Rights</div>
+        <div className="flex-1 h-10 text-lg text-center text-black">Obligations</div>
+        <div className="flex-1 h-10 text-lg text-center text-black">Rights</div>
       </div>
       {formattedTerms.map((term: any, i: number) => (
         <div className="flex flex-col" key={`row-${term.name}-${i}`}>
@@ -163,24 +167,26 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
             ) : (``)}
             <div className="flex-1 grid" style={{ gridTemplateColumns: `repeat(5, minmax(0, 1fr))`, direction: "rtl"}}>
               <div 
-                className={`${term.type === "Obligation" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Obligation" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer`} 
+                className={`${term.type === "Obligation" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Obligation" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
                 style={{ gridColumn: `span ${term.strength}` }}
                 onClick={() => {
                   setOpen(!open);
                   setOpenIndex(i);
                 }}
               >
+                {term.type === "Obligation" && term.strength > 0 && <Tree size={16} color="black" className="ml-2" />}
               </div>
             </div>
             <div className="flex-1 grid" style={{ gridTemplateColumns: `repeat(5, minmax(0, 1fr))`, direction: "ltr" }}>
               <div 
-                className={`${term.type === "Right" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Right" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer`} 
+                className={`${term.type === "Right" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Right" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
                 style={{ gridColumn: `span ${term.strength}` }}
                 onClick={() => {
                   setOpen(!open);
                   setOpenIndex(i);
                 }}
               >
+                {term.type === "Right" && term.strength > 0 && <Tree size={16} color="black" className="mr-2" />}
               </div>
             </div>
             {showLabels ? (
