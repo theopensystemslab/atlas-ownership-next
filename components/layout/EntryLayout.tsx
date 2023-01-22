@@ -19,6 +19,10 @@ interface EntryItemProps {
   children?: React.ReactNode
 }
 
+// "true" enables toggling between two chart styles
+//    helpful for debugging math between pattern classes & individual terms!
+const DEBUG_CHARTS = false;
+
 const EntryHeader = (entry?: Entry) => (
   <div
     // TODO: The sanity image pipeline could get us an optimized image here
@@ -108,7 +112,7 @@ const EntryDetails = (entry?: Entry) => (
 
 export const EntryLayout = (props: EntryLayoutProps) => {
   const { entry, carouselItems } = props
-  const [ showRollup, setShowRollup ] = useState(true);
+  const [ showRollup, setShowRollup ] = useState(false);
 
   return (
     <div className="text-white">
@@ -120,35 +124,37 @@ export const EntryLayout = (props: EntryLayoutProps) => {
         terms={entry?.terms}
         entryId={entry?._id}
       />
-      <form className="flex m-3 p-3 bg-gray-200">
-        <div className="text-black text-sm mr-2">
-          Chart by:
-        </div>
-        <div className="radio text-black text-sm mr-3">
-          <label>
-            <input
-              type="radio"
-              value="patternClass"
-              checked={showRollup === true}
-              onChange={() => setShowRollup(!showRollup)}
-              className="mr-1 ml-1"
-            />
-            Pattern class
-          </label>
-        </div>
-        <div className="radio text-black text-sm mr-3">
-          <label>
-            <input
-              type="radio"
-              value="term"
-              checked={showRollup === false}
-              onChange={() => setShowRollup(!showRollup)}
-              className="mr-1 ml-1"
-            />
-            Terms
-          </label>
-        </div>
-      </form>
+      {DEBUG_CHARTS && (
+        <form className="flex m-3 p-3 bg-gray-200">
+          <div className="text-black text-sm mr-2">
+            Chart by:
+          </div>
+          <div className="radio text-black text-sm mr-3">
+            <label>
+              <input
+                type="radio"
+                value="patternClass"
+                checked={showRollup === true}
+                onChange={() => setShowRollup(!showRollup)}
+                className="mr-1 ml-1"
+              />
+              Pattern class
+            </label>
+          </div>
+          <div className="radio text-black text-sm mr-3">
+            <label>
+              <input
+                type="radio"
+                value="term"
+                checked={showRollup === false}
+                onChange={() => setShowRollup(!showRollup)}
+                className="mr-1 ml-1"
+              />
+              Terms
+            </label>
+          </div>
+        </form>
+      )}
       {entry?.tenureType && (
         <Carousel
           data={carouselItems}
