@@ -1,0 +1,23 @@
+.searchRoot {
+  @apply flex items-stretch h-10 justify-center;
+}
+
+.searchRoot label {
+  @apply mt-2;
+}
+
+.searchRoot input {
+  @apply pl-2 bg-transparent text-white;
+}
+
+.searchRoot button {
+  @apply text-white mt-2 mr-4 cursor-pointer;
+}
+
+.resultsRoot {
+  @apply absolute z-20;
+}
+
+.result {
+  @apply bg-pink-300 mt-10 h-32 overflow-hidden;
+}
