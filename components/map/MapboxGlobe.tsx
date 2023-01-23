@@ -18,8 +18,9 @@ import Map, {
   Source,
 } from "react-map-gl"
 import { ref } from "valtio"
-import { A, S } from "../../lib/fp"
+import { A, O, S } from "../../lib/fp"
 import store from "../../lib/store"
+import { Entry } from "../../lib/types"
 import { useSelection } from "../sidebar/selection"
 import Markers from "./Markers"
 
@@ -42,45 +43,47 @@ const MapboxGlobe = () => {
       void router.events.off("beforeHistoryChange", handleRouteChange)
   }, [handleRouteChange, router, router.events])
 
-  const { patternNames } = useSelection()
+  const { patternNames: selectedPatternNames } = useSelection()
+
+  const entryToFeature = (entry: Entry): O.Option<Feature> =>
+    !entry.location?.geopoint
+      ? O.none
+      : O.some({
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [
+              entry.location.geopoint.lng,
+              entry.location.geopoint.lat,
+            ],
+          },
+          properties: {
+            slug: entry.slug?.current ?? null,
+          },
+        })
 
   const data = useMemo<FeatureCollection<Geometry, GeoJsonProperties>>(() => {
     const features: Array<Feature<Geometry, GeoJsonProperties>> = pipe(
       entries,
-      A.filter((entry) => {
-        if (patternNames.length === 0) return true
-        const patternNames2: string[] =
-          entry.patterns?.map((pattern) => pattern.name) ?? []
+      A.filterMap((entry) => {
+        if (selectedPatternNames.length === 0) return entryToFeature(entry)
 
-        return patternNames.reduce((acc, v) => {
-          const foo = patternNames2.includes(v)
-          return acc && foo
+        const match = selectedPatternNames.reduce((acc, v) => {
+          const entryPatternNames =
+            entry.patterns?.map((pattern) => pattern.name) ?? []
+          return acc && entryPatternNames.includes(v)
         }, true)
-      }),
-      A.filterMap((entry) =>
-        !entry.location?.geopoint
-          ? none
-          : some({
-              type: "Feature",
-              geometry: {
-                type: "Point",
-                coordinates: [
-                  entry.location.geopoint.lng,
-                  entry.location.geopoint.lat,
-                ],
-              },
-              properties: {
-                slug: entry.slug?.current ?? null,
-              },
-            })
-      )
+
+        if (match) return entryToFeature(entry)
+        else return O.none
+      })
     )
 
     return {
       type: "FeatureCollection",
       features,
     }
-  }, [entries, patternNames])
+  }, [entries, selectedPatternNames])
 
   const sourceId = "entries"
 
