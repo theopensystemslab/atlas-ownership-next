@@ -118,12 +118,12 @@ export const EntryLayout = (props: EntryLayoutProps) => {
     <div className="text-white">
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
-      <Chart
+      {entry?.terms?.length && <Chart
         rollupToPatternClass={showRollup}
         showLabels={true}
         terms={entry?.terms}
         entryId={entry?._id}
-      />
+      />}
       {DEBUG_CHARTS && (
         <form className="flex m-3 p-3 bg-gray-200">
           <div className="text-black text-sm mr-2">
