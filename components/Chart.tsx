@@ -1,5 +1,5 @@
 import { trpc } from "@/lib/trpc"
-import { Tree } from "@carbon/icons-react"
+import { ChevronUp, Tree } from "@carbon/icons-react"
 import clsx from "clsx"
 import _ from "lodash"
 import { useState } from "react"
@@ -115,10 +115,13 @@ const ExpandableRow = (props: ExpandableRowProps) => {
       id="row-expandable-description"
       onClick={onClick}
     >
-      <div className="p-4">
+      <div className="px-4 pb-4">
         <div className="flex justify-between items-start mb-4">
-          <Tree size={32} />
-          <p className="text-sm text-right">{term.patternClassName} {term.type.toLowerCase()}</p>
+          <Tree className="mt-4" size={"32"} />
+          <div className="flex justify-between items-center">
+            <ChevronUp size={32} className={`${backgroundColorClasses[term.patternClassName]} bg-opacity-20 h-10 w-10 p-2`}/>
+            <p className="text-sm text-right pl-4">{term.patternClassName} {term.type.toLowerCase()}</p>
+          </div>
         </div>
         <h2 className="text-lg">{term.name}</h2>
         <p className="text-sm mb-4">{term.meta?.description}</p>
