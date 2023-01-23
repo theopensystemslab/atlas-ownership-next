@@ -1,5 +1,5 @@
 import { Search as SearchIcon, SettingsAdjust } from "@carbon/icons-react"
-import { ChangeEvent, Fragment, useState } from "react"
+import { ChangeEvent, Fragment, useEffect, useRef, useState } from "react"
 import { useDebouncedCallback } from "use-debounce"
 import { trpc } from "../lib/trpc"
 import { matchSorter } from "match-sorter"
@@ -12,15 +12,25 @@ import usePortal from "react-cool-portal"
 import Link from "next/link"
 import { truncate } from "lodash"
 
-const SearchResult = ({ entry }: { entry: Entry }) => {
+const SearchResult = ({
+  entry,
+  onClick,
+}: {
+  entry: Entry
+  onClick?: () => void
+}) => {
   return (
     <div className={css.result}>
       <h1>{entry.name}</h1>
       <p>{truncate(entry.description, { length: 128, separator: " " })}</p>
       <div>
         {entry.slug?.current && (
-          <Link href={`/entry/${entry.slug?.current}`}>
-            <a>{entry.slug?.current}</a>
+          <Link
+            href={`/entry/${entry.slug?.current}`}
+            onClick={onClick}
+            legacyBehavior={false}
+          >
+            {entry.slug?.current}
           </Link>
         )}
       </div>
@@ -32,18 +42,26 @@ const Search = () => {
   const { data: entries = [] } = trpc.entries.useQuery()
 
   const [results, setResults] = useState<Entry[]>([])
+  const [searchQuery, setSearchQuery] = useState("")
+
+  const { Portal } = usePortal()
 
   const handler = useDebouncedCallback(
-    (e: ChangeEvent<HTMLInputElement>) =>
-      setResults(
-        matchSorter(entries, e.target.value, {
-          keys: ["name", "description", "patterns.*.name"],
-        })
-      ),
+    (e: ChangeEvent<HTMLInputElement>) => void setSearchQuery(e.target.value),
     100
   )
 
-  const { Portal } = usePortal()
+  useEffect(() => {
+    if (searchQuery.length === 0) return
+    setResults(
+      matchSorter(entries, searchQuery, {
+        keys: ["name", "description", "patterns.*.name"],
+        threshold: matchSorter.rankings.ACRONYM,
+      })
+    )
+  }, [entries, searchQuery])
+
+  const inputRef = useRef<HTMLInputElement>(null)
 
   return (
     <Fragment>
@@ -52,6 +70,7 @@ const Search = () => {
           <SearchIcon size={24} color={"white"} />
         </label>
         <input
+          ref={inputRef}
           id="search"
           type="text"
           onChange={handler}
@@ -62,13 +81,21 @@ const Search = () => {
         </button>
       </div>
       {/* <button className="bg-white text-black px-6 h-auto">Search</button> */}
-      {results.length > 0 && (
+      {searchQuery.length > 0 && (
         <Portal>
           <div className={css.resultsRoot}>
             {pipe(
               results,
               A.map((result) => (
-                <SearchResult key={result._id} entry={result} />
+                <SearchResult
+                  key={result._id}
+                  entry={result}
+                  onClick={() => {
+                    if (!inputRef.current) return
+                    inputRef.current.value = ""
+                    setSearchQuery("")
+                  }}
+                />
               ))
             )}
           </div>
