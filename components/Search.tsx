@@ -53,12 +53,19 @@ const Search = () => {
 
   useEffect(() => {
     if (searchQuery.length === 0) return
-    setResults(
-      matchSorter(entries, searchQuery, {
-        keys: ["name", "description", "patterns.*.name"],
-        threshold: matchSorter.rankings.ACRONYM,
-      })
+
+    const terms = searchQuery.split(" ")
+
+    const results = terms.reduceRight(
+      (results, term) =>
+        matchSorter(results, term, {
+          keys: ["name", "description", "patterns.*.name"],
+          threshold: matchSorter.rankings.ACRONYM,
+        }),
+      entries
     )
+
+    setResults(results)
   }, [entries, searchQuery])
 
   const inputRef = useRef<HTMLInputElement>(null)
