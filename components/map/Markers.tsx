@@ -41,11 +41,11 @@ const Marker = (props: MarkerProps) => {
   const PopupContent = () => (
     <div className="w-[500px]">
       <h2 className="text-2xl">{entry?.name}</h2>
-      <Chart
+      {entry?.terms?.length && <Chart
         rollupToPatternClass={true}
         showLabels={true}
         terms={entry?.terms}
-      />
+      />}
       <Link
         href={`/entry/${encodeURIComponent(slug)}`}
         className="flex justify-end items-center text-lg"
