@@ -1,5 +1,6 @@
 import { Search as SearchIcon, SettingsAdjust } from "@carbon/icons-react"
 import { toggleSidebar } from "lib/store"
+import Link from "next/link"
 
 const Search = () => {
   return (
@@ -23,7 +24,9 @@ const Header = () => (
       <h2 className="text-lg pt-3">
         A map of property rights and obligations across time and space
       </h2>
-      <a className="text-lg text-gray-500">Why?</a>
+      <Link href="/about">
+        <a className="text-lg text-gray-500" >Why?</a>
+      </Link>
     </div>
     <Search />
   </header>
