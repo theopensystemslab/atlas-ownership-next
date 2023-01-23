@@ -88,7 +88,7 @@ const DataRow = (props: DataRowProps) => {
   return (
     <div className="flex">
       {showLabels ? (
-        <div className="w-1/5 h-10 text-black text-right flex items-center justify-end mr-3">
+        <div className="w-1/5 h-10 text-black text-sm text-right flex items-center justify-end mr-3">
           {patternClass.name}
         </div> 
       ) : (``)}
@@ -144,8 +144,8 @@ const BarChartByPatternClass = (props: BarChartByPatternClassProps) => {
     <div className="mt-4">
       <div className="flex">
         {showLabels ? <div className="w-1/5 h-10"></div> : ``}
-        <div className="flex-1 h-10 text-lg text-center text-gray-500">Obligations</div>
-        <div className="flex-1 h-10 text-lg text-center text-gray-500 ">Rights</div>
+        <div className="flex-1 h-10 text-base text-center text-gray-500">Obligations</div>
+        <div className="flex-1 h-10 text-base text-center text-gray-500">Rights</div>
       </div>
       {totalsByPatternClass.map(patternClass => (
         <DataRow patternClassTotal={patternClass} showLabels={showLabels} key={`data-row-${patternClass.name}`} />
@@ -258,19 +258,19 @@ const Chart = (props: Props) => {
     .value();
 
   // Ensure totalsByPatternClass has an entry for **every** pattern class, insert one if it doesn't
-  if (totalsByPatternClass.length !== patternClasses?.length) {
-    patternClasses?.forEach(globalPatternClass => {
-      if (!_.find(totalsByPatternClass, ['name', globalPatternClass.name])) {
-        totalsByPatternClass.push({
-          terms: [],
-          meta: globalPatternClass,
-          name: globalPatternClass.name,
-          avgRights: 0,
-          avgObligations: 0,
-        });
-      }
-    });
-  }
+  // if (totalsByPatternClass.length !== patternClasses?.length) {
+  //   patternClasses?.forEach(globalPatternClass => {
+  //     if (!_.find(totalsByPatternClass, ['name', globalPatternClass.name])) {
+  //       totalsByPatternClass.push({
+  //         terms: [],
+  //         meta: globalPatternClass,
+  //         name: globalPatternClass.name,
+  //         avgRights: 0,
+  //         avgObligations: 0,
+  //       });
+  //     }
+  //   });
+  // }
 
   // Replace any NaNs with 0, round to nearest integer, and do a final sort
   totalsByPatternClass = _(totalsByPatternClass)

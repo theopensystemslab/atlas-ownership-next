@@ -9,6 +9,7 @@ import { useState } from "react"
 import { MapboxEvent, Marker as MapboxMarker, Popup } from "react-map-gl"
 import { ArrowRight } from "@carbon/icons-react"
 import { useGetEntryFromSlug } from "@/lib/queries"
+import _ from "lodash"
 
 type MarkersProps = {
   entries: Entry[]
@@ -40,19 +41,22 @@ const Marker = (props: MarkerProps) => {
 
   const PopupContent = () => (
     <div className="w-[500px]">
-      <h2 className="text-2xl">{entry?.name}</h2>
-      {entry?.terms?.length && <Chart
-        rollupToPatternClass={true}
-        showLabels={true}
-        terms={entry?.terms}
-      />}
+      <h2 className="text-xl">{entry?.name}</h2>
+      <span className="text-base">{entry?.tenureType?.map((i) => _.capitalize(_.startCase(i))).join(", ")}</span>
+      {entry?.terms?.length && (
+        <Chart
+          rollupToPatternClass={true}
+          showLabels={true}
+          terms={entry?.terms}
+        />
+      )}
       <Link
         href={`/entry/${encodeURIComponent(slug)}`}
-        className="flex justify-end items-center text-lg"
+        className="flex justify-end items-center"
         legacyBehavior
       >
         <a>
-          <div className="flex justify-end text-sm" onClick={() => setShowPopup(false)}>
+          <div className="flex justify-end text-sm mt-3" onClick={() => setShowPopup(false)}>
             Find out more
             <ArrowRight className="ml-2" size={20} />
           </div>
