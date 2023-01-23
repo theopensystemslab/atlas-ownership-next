@@ -138,11 +138,11 @@ const BarChartByPatternClass = (props: BarChartByPatternClassProps) => {
   const { data: totalsByPatternClass, showLabels } = props
 
   return (
-    <div className="m-4">
+    <div className="mt-4">
       <div className="flex">
         {showLabels ? <div className="w-1/5 h-10"></div> : ``}
-        <div className="flex-1 h-10 text-lg text-center text-black">Obligations</div>
-        <div className="flex-1 h-10 text-lg text-center text-black">Rights</div>
+        <div className="flex-1 h-10 text-lg text-center text-gray-500">Obligations</div>
+        <div className="flex-1 h-10 text-lg text-center text-gray-500 ">Rights</div>
       </div>
       {totalsByPatternClass.map(patternClass => (
         <DataRow patternClassTotal={patternClass} showLabels={showLabels} key={`data-row-${patternClass.name}`} />

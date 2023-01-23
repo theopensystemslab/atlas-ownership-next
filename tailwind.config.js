@@ -2,6 +2,9 @@
 module.exports = {
   content: ["./**/*.tsx"],
   theme: {
+    fontFamily: {
+      sans: ["Inter", "sans-serif"],
+    },
     extend: {
       colors: {
         rent: 'rgb(var(--color-rent) / <alpha-value>)',

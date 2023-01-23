@@ -73,7 +73,7 @@ const Marker = (props: MarkerProps) => {
       </MapboxMarker>
       {showPopup && (
         <Popup
-          className="z-50"
+          className="z-50 font-sans"
           longitude={lng}
           latitude={lat}
           maxWidth="none"
