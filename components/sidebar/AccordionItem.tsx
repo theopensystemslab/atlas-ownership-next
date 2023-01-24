@@ -1,14 +1,14 @@
 import css from "./AccordionItem.module.css"
 import { Hotel, RadioButton, RadioButtonChecked } from "@carbon/icons-react"
 import { ChangeEvent } from "react"
-import { Pattern } from "@/lib/types"
+import { EntryType, Pattern } from "@/lib/types"
 
 type Props = {
-  handleChange: (e: ChangeEvent<HTMLInputElement>, data: Pattern) => void
+  handleChange: (e: ChangeEvent<HTMLInputElement>, data: Pattern | EntryType) => void
   checked: boolean
   displayText: string
   id: string
-  data: Pattern
+  data: Pattern | EntryType
 }
 
 const AccordionItem = ({ handleChange, checked, displayText, id, data }: Props) => {

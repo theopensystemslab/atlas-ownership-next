@@ -92,3 +92,8 @@ export enum TenureType {
 }
 
 export type CarouselItem = Pick<Entry, "dates" | "location" | "name" | "slug">
+
+export type EntryType = {
+  title: string
+  value: string
+}

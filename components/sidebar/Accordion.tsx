@@ -5,25 +5,25 @@ import { ChangeEvent, useState } from "react"
 import { A } from "../../lib/fp"
 import AccordionItem from "./AccordionItem"
 import { ChevronDown, ChevronUp } from "@carbon/icons-react"
-import { Pattern } from "@/lib/types"
+import { EntryType, Pattern } from "@/lib/types"
 
 interface AccordionGroup {
   color: string
   name: string
-  description: string
+  description?: string
 }
 
-interface AccordionItemData {
+export interface AccordionItemData {
   _id: string
   checked: boolean
   displayText: string
-  data: Pattern
+  data: Pattern | EntryType
 }
 
 type Props = {
   group: AccordionGroup
   items: AccordionItemData[]
-  itemChange: (e: ChangeEvent<HTMLInputElement>, data: Pattern) => void
+  itemChange: (e: ChangeEvent<HTMLInputElement>, data: AccordionItemData["data"]) => void
 }
 
 const Accordion = (props: Props) => {
@@ -61,7 +61,7 @@ const Accordion = (props: Props) => {
             }}
             transition={{ duration: 0.8, ease: [0.04, 0.62, 0.23, 0.98] }}
           >
-            <p className="text-xs mt-2 mb-4">{description}</p>
+            {description  && <p className="text-xs mt-2 mb-4">{description}</p>}
             {pipe(
               items,
               A.map((item) => (
