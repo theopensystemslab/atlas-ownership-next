@@ -9,7 +9,7 @@ const NoopLayoutComponent = (props: Props) => {
   return (
     <div className="bg-black z-20 text-white max-w-full fixed inset-0 overflow-y-auto overflow-x-auto">
       <PageNavbar/>
-      <div className="m-8">
+      <div className="m-8 mr-0">
         {children}
       </div>
       {/* <Footer /> */}
