@@ -5,7 +5,7 @@ import { ChangeEvent, useState } from "react"
 import { A } from "../../lib/fp"
 import AccordionItem from "./AccordionItem"
 import { ChevronDown, ChevronUp } from "@carbon/icons-react"
-import { EntryType, Pattern } from "@/lib/types"
+import { EntryType, Pattern, TenureType } from "@/lib/types"
 
 interface AccordionGroup {
   color: string
@@ -17,13 +17,15 @@ export interface AccordionItemData {
   _id: string
   checked: boolean
   displayText: string
-  data: Pattern | EntryType
+  data: EntryFilterData
 }
+
+export type EntryFilterData = Pattern | EntryType | TenureType
 
 type Props = {
   group: AccordionGroup
   items: AccordionItemData[]
-  itemChange: (e: ChangeEvent<HTMLInputElement>, data: AccordionItemData["data"]) => void
+  itemChange: (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => void
 }
 
 const Accordion = (props: Props) => {

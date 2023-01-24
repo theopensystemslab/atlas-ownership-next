@@ -4,11 +4,11 @@ import { motion } from "framer-motion"
 import theme from "tailwindcss/defaultTheme"
 import { A } from "../../lib/fp"
 import { trpc } from "../../lib/trpc"
-import Accordion, { AccordionItemData } from "./Accordion"
+import Accordion, { EntryFilterData, AccordionItemData } from "./Accordion"
 import { ChevronLeft, ChevronRight } from "@carbon/icons-react"
 import { toggleSidebar, useStore } from "lib/store"
 import { ChangeEvent } from "react"
-import { EntryType, Pattern } from "@/lib/types"
+import { EntryType, Pattern, TenureType } from "@/lib/types"
 import selection, { useSelection } from "./selection"
 
 const Chevvy = (props: any) => (
@@ -37,7 +37,7 @@ const EntryTypeAccordion = () => {
     { title: "Historical", value: "historical" },
   ]
 
-  const handleEntryTypeChange = (e: ChangeEvent<HTMLInputElement>, data: Pattern | EntryType) => {
+  const handleEntryTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
     const entryType = data as EntryType
     if (e.target.checked && !entryTypes.includes(entryType.value)) {
       selection.entryTypes.push(entryType.value)
@@ -64,13 +64,47 @@ const EntryTypeAccordion = () => {
   )
 }
 
+const TenureTypeAccordion = () => {
+  const { tenureTypes } = useSelection();
+
+  const tenureTypeData: AccordionItemData[] = Object.values(TenureType).map((tenureType) => ({
+    _id: tenureType,
+    checked: tenureTypes.includes(tenureType),
+    data: tenureType,
+    displayText: tenureType,
+  }))
+
+  const handleEntryTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
+    const tenureType = data as TenureType;
+    if (e.target.checked && !tenureTypes.includes(tenureType)) {
+      selection.tenureTypes.push(tenureType)
+    } else if (!e.target.checked && tenureTypes.includes(tenureType)) {
+      selection.entryTypes = selection.tenureTypes.filter(
+        (x) => x !== tenureType
+      )
+    }
+    console.log(selection.tenureTypes)
+  }
+
+  return (
+    <Accordion
+      group={{
+        name: "Models",
+        color: "#DBDBDB"
+      }}
+      itemChange={handleEntryTypeChange}
+      items={tenureTypeData}
+    />
+  )
+}
+
 const PatternClassAccordion = () => {
   const { data: patternClasses = [] } = trpc.patternClasses.useQuery()
   const { data: patterns = [] } = trpc.patternsWithClass.useQuery()
 
   const { patternNames } = useSelection();
 
-  const handlePatternChange = (e: ChangeEvent<HTMLInputElement>, data: Pattern | EntryType) => {
+  const handlePatternChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
     const pattern = data as Pattern;
     if (e.target.checked && !patternNames.includes(pattern.name)) {
       selection.patternNames.push(pattern.name)
@@ -133,7 +167,7 @@ const Sidebar = () => {
     >
       <Chevvy onClick={toggleSidebar} open={isOpen} />
       <EntryTypeAccordion />
-      {/* <TenureTypeAccordion /> */}
+      <TenureTypeAccordion />
       <PatternClassAccordion />
 
     </motion.div>
