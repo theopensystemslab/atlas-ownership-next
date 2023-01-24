@@ -1,30 +1,45 @@
-import css from "./PatternClassAccordion.module.css"
+import css from "./Accordion.module.css"
 import { pipe } from "fp-ts/lib/function"
 import { AnimatePresence, motion } from "framer-motion"
-import { useState } from "react"
+import { ChangeEvent, useState } from "react"
 import { A } from "../../lib/fp"
-import { Pattern, PatternClass } from "../../lib/types"
-import PatternClassAccordionPattern from "./PatternClassAccordionPattern"
+import AccordionItem from "./AccordionItem"
 import { ChevronDown, ChevronUp } from "@carbon/icons-react"
+import { Pattern } from "@/lib/types"
 
-type Props = {
-  patternClass: PatternClass
-  patterns: Pattern[]
+interface AccordionGroup {
+  color: string
+  name: string
+  description: string
 }
 
-const PatternClassAccordion = (props: Props) => {
+interface AccordionItemData {
+  _id: string
+  checked: boolean
+  displayText: string
+  data: Pattern
+}
+
+type Props = {
+  group: AccordionGroup
+  items: AccordionItemData[]
+  itemChange: (e: ChangeEvent<HTMLInputElement>, data: Pattern) => void
+}
+
+const Accordion = (props: Props) => {
   const {
-    patternClass: {
-      color: { hex },
+    group: {
+      color,
       name,
       description
     },
-    patterns,
+    items,
+    itemChange,
   } = props
   const [isOpen, setOpen] = useState(false)
 
   return (
-    <div style={{ backgroundColor: hex }} className={css.root}>
+    <div style={{ backgroundColor: color }} className={css.root}>
       <motion.header
         className={css.header}
         initial={false}
@@ -48,11 +63,15 @@ const PatternClassAccordion = (props: Props) => {
           >
             <p className="text-xs mt-2 mb-4">{description}</p>
             {pipe(
-              patterns,
-              A.map((pattern) => (
-                <PatternClassAccordionPattern
-                  key={pattern._id}
-                  pattern={pattern}
+              items,
+              A.map((item) => (
+                <AccordionItem
+                  key={item._id}
+                  id={item._id}
+                  data={item.data}
+                  handleChange={itemChange}
+                  checked={item.checked}
+                  displayText={item.displayText}
                 />
               ))
             )}
@@ -63,4 +82,4 @@ const PatternClassAccordion = (props: Props) => {
   )
 }
 
-export default PatternClassAccordion
+export default Accordion
