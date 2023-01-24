@@ -10,7 +10,7 @@
   @apply flex justify-between items-center text-ellipsis overflow-hidden mr-2
 }
 
-.icon {
+.labelText > * {
   @apply mr-4 shrink-0
 }
 

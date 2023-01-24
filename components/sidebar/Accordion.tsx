@@ -18,6 +18,7 @@ export interface AccordionItemData {
   checked: boolean
   displayText: string
   data: EntryFilterData
+  icon: React.ReactNode
 }
 
 export type EntryFilterData = Pattern | EntryType | TenureType
@@ -74,6 +75,7 @@ const Accordion = (props: Props) => {
                   handleChange={itemChange}
                   checked={item.checked}
                   displayText={item.displayText}
+                  icon={item.icon}
                 />
               ))
             )}
