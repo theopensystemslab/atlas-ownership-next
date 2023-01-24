@@ -8,6 +8,8 @@ import Accordion from "./Accordion"
 import { ChevronLeft, ChevronRight } from "@carbon/icons-react"
 import { toggleSidebar, useStore } from "lib/store"
 import { ChangeEvent } from "react"
+import { Pattern } from "@/lib/types"
+import selection, { useSelection } from "./selection"
 
 const Chevvy = (props: any) => (
   <div className={css.chevvy} {...props}>
@@ -32,16 +34,18 @@ const Sidebar = () => {
   const { data: patternClasses = [] } = trpc.patternClasses.useQuery()
   const { data: patterns = [] } = trpc.patternsWithClass.useQuery()
 
-  const handlePatternChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // if (e.target.checked && !patternNames.includes(pattern.name)) {
-    //   selection.patternNames.push(pattern.name)
-    // } else if (!e.target.checked && patternNames.includes(pattern.name)) {
-    //   selection.patternNames = selection.patternNames.filter(
-    //     (x) => x !== pattern.name
-    //   )
-    // }
-    // console.log(selection.patternNames)
-    console.log("handlePatternChange")
+  const { patternNames } = useSelection();
+
+
+  const handlePatternChange = (e: ChangeEvent<HTMLInputElement>, pattern: Pattern) => {
+    if (e.target.checked && !patternNames.includes(pattern.name)) {
+      selection.patternNames.push(pattern.name)
+    } else if (!e.target.checked && patternNames.includes(pattern.name)) {
+      selection.patternNames = selection.patternNames.filter(
+        (x) => x !== pattern.name
+      )
+    }
+    console.log(selection.patternNames)
   }
 
   return (
@@ -79,7 +83,7 @@ const Sidebar = () => {
             items={pipe(
               patterns,
               A.filter((pattern) => pattern.class.name === patternClass.name),
-              A.map((pattern) => ({ checked: true, _id: pattern._id, displayText: pattern.name}))
+              A.map((pattern) => ({ checked: patternNames.includes(pattern.name), _id: pattern._id, displayText: pattern.name, data: pattern}))
             )}
           />
         ))

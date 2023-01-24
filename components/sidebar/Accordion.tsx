@@ -5,6 +5,7 @@ import { ChangeEvent, useState } from "react"
 import { A } from "../../lib/fp"
 import AccordionItem from "./AccordionItem"
 import { ChevronDown, ChevronUp } from "@carbon/icons-react"
+import { Pattern } from "@/lib/types"
 
 interface AccordionGroup {
   color: string
@@ -16,12 +17,13 @@ interface AccordionItemData {
   _id: string
   checked: boolean
   displayText: string
+  data: Pattern
 }
 
 type Props = {
   group: AccordionGroup
   items: AccordionItemData[]
-  itemChange: (e: ChangeEvent<HTMLInputElement>) => void
+  itemChange: (e: ChangeEvent<HTMLInputElement>, data: Pattern) => void
 }
 
 const Accordion = (props: Props) => {
@@ -66,7 +68,7 @@ const Accordion = (props: Props) => {
                 <AccordionItem
                   key={item._id}
                   id={item._id}
-                  // item={item}
+                  data={item.data}
                   handleChange={itemChange}
                   checked={item.checked}
                   displayText={item.displayText}
