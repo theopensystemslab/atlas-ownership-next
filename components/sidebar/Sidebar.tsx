@@ -92,7 +92,7 @@ const TenureTypeAccordion = () => {
     if (e.target.checked && !tenureTypes.includes(tenureType)) {
       selection.tenureTypes.push(tenureType)
     } else if (!e.target.checked && tenureTypes.includes(tenureType)) {
-      selection.entryTypes = selection.tenureTypes.filter(
+      selection.tenureTypes = selection.tenureTypes.filter(
         (x) => x !== tenureType
       )
     }
