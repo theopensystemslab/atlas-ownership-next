@@ -9,7 +9,7 @@ import { ChevronLeft, ChevronRight, Hotel } from "@carbon/icons-react"
 import { toggleSidebar, useStore } from "lib/store"
 import { ChangeEvent } from "react"
 import { EntryType, Pattern, TenureType } from "@/lib/types"
-import selection, { useSelection } from "./selection"
+import { deselectEntryType, deselectPattern, deselectTenureType, selectEntryType, selectPattern, selectTenureType, useSelection } from "./selection"
 import clsx from "clsx"
 
 const Chevvy = (props: any) => (
@@ -40,11 +40,7 @@ const EntryTypeAccordion = () => {
 
   const handleEntryTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
     const entryType = data as EntryType
-    if (e.target.checked && selectedEntryType !== entryType.value) {
-      selection.entryType = entryType.value
-    } else if (!e.target.checked && selectedEntryType == entryType.value) {
-      selection.entryType = undefined
-    }
+    e.target.checked ? selectEntryType(entryType) : deselectEntryType();
   }
 
   const getEntryTypeIcon = (entryType: EntryType) => (
@@ -86,14 +82,7 @@ const TenureTypeAccordion = () => {
 
   const handleTenureTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
     const tenureType = data as TenureType;
-    if (e.target.checked && !tenureTypes.includes(tenureType)) {
-      selection.tenureTypes.push(tenureType)
-    } else if (!e.target.checked && tenureTypes.includes(tenureType)) {
-      selection.tenureTypes = selection.tenureTypes.filter(
-        (x) => x !== tenureType
-      )
-    }
-    console.log(selection.tenureTypes)
+    e.target.checked ? selectTenureType(tenureType) : deselectTenureType(tenureType);
   }
 
   return (
@@ -116,14 +105,7 @@ const PatternClassAccordion = () => {
 
   const handlePatternChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
     const pattern = data as Pattern;
-    if (e.target.checked && !patternNames.includes(pattern.name)) {
-      selection.patternNames.push(pattern.name)
-    } else if (!e.target.checked && patternNames.includes(pattern.name)) {
-      selection.patternNames = selection.patternNames.filter(
-        (x) => x !== pattern.name
-      )
-    }
-    console.log(selection.patternNames)
+    e.target.checked ? selectPattern(pattern) : deselectPattern(pattern)
   }
 
   const placeholderPatternClassIcon = <Hotel size={24} />
