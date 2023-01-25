@@ -70,7 +70,7 @@ const EntryTypeAccordion = () => {
 const TenureTypeAccordion = () => {
   const { tenureTypes } = useSelection();
 
-  const getTenureTypeIcon = (tenureType: TenureType) => <div className="text-lg w-5">{tenureType.substring(0, 2)}</div>
+  const getTenureTypeIcon = (tenureType: TenureType) => <div className="text-base sm:text-lg w-5">{tenureType.substring(0, 2)}</div>
 
   const tenureTypeData: AccordionItemData[] = Object.values(TenureType).map(tenureType => ({
     _id: tenureType,

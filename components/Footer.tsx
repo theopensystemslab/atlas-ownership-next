@@ -10,9 +10,9 @@ const FooterLinks = () => {
     { title: "Terms of use", path: "/terms-of-use" },
   ]
   return (
-    <div className="flex flex-col flex-wrap col-span-2 text-xs mt-1">
+    <div className="flex justify-between items-center p-2 sm:flex-col flex-wrap col-span-6 sm:col-span-2 text-xs sm:mt-1">
       {links.map((link) => (
-        <Link key={link.title} href={link.path} className="mb-0.5">
+        <Link key={link.title} href={link.path} className="sm:mb-0.5">
           {link.title}
         </Link>
       ))}
@@ -21,7 +21,7 @@ const FooterLinks = () => {
 }
 
 const Collaborators = () => (
-  <b className="row-span-2 col-span-4 text-l">Collaborators</b>
+  <b className="hidden sm:flex row-span-2 col-span-4 text-xs">Collaborators</b>
 )
 
 const OSLLogo = () => (
@@ -37,7 +37,7 @@ const OSLLogo = () => (
 )
 
 const SocialIcons = () => (
-  <div className="flex space-x-3">
+  <div className="hidden sm:flex space-x-3">
     <LogoTwitter color="white" size={32} />
     <LogoGithub color="white" size={32} />
     <OSLLogo />
@@ -45,20 +45,25 @@ const SocialIcons = () => (
 )
 
 const Discalimer = () => (
-  <p className="text-xs col-span-2">
+  <p className="text-xs p-2 sm:p-0 col-span-6 sm:col-span-2">
     The Atlas of Ownership is maintained by Open Systems Lab, non profit company
     9152368 registered in England and Wales
   </p>
 )
 
 const SubmitButton = () => (
-  <a href="https://airtable.com/shru3ZGjdyhEGTzx6" target="_blank" rel="noreferrer" className="bg-white text-black py-1 px-14 col-span-2 col-end-7 mb-4 flex items-center justify-center">
+  <a 
+    href="https://airtable.com/shru3ZGjdyhEGTzx6" 
+    target="_blank" 
+    rel="noreferrer" 
+    className="bg-white text-black py-1 px-14 col-span-6 sm:col-span-2 col-end-7 mb-1 sm:mb-4 flex items-center justify-center"
+  >
     Submit an entry <ArrowRight className="ml-2" size={16} />
   </a>
 )
 
 const Footer = () => (
-  <footer className="bottom-0 absolute w-full h-1/4 pl-3 bg-black text-white text-sm grid grid-cols-6 grid-rows-3 gap-1">
+  <footer className="bottom-0 absolute w-full h-1/4 sm:pl-3 bg-black text-white text-xs sm:text-sm grid grid-cols-6 grid-rows-3 gap-1">
     <FooterLinks />
     <SubmitButton />
     <Collaborators />
