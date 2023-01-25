@@ -1,14 +1,15 @@
+import { TenureType } from "@/lib/types"
 import { proxy, useSnapshot } from "valtio"
 
 type SelectionStore = {
   patternNames: string[]
-  entryTypes: string[]
-  tenureTypes: string[]
+  entryType: string | undefined
+  tenureTypes: TenureType[]
 }
 
 const selection = proxy<SelectionStore>({
   patternNames: [],
-  entryTypes: [],
+  entryType: undefined,
   tenureTypes: [],
 })
 

@@ -30,7 +30,7 @@ const Chevvy = (props: any) => (
 )
 
 const EntryTypeAccordion = () => {
-  const { entryTypes } = useSelection();
+  const { entryType: selectedEntryType } = useSelection();
 
   const entryTypeData: EntryType[] = [
     { title: "Innovative", value: "innovative" },
@@ -40,14 +40,11 @@ const EntryTypeAccordion = () => {
 
   const handleEntryTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
     const entryType = data as EntryType
-    if (e.target.checked && !entryTypes.includes(entryType.value)) {
-      selection.entryTypes.push(entryType.value)
-    } else if (!e.target.checked && entryTypes.includes(entryType.value)) {
-      selection.entryTypes = selection.entryTypes.filter(
-        (x) => x !== entryType.value
-      )
+    if (e.target.checked && selectedEntryType !== entryType.value) {
+      selection.entryType = entryType.value
+    } else if (!e.target.checked && selectedEntryType == entryType.value) {
+      selection.entryType = undefined
     }
-    console.log(selection.entryTypes)
   }
 
   const getEntryTypeIcon = (entryType: EntryType) => (
@@ -68,7 +65,7 @@ const EntryTypeAccordion = () => {
       itemChange={handleEntryTypeChange}
       items={pipe(
         entryTypeData,
-        A.map((entryType) => ({ checked: entryTypes.includes(entryType.value), _id: entryType.value, displayText: entryType.title, data: entryType, icon: getEntryTypeIcon(entryType) }))
+        A.map((entryType) => ({ checked: selectedEntryType === entryType.value, _id: entryType.value, displayText: entryType.title, data: entryType, icon: getEntryTypeIcon(entryType) }))
       )}
     />
   )
@@ -79,7 +76,7 @@ const TenureTypeAccordion = () => {
 
   const getTenureTypeIcon = (tenureType: TenureType) => <div className="text-lg w-5">{tenureType.substring(0, 2)}</div>
 
-  const tenureTypeData: AccordionItemData[] = Object.values(TenureType).map((tenureType) => ({
+  const tenureTypeData: AccordionItemData[] = Object.values(TenureType).map(tenureType => ({
     _id: tenureType,
     checked: tenureTypes.includes(tenureType),
     data: tenureType,
@@ -87,7 +84,7 @@ const TenureTypeAccordion = () => {
     icon: getTenureTypeIcon(tenureType)
   }))
 
-  const handleEntryTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
+  const handleTenureTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
     const tenureType = data as TenureType;
     if (e.target.checked && !tenureTypes.includes(tenureType)) {
       selection.tenureTypes.push(tenureType)
@@ -105,7 +102,7 @@ const TenureTypeAccordion = () => {
         name: "Models",
         color: "#DBDBDB"
       }}
-      itemChange={handleEntryTypeChange}
+      itemChange={handleTenureTypeChange}
       items={tenureTypeData}
     />
   )
