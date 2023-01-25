@@ -186,7 +186,7 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
                 {term.type === "Obligation" && term.strength > 0 && <Tree size={16} color="black" className="ml-2" />}
               </div>
               {showLabels &&
-                <div className="flex-1 h-10 text-black text-sm flex items-center mr-3 text-right" style={{ gridColumn: showLabels ? `span ${8 - term.strength}` : `span ${5 - term.strength}` }}>
+                <div className="flex-1 h-10 text-black text-xs sm:text-sm flex items-center mr-3 text-right" style={{ gridColumn: showLabels ? `span ${8 - term.strength}` : `span ${5 - term.strength}` }}>
                   {term.type === "Obligation" && term.name}
                 </div>
               }
@@ -200,7 +200,7 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
                 {term.type === "Right" && term.strength > 0 && <Tree size={16} color="black" className="mr-2" />}
               </div>
             {showLabels &&
-                <div className="flex-1 h-10 text-black text-sm flex items-center justify-start ml-3" style={{ gridColumn: showLabels ? `span ${8 - term.strength}` : `span ${5 - term.strength}` }}>
+                <div className="flex-1 h-10 text-black text-xs sm:text-sm flex items-center justify-start ml-3" style={{ gridColumn: showLabels ? `span ${8 - term.strength}` : `span ${5 - term.strength}` }}>
                 {term.type === "Right" && term.name}
               </div> 
             }
