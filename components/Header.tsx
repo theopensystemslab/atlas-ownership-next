@@ -28,7 +28,7 @@ const Header = () => (
         <a className="text-lg text-gray-500 pointer-events-auto" >Why?</a>
       </Link>
     </div>
-    <Search />
+    {/* <Search /> */}
   </header>
 )
 

@@ -22,7 +22,7 @@ const GlobeLayoutComponent = (props: Props) => {
         <MapboxGlobe />
       </div>
       <motion.div
-        className="h-full w-1/2 absolute top-0 right-0 bg-white overflow-y-auto no-scrollbar z-50"
+        className="h-full w-full sm:w-1/2 absolute top-0 right-0 bg-white overflow-y-auto no-scrollbar z-50"
         variants={{
           open: {
             x: "0%",

@@ -88,7 +88,7 @@ const DataRow = (props: DataRowProps) => {
   return (
     <div className="flex">
       {showLabels ? (
-        <div className="w-1/5 h-10 text-black text-sm text-right flex items-center justify-end mr-3">
+        <div className="w-1/5 h-10 text-black text-sx sm:text-sm text-right flex items-center justify-end mr-3">
           {patternClass.name}
         </div> 
       ) : (``)}
@@ -120,15 +120,15 @@ const ExpandableRow = (props: ExpandableRowProps) => {
           <Tree className="mt-4" size={"32"} />
           <div className="flex justify-between items-center">
             <ChevronUp size={32} className={`${backgroundColorClasses[term.patternClassName]} bg-opacity-20 h-10 w-10 p-2`}/>
-            <p className="text-sm text-right pl-4">{term.patternClassName} {term.type.toLowerCase()}</p>
+            <p className="text-xs sm:text-sm text-right pl-4">{term.patternClassName} {term.type.toLowerCase()}</p>
           </div>
         </div>
-        <h2 className="text-lg">{term.name}</h2>
-        <p className="text-sm mb-4">{term.meta?.description}</p>
+        <h2 className="text-base sm:text-lg">{term.name}</h2>
+        <p className="text-xs sm:text-sm mb-2 sm:mb-4">{term.meta?.description}</p>
         {term?.description && (
           <div>
             <h3>How it applies here</h3>
-            <p className="text-sm">{term?.description}</p>
+            <p className="text-xs sm:text-sm">{term?.description}</p>
           </div>
         )}
       </div>
@@ -171,13 +171,13 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
   return (
     <div className="m-4">
       <div className="flex">
-        <div className="flex-1 h-10 text-lg text-center text-black">Obligations</div>
-        <div className="flex-1 h-10 text-lg text-center text-black">Rights</div>
+        <div className="flex-1 h-10 text-base sm:text-lg text-center text-black">Obligations</div>
+        <div className="flex-1 h-10 text-base sm:text-lg text-center text-black">Rights</div>
       </div>
       {formattedTerms.map((term: any, i: number) => (
         <div className="flex flex-col" key={`row-${term.name}-${i}`}>
           <div className="flex">
-            <div className="flex-1 grid" style={{ gridTemplateColumns: `repeat(8, minmax(0, 1fr))`, direction: "rtl"}}>
+            <div className="flex-1 grid" style={{ gridTemplateColumns: showLabels ? `repeat(8, minmax(0, 1fr))` : `repeat(5, minmax(0, 1fr))`, direction: "rtl"}}>
               <div 
                 className={`${term.type === "Obligation" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Obligation" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
                 style={{ gridColumn: `span ${term.strength}` }}
@@ -186,12 +186,12 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
                 {term.type === "Obligation" && term.strength > 0 && <Tree size={16} color="black" className="ml-2" />}
               </div>
               {showLabels &&
-                <div className="flex-1 h-10 text-black text-sm flex items-center mr-3 text-right" style={{ gridColumn: `span ${8 - term.strength}` }}>
+                <div className="flex-1 h-10 text-black text-sm flex items-center mr-3 text-right" style={{ gridColumn: showLabels ? `span ${8 - term.strength}` : `span ${5 - term.strength}` }}>
                   {term.type === "Obligation" && term.name}
                 </div>
               }
             </div>
-            <div className="flex-1 grid" style={{ gridTemplateColumns: `repeat(8, minmax(0, 1fr))`, direction: "ltr" }}>
+            <div className="flex-1 grid" style={{ gridTemplateColumns: showLabels ? `repeat(8, minmax(0, 1fr))` : `repeat(5, minmax(0, 1fr))`, direction: "ltr" }}>
               <div 
                 className={`${term.type === "Right" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Right" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
                 style={{ gridColumn: `span ${term.strength}` }}
@@ -200,7 +200,7 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
                 {term.type === "Right" && term.strength > 0 && <Tree size={16} color="black" className="mr-2" />}
               </div>
             {showLabels &&
-                <div className="flex-1 h-10 text-black text-sm flex items-center justify-start ml-3" style={{ gridColumn: `span ${8 - term.strength}` }}>
+                <div className="flex-1 h-10 text-black text-sm flex items-center justify-start ml-3" style={{ gridColumn: showLabels ? `span ${8 - term.strength}` : `span ${5 - term.strength}` }}>
                 {term.type === "Right" && term.name}
               </div> 
             }
