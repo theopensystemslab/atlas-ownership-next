@@ -3,13 +3,13 @@ import NoopLayout from "../components/layout/NoopLayout"
 
 const AboutPage = () => {
   return (
-    <div className="flex">
-      <div className="w-1/3">
-        <h1 className="text-5xl font-semibold mb-12">
+    <div className="flex flex-col sm:flex-row">
+      <div className="w-full sm:w-1/3">
+        <h1 className="text-2xl sm:text-5xl font-semibold mb-8 sm:mb-12">
           Other forms of <br />
           ownership are possible.
         </h1>
-        <div className="flex flex-col w-3/4">
+        <div className="flex flex-col text-sm sm:text-base w-full sm:w-3/4">
           <p className="mb-3">
             What <em>is</em> ownership? The answer seems obvious, until you
             think about it. How is it possible for us to &quot;own&quot; a piece
@@ -64,7 +64,7 @@ const AboutPage = () => {
           </blockquote>
         </div>
       </div>
-      <div className="w-2/3 relative flex items-center justify-center">
+      <div className="w-full sm:w-2/3 relative sm:flex sm:items-center sm:justify-center">
         <Image
           src="/images/real-estate-value-diagram-reverse.svg"
           alt="Real estate value comparison diagram"
