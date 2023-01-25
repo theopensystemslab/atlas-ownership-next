@@ -9,7 +9,7 @@ import { ChevronLeft, ChevronRight, Hotel } from "@carbon/icons-react"
 import { toggleSidebar, useStore } from "lib/store"
 import { ChangeEvent } from "react"
 import { EntryType, Pattern, TenureType } from "@/lib/types"
-import selection, { useSelection } from "./selection"
+import { deselectEntryType, deselectPattern, deselectTenureType, selectEntryType, selectPattern, selectTenureType, useSelection } from "./selection"
 import clsx from "clsx"
 
 const Chevvy = (props: any) => (
@@ -30,7 +30,7 @@ const Chevvy = (props: any) => (
 )
 
 const EntryTypeAccordion = () => {
-  const { entryTypes } = useSelection();
+  const { entryType: selectedEntryType } = useSelection();
 
   const entryTypeData: EntryType[] = [
     { title: "Innovative", value: "innovative" },
@@ -40,14 +40,7 @@ const EntryTypeAccordion = () => {
 
   const handleEntryTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
     const entryType = data as EntryType
-    if (e.target.checked && !entryTypes.includes(entryType.value)) {
-      selection.entryTypes.push(entryType.value)
-    } else if (!e.target.checked && entryTypes.includes(entryType.value)) {
-      selection.entryTypes = selection.entryTypes.filter(
-        (x) => x !== entryType.value
-      )
-    }
-    console.log(selection.entryTypes)
+    e.target.checked ? selectEntryType(entryType) : deselectEntryType();
   }
 
   const getEntryTypeIcon = (entryType: EntryType) => (
@@ -68,7 +61,7 @@ const EntryTypeAccordion = () => {
       itemChange={handleEntryTypeChange}
       items={pipe(
         entryTypeData,
-        A.map((entryType) => ({ checked: entryTypes.includes(entryType.value), _id: entryType.value, displayText: entryType.title, data: entryType, icon: getEntryTypeIcon(entryType) }))
+        A.map((entryType) => ({ checked: selectedEntryType === entryType.value, _id: entryType.value, displayText: entryType.title, data: entryType, icon: getEntryTypeIcon(entryType) }))
       )}
     />
   )
@@ -79,7 +72,7 @@ const TenureTypeAccordion = () => {
 
   const getTenureTypeIcon = (tenureType: TenureType) => <div className="text-lg w-5">{tenureType.substring(0, 2)}</div>
 
-  const tenureTypeData: AccordionItemData[] = Object.values(TenureType).map((tenureType) => ({
+  const tenureTypeData: AccordionItemData[] = Object.values(TenureType).map(tenureType => ({
     _id: tenureType,
     checked: tenureTypes.includes(tenureType),
     data: tenureType,
@@ -87,16 +80,9 @@ const TenureTypeAccordion = () => {
     icon: getTenureTypeIcon(tenureType)
   }))
 
-  const handleEntryTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
+  const handleTenureTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
     const tenureType = data as TenureType;
-    if (e.target.checked && !tenureTypes.includes(tenureType)) {
-      selection.tenureTypes.push(tenureType)
-    } else if (!e.target.checked && tenureTypes.includes(tenureType)) {
-      selection.tenureTypes = selection.tenureTypes.filter(
-        (x) => x !== tenureType
-      )
-    }
-    console.log(selection.tenureTypes)
+    e.target.checked ? selectTenureType(tenureType) : deselectTenureType(tenureType);
   }
 
   return (
@@ -105,7 +91,7 @@ const TenureTypeAccordion = () => {
         name: "Models",
         color: "#DBDBDB"
       }}
-      itemChange={handleEntryTypeChange}
+      itemChange={handleTenureTypeChange}
       items={tenureTypeData}
     />
   )
@@ -119,14 +105,7 @@ const PatternClassAccordion = () => {
 
   const handlePatternChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
     const pattern = data as Pattern;
-    if (e.target.checked && !patternNames.includes(pattern.name)) {
-      selection.patternNames.push(pattern.name)
-    } else if (!e.target.checked && patternNames.includes(pattern.name)) {
-      selection.patternNames = selection.patternNames.filter(
-        (x) => x !== pattern.name
-      )
-    }
-    console.log(selection.patternNames)
+    e.target.checked ? selectPattern(pattern) : deselectPattern(pattern)
   }
 
   const placeholderPatternClassIcon = <Hotel size={24} />
