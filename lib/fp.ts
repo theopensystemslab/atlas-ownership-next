@@ -22,3 +22,12 @@ export const getOrError =
     )
 
 export { A, RA, RR, O, E, S, NEA, abs, hypot, round }
+
+export const pipeLog = <T extends unknown>(x: T): T => (console.log(x), x)
+
+export const pipeLogWith =
+  <T extends unknown>(f: (t: T) => void) =>
+  (t: T): T => {
+    console.log(f(t))
+    return t
+  }
