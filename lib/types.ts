@@ -83,12 +83,17 @@ export type Entry = {
 export enum TenureType {
   leasehold = "Leasehold",
   freehold = "Freehold",
-  renting = "Renting",
   communityLandTrust = "Community Land Trust",
-  other = "Other",
+  renting = "Renting",
   collectiveOwnership = "Collective Ownership",
   indigenousRecognition = "Indigenous Recognition",
   commons = "Commons",
+  other = "Other",
 }
 
 export type CarouselItem = Pick<Entry, "dates" | "location" | "name" | "slug">
+
+export type EntryType = {
+  title: string
+  value: string
+}

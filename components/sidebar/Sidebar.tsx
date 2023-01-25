@@ -4,12 +4,13 @@ import { motion } from "framer-motion"
 import theme from "tailwindcss/defaultTheme"
 import { A } from "../../lib/fp"
 import { trpc } from "../../lib/trpc"
-import Accordion from "./Accordion"
-import { ChevronLeft, ChevronRight } from "@carbon/icons-react"
+import Accordion, { EntryFilterData, AccordionItemData } from "./Accordion"
+import { ChevronLeft, ChevronRight, Hotel } from "@carbon/icons-react"
 import { toggleSidebar, useStore } from "lib/store"
 import { ChangeEvent } from "react"
-import { Pattern } from "@/lib/types"
+import { EntryType, Pattern, TenureType } from "@/lib/types"
 import selection, { useSelection } from "./selection"
+import clsx from "clsx"
 
 const Chevvy = (props: any) => (
   <div className={css.chevvy} {...props}>
@@ -28,16 +29,96 @@ const Chevvy = (props: any) => (
   </div>
 )
 
-const Sidebar = () => {
-  const isOpen = useStore().isSidebarOpen
+const EntryTypeAccordion = () => {
+  const { entryTypes } = useSelection();
 
+  const entryTypeData: EntryType[] = [
+    { title: "Innovative", value: "innovative" },
+    { title: "Typical", value: "typical" },
+    { title: "Historical", value: "historical" },
+  ]
+
+  const handleEntryTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
+    const entryType = data as EntryType
+    if (e.target.checked && !entryTypes.includes(entryType.value)) {
+      selection.entryTypes.push(entryType.value)
+    } else if (!e.target.checked && entryTypes.includes(entryType.value)) {
+      selection.entryTypes = selection.entryTypes.filter(
+        (x) => x !== entryType.value
+      )
+    }
+    console.log(selection.entryTypes)
+  }
+
+  const getEntryTypeIcon = (entryType: EntryType) => (
+    <div className={
+      clsx("rounded-full block h-5 w-5", { 
+        "bg-black": entryType.value === "typical", 
+        "bg-gray-300": entryType.value === "historical", 
+        "border-black border-2": entryType.value === "innovative"
+      })}></div>
+  )
+
+  return (
+    <Accordion
+      group={{
+        name: "Entry types",
+        color: "white"
+      }}
+      itemChange={handleEntryTypeChange}
+      items={pipe(
+        entryTypeData,
+        A.map((entryType) => ({ checked: entryTypes.includes(entryType.value), _id: entryType.value, displayText: entryType.title, data: entryType, icon: getEntryTypeIcon(entryType) }))
+      )}
+    />
+  )
+}
+
+const TenureTypeAccordion = () => {
+  const { tenureTypes } = useSelection();
+
+  const getTenureTypeIcon = (tenureType: TenureType) => <div className="text-lg w-5">{tenureType.substring(0, 2)}</div>
+
+  const tenureTypeData: AccordionItemData[] = Object.values(TenureType).map((tenureType) => ({
+    _id: tenureType,
+    checked: tenureTypes.includes(tenureType),
+    data: tenureType,
+    displayText: tenureType,
+    icon: getTenureTypeIcon(tenureType)
+  }))
+
+  const handleEntryTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
+    const tenureType = data as TenureType;
+    if (e.target.checked && !tenureTypes.includes(tenureType)) {
+      selection.tenureTypes.push(tenureType)
+    } else if (!e.target.checked && tenureTypes.includes(tenureType)) {
+      selection.tenureTypes = selection.tenureTypes.filter(
+        (x) => x !== tenureType
+      )
+    }
+    console.log(selection.tenureTypes)
+  }
+
+  return (
+    <Accordion
+      group={{
+        name: "Models",
+        color: "#DBDBDB"
+      }}
+      itemChange={handleEntryTypeChange}
+      items={tenureTypeData}
+    />
+  )
+}
+
+const PatternClassAccordion = () => {
   const { data: patternClasses = [] } = trpc.patternClasses.useQuery()
   const { data: patterns = [] } = trpc.patternsWithClass.useQuery()
 
   const { patternNames } = useSelection();
 
-
-  const handlePatternChange = (e: ChangeEvent<HTMLInputElement>, pattern: Pattern) => {
+  const handlePatternChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
+    const pattern = data as Pattern;
     if (e.target.checked && !patternNames.includes(pattern.name)) {
       selection.patternNames.push(pattern.name)
     } else if (!e.target.checked && patternNames.includes(pattern.name)) {
@@ -47,6 +128,37 @@ const Sidebar = () => {
     }
     console.log(selection.patternNames)
   }
+
+  const placeholderPatternClassIcon = <Hotel size={24} />
+
+  return (
+    <>
+      {pipe(
+        patternClasses,
+        A.map((patternClass) => (
+          <Accordion
+            key={patternClass.name}
+            group={{
+              name: patternClass.name,
+              description: patternClass.description,
+              color: patternClass.color.hex
+            }}
+            itemChange={handlePatternChange}
+            items={pipe(
+              patterns,
+              A.filter((pattern) => pattern.class.name === patternClass.name),
+              A.map((pattern) => ({ checked: patternNames.includes(pattern.name), _id: pattern._id, displayText: pattern.name, data: pattern, icon: placeholderPatternClassIcon }))
+            )}
+          />
+        ))
+      )}
+    </>
+  )
+}
+
+const Sidebar = () => {
+  const isOpen = useStore().isSidebarOpen
+
 
   return (
     <motion.div
@@ -69,25 +181,10 @@ const Sidebar = () => {
       }}
     >
       <Chevvy onClick={toggleSidebar} open={isOpen} />
-      {pipe(
-        patternClasses,
-        A.map((patternClass) => (
-          <Accordion
-            key={patternClass.name}
-            group={{ 
-              name: patternClass.name, 
-              description: patternClass.description, 
-              color: patternClass.color.hex
-            }}
-            itemChange={handlePatternChange}
-            items={pipe(
-              patterns,
-              A.filter((pattern) => pattern.class.name === patternClass.name),
-              A.map((pattern) => ({ checked: patternNames.includes(pattern.name), _id: pattern._id, displayText: pattern.name, data: pattern}))
-            )}
-          />
-        ))
-      )}
+      <EntryTypeAccordion />
+      <TenureTypeAccordion />
+      <PatternClassAccordion />
+
     </motion.div>
   )
 }
