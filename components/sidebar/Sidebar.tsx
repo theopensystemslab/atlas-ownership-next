@@ -5,12 +5,21 @@ import theme from "tailwindcss/defaultTheme"
 import { A } from "../../lib/fp"
 import { trpc } from "../../lib/trpc"
 import Accordion, { EntryFilterData, AccordionItemData } from "./Accordion"
-import { ChevronLeft, ChevronRight, Hotel } from "@carbon/icons-react"
+import { ChevronLeft, ChevronRight } from "@carbon/icons-react"
 import { toggleSidebar, useStore } from "lib/store"
-import { ChangeEvent } from "react"
+import { ChangeEvent, useState } from "react"
 import { EntryType, Pattern, TenureType } from "@/lib/types"
-import { deselectEntryType, deselectPattern, deselectTenureType, selectEntryType, selectPattern, selectTenureType, useSelection } from "./selection"
+import {
+  deselectEntryType,
+  deselectPattern,
+  deselectTenureType,
+  selectEntryType,
+  selectPattern,
+  selectTenureType,
+  useSelection,
+} from "./selection"
 import clsx from "clsx"
+import { PatternIcon } from "../layout/ui/PatternIcon"
 
 const Chevvy = (props: any) => (
   <div className={css.chevvy} {...props}>
@@ -30,7 +39,7 @@ const Chevvy = (props: any) => (
 )
 
 const EntryTypeAccordion = () => {
-  const { entryType: selectedEntryType } = useSelection();
+  const { entryType: selectedEntryType } = useSelection()
 
   const entryTypeData: EntryType[] = [
     { title: "Innovative", value: "innovative" },
@@ -38,58 +47,77 @@ const EntryTypeAccordion = () => {
     { title: "Historical", value: "historical" },
   ]
 
-  const handleEntryTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
+  const handleEntryTypeChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    data: EntryFilterData
+  ) => {
     const entryType = data as EntryType
-    e.target.checked ? selectEntryType(entryType) : deselectEntryType();
+    e.target.checked ? selectEntryType(entryType) : deselectEntryType()
   }
 
   const getEntryTypeIcon = (entryType: EntryType) => (
-    <div className={
-      clsx("rounded-full block h-5 w-5", { 
-        "bg-black": entryType.value === "typical", 
-        "bg-gray-300": entryType.value === "historical", 
-        "border-black border-2": entryType.value === "innovative"
-      })}></div>
+    <div
+      className={clsx("rounded-full block h-5 w-5", {
+        "bg-black": entryType.value === "typical",
+        "bg-gray-300": entryType.value === "historical",
+        "border-black border-2": entryType.value === "innovative",
+      })}
+    ></div>
   )
 
   return (
     <Accordion
       group={{
         name: "Entry types",
-        color: "white"
+        color: "white",
       }}
       itemChange={handleEntryTypeChange}
       items={pipe(
         entryTypeData,
-        A.map((entryType) => ({ checked: selectedEntryType === entryType.value, _id: entryType.value, displayText: entryType.title, data: entryType, icon: getEntryTypeIcon(entryType) }))
+        A.map((entryType) => ({
+          checked: selectedEntryType === entryType.value,
+          _id: entryType.value,
+          displayText: entryType.title,
+          data: entryType,
+          icon: getEntryTypeIcon(entryType),
+        }))
       )}
     />
   )
 }
 
 const TenureTypeAccordion = () => {
-  const { tenureTypes } = useSelection();
+  const { tenureTypes } = useSelection()
 
-  const getTenureTypeIcon = (tenureType: TenureType) => <div className="text-lg w-5">{tenureType.substring(0, 2)}</div>
+  const getTenureTypeIcon = (tenureType: TenureType) => (
+    <div className="text-lg w-5">{tenureType.substring(0, 2)}</div>
+  )
 
-  const tenureTypeData: AccordionItemData[] = Object.values(TenureType).map(tenureType => ({
-    _id: tenureType,
-    checked: tenureTypes.includes(tenureType),
-    data: tenureType,
-    displayText: tenureType,
-    icon: getTenureTypeIcon(tenureType)
-  }))
+  const tenureTypeData: AccordionItemData[] = Object.values(TenureType).map(
+    (tenureType) => ({
+      _id: tenureType,
+      checked: tenureTypes.includes(tenureType),
+      data: tenureType,
+      displayText: tenureType,
+      icon: getTenureTypeIcon(tenureType),
+    })
+  )
 
-  const handleTenureTypeChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
-    const tenureType = data as TenureType;
-    e.target.checked ? selectTenureType(tenureType) : deselectTenureType(tenureType);
+  const handleTenureTypeChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    data: EntryFilterData
+  ) => {
+    const tenureType = data as TenureType
+    e.target.checked
+      ? selectTenureType(tenureType)
+      : deselectTenureType(tenureType)
   }
 
   return (
     <Accordion
       group={{
         name: "Models",
-        color: "#DBDBDB"
+        color: "#DBDBDB",
       }}
       itemChange={handleTenureTypeChange}
       items={tenureTypeData}
@@ -101,14 +129,23 @@ const PatternClassAccordion = () => {
   const { data: patternClasses = [] } = trpc.patternClasses.useQuery()
   const { data: patterns = [] } = trpc.patternsWithClass.useQuery()
 
-  const { patternNames } = useSelection();
+  const { patternNames } = useSelection()
 
-  const handlePatternChange = (e: ChangeEvent<HTMLInputElement>, data: EntryFilterData) => {
-    const pattern = data as Pattern;
+  const handlePatternChange = (
+    e: ChangeEvent<HTMLInputElement>,
+    data: EntryFilterData
+  ) => {
+    const pattern = data as Pattern
     e.target.checked ? selectPattern(pattern) : deselectPattern(pattern)
   }
 
-  const placeholderPatternClassIcon = <Hotel size={24} />
+  const buildAccordionItemData = (pattern: Pattern): AccordionItemData => ({ 
+    checked: patternNames.includes(pattern.name), 
+    _id: pattern._id, 
+    displayText: pattern.name, 
+    data: pattern, 
+    icon: <PatternIcon size={32} pattern={pattern} className="mr-4"/> 
+  })
 
   return (
     <>
@@ -120,13 +157,13 @@ const PatternClassAccordion = () => {
             group={{
               name: patternClass.name,
               description: patternClass.description,
-              color: patternClass.color.hex
+              color: patternClass.color.hex,
             }}
             itemChange={handlePatternChange}
             items={pipe(
               patterns,
               A.filter((pattern) => pattern.class.name === patternClass.name),
-              A.map((pattern) => ({ checked: patternNames.includes(pattern.name), _id: pattern._id, displayText: pattern.name, data: pattern, icon: placeholderPatternClassIcon }))
+              A.map(buildAccordionItemData)
             )}
           />
         ))
@@ -137,7 +174,7 @@ const PatternClassAccordion = () => {
 
 const Sidebar = () => {
   const isOpen = useStore().isSidebarOpen
-
+  const [overflowYAuto, setOverflowYAuto] = useState(false)
 
   return (
     <motion.div
@@ -151,19 +188,32 @@ const Sidebar = () => {
       }}
       animate={isOpen ? "open" : "closed"}
       initial="closed"
-      className={css.root}
+      className={clsx(
+        css.root,
+        "no-scrollbar",
+        overflowYAuto && "overflow-y-auto"
+      )}
       transition={{
         type: "spring",
         damping: 25,
         mass: 0.9,
         stiffness: 120,
       }}
+      onAnimationStart={(e) => {
+        if (!isOpen) {
+          setOverflowYAuto(false)
+        }
+      }}
+      onAnimationComplete={(e) => {
+        if (isOpen) {
+          setOverflowYAuto(true)
+        }
+      }}
     >
       <Chevvy onClick={toggleSidebar} open={isOpen} />
       <EntryTypeAccordion />
       <TenureTypeAccordion />
       <PatternClassAccordion />
-
     </motion.div>
   )
 }

@@ -29,6 +29,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -57,4 +58,8 @@ a {
 .mapboxgl-popup-close-button {
   font-size: x-large;
   padding-right: 6px;
+}
+
+h1 {
+  @apply font-bold text-2xl;
 }

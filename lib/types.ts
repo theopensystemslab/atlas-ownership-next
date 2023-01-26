@@ -1,3 +1,5 @@
+import { PortableTextBlockComponent } from "@portabletext/react"
+
 export type Geopoint = {
   lat: number
   lng: number
@@ -25,6 +27,7 @@ export type Pattern = {
   class: PatternClass
   entryCount?: number
   type: "right" | "obligation"
+  iconUrl?: string
 }
 
 export type PatternClass = {
@@ -96,4 +99,10 @@ export type CarouselItem = Pick<Entry, "dates" | "location" | "name" | "slug">
 export type EntryType = {
   title: string
   value: string
+}
+
+export type Page = {
+  slug?: string
+  title?: string
+  content?: any[]
 }

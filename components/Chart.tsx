@@ -1,10 +1,11 @@
 import { trpc } from "@/lib/trpc"
-import { ChevronUp, Tree } from "@carbon/icons-react"
+import { ChevronUp } from "@carbon/icons-react"
 import clsx from "clsx"
 import _ from "lodash"
 import { useState } from "react"
 import { PatternClass, Term } from "../lib/types"
 import { Carousel } from "./carousel/Carousel"
+import { PatternIcon } from "./layout/ui/PatternIcon"
 
 // TODO: Move to style utils
 // maps patternClass.name to custom color keys defined in tailwind.config.js
@@ -117,7 +118,7 @@ const ExpandableRow = (props: ExpandableRowProps) => {
     >
       <div className="px-4 pb-4">
         <div className="flex justify-between items-start mb-4">
-          <Tree className="mt-4" size={"32"} />
+          <PatternIcon className="mt-4" size="32" pattern={{ iconUrl: term.patternIconUrl }}/>
           <div className="flex justify-between items-center">
             <ChevronUp size={32} className={`${backgroundColorClasses[term.patternClassName]} bg-opacity-20 h-10 w-10 p-2`}/>
             <p className="text-xs sm:text-sm text-right pl-4">{term.patternClassName} {term.type.toLowerCase()}</p>
@@ -183,7 +184,7 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
                 style={{ gridColumn: `span ${term.strength}` }}
                 onClick={() => handleClick(i)}
               >
-                {term.type === "Obligation" && term.strength > 0 && <Tree size={16} color="black" className="ml-2" />}
+                {term.type === "Obligation" && term.strength > 0 && <PatternIcon size="24" className="ml-2 text-black" pattern={{ iconUrl: term.patternIconUrl }}/>}
               </div>
               {showLabels &&
                 <div className="flex-1 h-10 text-black text-xs sm:text-sm flex items-center mr-3 text-right" style={{ gridColumn: showLabels ? `span ${8 - term.strength}` : `span ${5 - term.strength}` }}>
@@ -197,7 +198,7 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
                 style={{ gridColumn: `span ${term.strength}` }}
                 onClick={() => handleClick(i)}
               >
-                {term.type === "Right" && term.strength > 0 && <Tree size={16} color="black" className="mr-2" />}
+                {term.type === "Right" && term.strength > 0 && <PatternIcon size="24" className="mr-2 text-black" pattern={{ iconUrl: term.pattern?.patternIconUrl }} />}
               </div>
             {showLabels &&
                 <div className="flex-1 h-10 text-black text-xs sm:text-sm flex items-center justify-start ml-3" style={{ gridColumn: showLabels ? `span ${8 - term.strength}` : `span ${5 - term.strength}` }}>
@@ -237,6 +238,7 @@ const Chart = (props: Props) => {
       name: term.patternName,
       patternClassName: _.find(patternClasses, ['_id', term.pattern?.class?._ref])?.name,
       patternClassOrder: _.find(patternClasses, ['_id', term.pattern?.class?._ref])?.order,
+      patternIconUrl: term.pattern?.iconUrl,
       type: term.type,
       strength: term.strength,
       description: term.description,

@@ -42,7 +42,7 @@ const EntryHeader = (entry?: Entry) => (
     </nav>
     <div className="flex flex-row justify-between items-center">
       <h1 className="text-3xl sm:text-5xl w-2/3 sm:w-1/2">{entry?.name}</h1>
-      <Tag>{entry?.type}</Tag>
+      <Tag className="bg-white">{entry?.type}</Tag>
     </div>
   </div>
 )

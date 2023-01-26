@@ -1,0 +1,45 @@
+.searchRoot {
+  @apply flex items-stretch h-10 justify-center pointer-events-auto;
+}
+
+.searchRoot label {
+  @apply mt-2;
+}
+
+.searchRoot input {
+  @apply pl-2 bg-transparent text-white;
+}
+
+.searchRoot button {
+  @apply text-white mt-2 mr-4 cursor-pointer;
+}
+
+.resultsRoot {
+  @apply absolute top-11 z-20;
+  @apply w-full;
+  @apply overflow-y-auto;
+  @apply pointer-events-auto;
+  max-height: calc(100% - 2.75rem);
+}
+
+.result {
+  position: relative;
+  @apply px-4 py-8;
+  @apply max-w-lg ml-auto  opacity-100 text-white  overflow-hidden;
+  @apply bg-black;
+}
+
+.result:first-child {
+  @apply pt-4;
+}
+
+.result:not(:last-child)::before {
+  content: "";
+  @apply absolute bottom-0 right-0 left-0 mx-auto;
+  @apply w-3/4;
+  @apply border-b border-white opacity-50;
+}
+
+.result p {
+  @apply text-xs;
+}
