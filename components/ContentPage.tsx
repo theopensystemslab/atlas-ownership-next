@@ -15,8 +15,8 @@ interface ContentPageProps {
 
 export const ContentPage = ({ page }: ContentPageProps) => {
   return (
-    <div className="w-1/3">
-      <h1 className="text-5xl font-semibold mb-12">
+    <div className="w-full sm:w-1/3">
+      <h1 className="text-3xl sm:text-5xl font-semibold mb-12">
         {page?.title}
       </h1>
       <div className="flex flex-col">
