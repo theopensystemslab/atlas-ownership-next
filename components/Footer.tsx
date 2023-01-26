@@ -4,19 +4,27 @@ import Image from "next/image"
 import { trpc } from "@/lib/trpc"
 
 const FooterLinks = () => {
-  const links = [
+  const pageLinks = [
     { title: "About", path: "/about" },
     { title: "Explore the patterns", path: "/patterns" },
     { title: "Licence", path: "/licence" },
     { title: "Terms of use", path: "/terms-of-use" },
   ]
   return (
-    <div className="flex flex-col flex-wrap col-span-2 text-xs mt-1">
-      {links.map((link) => (
-        <Link key={link.title} href={link.path} className="mb-0.5">
-          {link.title}
-        </Link>
-      ))}
+    <div className="col-span-4 text-xs mt-2 mb-4">
+      <div className="grid grid-cols-4 grid-flow-col grid-rows-3 gap-1">
+        {pageLinks.map((link) => (
+          <Link key={link.title} href={link.path}>
+            <a>{link.title}</a>
+          </Link>
+        ))}
+        <a href="https://airtable.com/shru3ZGjdyhEGTzx6" target="_blank" rel="noreferrer">
+          Submit an entry
+        </a>
+        <a href="mailto:atlasofownership@opensystemslab.io ">
+          Contact us
+        </a>
+      </div>
     </div>
   )
 }
