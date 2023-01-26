@@ -3,15 +3,16 @@ import { CarbonIconProps, Hotel } from "@carbon/icons-react";
 import Image from "next/image";
 
 interface PatternIconProps {
-  pattern: Pattern
+  pattern: Partial<Pattern>
   className?: string
   size: CarbonIconProps["size"]
 }
 
-const FallbackIcon = (props: PatternIconProps) => <Hotel size={32} className={props.className}/>
+const FallbackIcon = (props: PatternIconProps) => <Hotel size={props.size} className={props.className}/>
 
 export const PatternIcon = (props: PatternIconProps) => {
   const { pattern, size, className } = props;
+  console.log({pattern})
   return (
     pattern.iconUrl ?
     <div className={className}>

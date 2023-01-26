@@ -5,7 +5,7 @@ import { trpc } from "./trpc"
 import { Entry } from "./types"
 
 export const entriesQuery = `*[_type == "entry"]{...,  entryRating-> { grade }, mainImage {..., file {..., asset-> } }, 'patterns': terms[].pattern->{ name } }`
-export const patternsQuery = `*[_type == "pattern"]`
+export const patternsQuery = groq`*[_type == "pattern"] {..., "iconUrl": icon.asset -> url} `
 export const patternClassesQuery = `*[_type == "patternClass"] | order(order)`
 export const patternsWithClassQuery = groq`
   *[_type == "pattern"]
