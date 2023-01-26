@@ -15,10 +15,11 @@
 }
 
 .resultsRoot {
-  @apply absolute top-10 z-20;
+  @apply absolute top-11 z-20;
   @apply w-full;
   @apply overflow-y-auto;
   @apply pointer-events-auto;
+  max-height: calc(100% - 2.75rem);
 }
 
 .result {

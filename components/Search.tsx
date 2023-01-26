@@ -6,6 +6,7 @@ import { matchSorter } from "match-sorter"
 import Link from "next/link"
 import { ChangeEvent, Fragment, useEffect, useRef, useState } from "react"
 import usePortal from "react-cool-portal"
+import { useClickAway, useKey } from "react-use"
 import { useDebouncedCallback } from "use-debounce"
 import { A } from "../lib/fp"
 import { trpc } from "../lib/trpc"
@@ -72,10 +73,19 @@ const Search = () => {
     setResults(results)
   }, [entries, searchQuery])
 
+  const rootRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
+  const clear = () => {
+    setSearchQuery("")
+    if (inputRef.current) inputRef.current.value = ""
+  }
+
+  useKey("Escape", clear)
+  useClickAway(rootRef, clear)
+
   return (
-    <Fragment>
+    <div ref={rootRef}>
       <div className={css.searchRoot}>
         <label>
           <SearchIcon size={24} color={"white"} />
@@ -112,7 +122,7 @@ const Search = () => {
           </div>
         </Portal>
       )}
-    </Fragment>
+    </div>
   )
 }
 
