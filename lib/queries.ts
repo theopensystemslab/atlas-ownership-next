@@ -62,3 +62,4 @@ export const entriesByPatternIdQuery = (
     *[_type == "entry" && references("${patternId}") && _id != "${entryId}"]
     { dates, slug, location, name, _id }
 `
+export const contributorsQuery = groq`array::unique(*[_type == "entry" && defined(contributors)].contributors[].name)`

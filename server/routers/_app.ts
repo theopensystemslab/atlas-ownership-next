@@ -9,6 +9,7 @@ import {
   patternsQuery,
   patternsWithClassQuery,
   tenureTypeQuery,
+  contributorsQuery,
 } from "@/lib/queries"
 import { Entry, Pattern, PatternClass } from "@/lib/types"
 import { z } from "zod"
@@ -58,6 +59,9 @@ export const appRouter = router({
       ({ input }): Promise<CarouselItem[]> =>
         sanityClient.fetch(entriesByPatternIdQuery(input.patternId, input.entryId))
     ),
+  contributors: procedure.query(
+    (): Promise<string[]> => sanityClient.fetch(contributorsQuery)
+  ),
 })
 
 // export type definition of API

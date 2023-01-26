@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { LogoTwitter, LogoGithub, ArrowRight } from "@carbon/icons-react"
 import Image from "next/image"
+import { trpc } from "@/lib/trpc"
 
 const FooterLinks = () => {
   const links = [
@@ -20,9 +21,17 @@ const FooterLinks = () => {
   )
 }
 
-const Collaborators = () => (
-  <b className="row-span-2 col-span-4 text-l">Collaborators</b>
-)
+const Contributors = () => {
+  const { data: contributors, error: contributorsError } = trpc.contributors.useQuery()
+  return (
+    <div className ="row-span-2 col-span-4">
+      <b className="text-md mb-2 block">Contributors</b>
+      <div className="grid grid-cols-4 grid-rows-6 grid-flow-col">
+      { contributors?.map(contributor => <p key={contributor} className="text-xs mb-1">{contributor}</p>)}
+      </div>
+    </div>
+  )
+}
 
 const OSLLogo = () => (
   <div>
@@ -61,7 +70,7 @@ const Footer = () => (
   <footer className="bottom-0 absolute w-full h-1/4 pl-3 bg-black text-white text-sm grid grid-cols-6 grid-rows-3 gap-1">
     <FooterLinks />
     <SubmitButton />
-    <Collaborators />
+    <Contributors />
     <Discalimer />
     <SocialIcons />
   </footer>
