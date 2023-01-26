@@ -21,7 +21,7 @@ const FooterLinks = () => {
         <a href="https://airtable.com/shru3ZGjdyhEGTzx6" target="_blank" rel="noreferrer">
           Submit an entry
         </a>
-        <a href="mailto:atlasofownership@opensystemslab.io ">
+        <a href="mailto:atlasofownership@opensystemslab.io">
           Contact us
         </a>
       </div>
@@ -49,17 +49,43 @@ const OSLLogo = () => (
       width="24px"
       height="32px"
       layout="fixed"
+      className="hover:brightness-50"
     />
   </div>
 )
 
-const SocialIcons = () => (
-  <div className="flex space-x-3">
-    <LogoTwitter color="white" size={32} />
-    <LogoGithub color="white" size={32} />
-    <OSLLogo />
-  </div>
-)
+const SocialIcons = () => {
+  const socialLinks = [
+    { 
+      url: "https://twitter.com/OpenSystemsLab", 
+      component: <LogoTwitter size={32} />
+    },
+    { 
+      url: "https://github.com/theopensystemslab", 
+      component: <LogoGithub size={32} />
+    },
+    { 
+      url: "https://www.opensystemslab.io/", 
+      component: <OSLLogo />
+    },
+  ]
+  
+  return (
+    <div className="flex space-x-3">
+      { socialLinks.map((link, i) => (
+        <a 
+          key={`social-link-${i + 1}`} 
+          href={link.url} 
+          target="_blank" 
+          rel="noreferrer"
+          className="text-white hover:text-gray-500"
+        >
+          {link.component}
+        </a>
+      ))}
+    </div>
+  )
+}
 
 const Discalimer = () => (
   <p className="text-xs col-span-2">
