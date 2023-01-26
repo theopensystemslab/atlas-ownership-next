@@ -15,13 +15,31 @@
 }
 
 .resultsRoot {
-  @apply absolute z-20;
+  @apply absolute top-10 z-20;
+  @apply w-full;
+  @apply overflow-y-auto;
+
+  /* @apply flex justify-end flex-wrap; */
 }
 
 .result {
-  @apply bg-pink-300 mt-10 h-32 overflow-hidden;
+  position: relative;
+  @apply px-4 py-8;
+  @apply max-w-lg ml-auto  opacity-100 text-white  overflow-hidden;
+  @apply bg-black;
 }
 
-.result > *:not(:first-child) {
-  @apply mt-4;
+.result:first-child {
+  @apply pt-4;
+}
+
+.result:not(:last-child)::before {
+  content: "";
+  @apply absolute bottom-0 right-0 left-0 mx-auto;
+  @apply w-3/4;
+  @apply border-b border-white opacity-50;
+}
+
+.result p {
+  @apply text-xs;
 }

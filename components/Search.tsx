@@ -11,6 +11,7 @@ import { toggleSidebar } from "../lib/store"
 import usePortal from "react-cool-portal"
 import Link from "next/link"
 import { truncate } from "lodash"
+import clsx from "clsx"
 
 const SearchResult = ({
   entry,
@@ -21,19 +22,20 @@ const SearchResult = ({
 }) => {
   return (
     <div className={css.result}>
-      <h1>{entry.name}</h1>
-      <p>{truncate(entry.description, { length: 128, separator: " " })}</p>
-      <div>
+      <Link
+        href={`/entry/${entry.slug?.current}`}
+        onClick={onClick}
+        legacyBehavior={false}
+      >
+        <div>
+          <h1>{entry.name}</h1>
+          <p>{truncate(entry.description, { length: 280, separator: " " })}</p>
+          {/* <div>
         {entry.slug?.current && (
-          <Link
-            href={`/entry/${entry.slug?.current}`}
-            onClick={onClick}
-            legacyBehavior={false}
-          >
-            {entry.slug?.current}
-          </Link>
         )}
-      </div>
+      </div> */}
+        </div>
+      </Link>
     </div>
   )
 }
@@ -44,7 +46,10 @@ const Search = () => {
   const [results, setResults] = useState<Entry[]>([])
   const [searchQuery, setSearchQuery] = useState("")
 
-  const { Portal } = usePortal()
+  const { Portal } = usePortal({
+    autoRemoveContainer: false,
+    internalShowHide: false,
+  })
 
   const handler = useDebouncedCallback(
     (e: ChangeEvent<HTMLInputElement>) => void setSearchQuery(e.target.value),
@@ -83,14 +88,14 @@ const Search = () => {
           onChange={handler}
           placeholder="Search the atlas"
         />
-        <button>
+        {/* <button>
           <SettingsAdjust size={24} onClick={toggleSidebar} />
-        </button>
+        </button> */}
       </div>
       {/* <button className="bg-white text-black px-6 h-auto">Search</button> */}
       {searchQuery.length > 0 && (
         <Portal>
-          <div className={css.resultsRoot}>
+          <div className={clsx(css.resultsRoot, "no-scrollbar")}>
             {pipe(
               results,
               A.map((result) => (
