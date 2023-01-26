@@ -25,6 +25,7 @@ export const patternInfoQuery = (patternClassName: string | null) => `
       *[_type == "pattern"] { 
         ..., 
         class->, 
+        "iconUrl": icon.asset -> url,
         "entryCount": count(* [_type == "entry" && references(^._id)])
       }
       [class.name == "${patternClassName}" && type == "right" && entryCount > 0]
@@ -32,7 +33,8 @@ export const patternInfoQuery = (patternClassName: string | null) => `
     "obligations": 
       *[_type == "pattern"] {
         ..., 
-        class->, 
+        class->,
+        "iconUrl": icon.asset -> url,
         "entryCount": count(* [_type == "entry" && references(^._id)])
       }
       [class.name == "${patternClassName}" && type == "obligation" && entryCount > 0]

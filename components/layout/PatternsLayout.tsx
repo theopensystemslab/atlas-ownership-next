@@ -1,9 +1,9 @@
 import { trpc } from "@/lib/trpc";
 import { Pattern, PatternClass } from "@/lib/types"
-import { Hotel } from "@carbon/icons-react";
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useState } from "react";
 import { PageNavbar } from "../PageNavbar";
+import { PatternIcon } from "./ui/PatternIcon";
 
 interface PatternsLayoutProps {
   patternClasses?: PatternClass[]
@@ -69,7 +69,7 @@ const PatternItem = (props: { pattern: Pattern, patternClassName: string | undef
   return (
     <div className={`flex mb-4 ${reverse ? "flex-row-reverse" : ""}`}>
       <div className={clsx(`w-1/2 ${patternClassLookup[patternClassName!]} bg-opacity-40 flex items-center justify-center`)}>
-        <Hotel size={32} className="w-1/4 flex-center" />
+        <PatternIcon pattern={pattern} className="w-1/4 flex-center" size={32} />
         <div className="p-4 w-3/4">
           <p className="text-lg">{pattern.name}</p>
           <p className="text-xs">{pattern.description}</p>

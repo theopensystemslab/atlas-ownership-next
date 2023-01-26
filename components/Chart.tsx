@@ -167,6 +167,7 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
       setOpen(!open);
     }
   }
+  console.log(props.data)
 
   return (
     <div className="m-4">
