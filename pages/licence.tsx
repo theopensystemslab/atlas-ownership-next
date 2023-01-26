@@ -1,17 +1,12 @@
+import { trpc } from "@/lib/trpc"
 import NoopLayout from "../components/layout/NoopLayout"
+import { ContentPage } from "@/components/ContentPage"
 
 const LicencePage = () => {
+  const { data: licensePage } = trpc.page.useQuery({ pageSlug: "licence"})
+
   return (
-    <div className="w-1/3">
-      <h1 className="text-5xl font-semibold mb-12">
-        Licence
-      </h1>
-      <div className="flex flex-col w-3/4">
-        <p className="mb-3">
-          This is a placeholder sentence.
-        </p>
-      </div>
-    </div>
+    <ContentPage page={licensePage} />
   )
 }
 

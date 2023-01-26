@@ -1,17 +1,13 @@
+import { ContentPage } from "@/components/ContentPage"
+import { trpc } from "@/lib/trpc"
 import NoopLayout from "../components/layout/NoopLayout"
 
 const TermsOfUsePage = () => {
+  const { data: termsOfUsePage } = trpc.page.useQuery({ pageSlug: "terms-of-use" })
+  console.log(termsOfUsePage)
+
   return (
-    <div className="w-1/3">
-      <h1 className="text-5xl font-semibold mb-12">
-        Terms of Use
-      </h1>
-      <div className="flex flex-col w-3/4">
-        <p className="mb-3">
-          This is a placeholder sentence.
-        </p>
-      </div>
-    </div>
+    <ContentPage page={termsOfUsePage} />
   )
 }
 

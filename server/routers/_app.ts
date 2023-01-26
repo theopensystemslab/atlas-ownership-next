@@ -10,6 +10,7 @@ import {
   patternsWithClassQuery,
   tenureTypeQuery,
   contributorsQuery,
+  pageQuery,
 } from "@/lib/queries"
 import { Entry, Pattern, PatternClass } from "@/lib/types"
 import { z } from "zod"
@@ -62,6 +63,16 @@ export const appRouter = router({
   contributors: procedure.query(
     (): Promise<string[]> => sanityClient.fetch(contributorsQuery)
   ),
+  page: procedure
+    .input(
+      z.object({
+        pageSlug: z.string().optional(),
+      })
+    )
+    .query(
+      ({ input }): Promise<any> =>
+        sanityClient.fetch(pageQuery(input?.pageSlug))
+    ),
 })
 
 // export type definition of API
