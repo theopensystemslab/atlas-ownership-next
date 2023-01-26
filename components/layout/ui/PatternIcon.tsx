@@ -4,7 +4,7 @@ import Image from "next/image";
 
 interface PatternIconProps {
   pattern: Pattern
-  className: string
+  className?: string
   size: CarbonIconProps["size"]
 }
 
@@ -14,14 +14,15 @@ export const PatternIcon = (props: PatternIconProps) => {
   const { pattern, size, className } = props;
   return (
     pattern.iconUrl ?
-    <Image
-      priority
-      className={className}
-      src={pattern.iconUrl}
-      height={size}
-      width={size}
-      alt={`${pattern.name} icon`}
-    /> 
+    <div className={className}>
+      <Image
+        priority
+        src={pattern.iconUrl}
+        height={size}
+        width={size}
+        alt={`${pattern.name} icon`}
+      /> 
+    </div>
     : <FallbackIcon {...props}/>
   )
 }

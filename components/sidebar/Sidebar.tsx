@@ -5,7 +5,7 @@ import theme from "tailwindcss/defaultTheme"
 import { A } from "../../lib/fp"
 import { trpc } from "../../lib/trpc"
 import Accordion, { EntryFilterData, AccordionItemData } from "./Accordion"
-import { ChevronLeft, ChevronRight, Hotel } from "@carbon/icons-react"
+import { ChevronLeft, ChevronRight } from "@carbon/icons-react"
 import { toggleSidebar, useStore } from "lib/store"
 import { ChangeEvent, useState } from "react"
 import { EntryType, Pattern, TenureType } from "@/lib/types"
@@ -19,6 +19,7 @@ import {
   useSelection,
 } from "./selection"
 import clsx from "clsx"
+import { PatternIcon } from "../layout/ui/PatternIcon"
 
 const Chevvy = (props: any) => (
   <div className={css.chevvy} {...props}>
@@ -138,7 +139,13 @@ const PatternClassAccordion = () => {
     e.target.checked ? selectPattern(pattern) : deselectPattern(pattern)
   }
 
-  const placeholderPatternClassIcon = <Hotel size={24} />
+  const buildAccordionItemData = (pattern: Pattern): AccordionItemData => ({ 
+    checked: patternNames.includes(pattern.name), 
+    _id: pattern._id, 
+    displayText: pattern.name, 
+    data: pattern, 
+    icon: <PatternIcon size={32} pattern={pattern} className="mr-4"/> 
+  })
 
   return (
     <>
@@ -156,13 +163,7 @@ const PatternClassAccordion = () => {
             items={pipe(
               patterns,
               A.filter((pattern) => pattern.class.name === patternClass.name),
-              A.map((pattern) => ({
-                checked: patternNames.includes(pattern.name),
-                _id: pattern._id,
-                displayText: pattern.name,
-                data: pattern,
-                icon: placeholderPatternClassIcon,
-              }))
+              A.map(buildAccordionItemData)
             )}
           />
         ))

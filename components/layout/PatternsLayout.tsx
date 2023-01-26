@@ -69,7 +69,7 @@ const PatternItem = (props: { pattern: Pattern, patternClassName: string | undef
   return (
     <div className={`flex mb-4 ${reverse ? "flex-row-reverse" : ""}`}>
       <div className={clsx(`w-1/2 ${patternClassLookup[patternClassName!]} bg-opacity-40 flex items-center justify-center`)}>
-        <PatternIcon pattern={pattern} className="w-1/4 flex-center" size={32} />
+        <PatternIcon pattern={pattern} className="w-1/4 flex justify-center" size={32} />
         <div className="p-4 w-3/4">
           <p className="text-lg">{pattern.name}</p>
           <p className="text-xs">{pattern.description}</p>
