@@ -1,12 +1,16 @@
 import { pipe } from "fp-ts/lib/function"
+import { groq } from "next-sanity"
 import { O, RA } from "./fp"
 import { trpc } from "./trpc"
 import { Entry } from "./types"
 
 export const entriesQuery = `*[_type == "entry"]{...,  entryRating-> { grade }, mainImage {..., file {..., asset-> } }, 'patterns': terms[].pattern->{ name } }`
-export const patternsQuery = `*[_type == "pattern"]`
+export const patternsQuery = groq`*[_type == "pattern"] {..., "iconUrl": icon.asset -> url} `
 export const patternClassesQuery = `*[_type == "patternClass"] | order(order)`
-export const patternsWithClassQuery = `*[_type == "pattern"]{..., class -> }[ count(*[_type == "entry" && references(^._id)]) > 0] | order(order)`
+export const patternsWithClassQuery = groq`
+  *[_type == "pattern"]
+  {..., class -> , "iconUrl": icon.asset -> url}
+  [ count(*[_type == "entry" && references(^._id)]) > 0] | order(order)`
 
 export const useGetEntryFromSlug = () => {
   const { data: entries } = trpc.entries.useQuery()
@@ -25,6 +29,7 @@ export const patternInfoQuery = (patternClassName: string | null) => `
       *[_type == "pattern"] { 
         ..., 
         class->, 
+        "iconUrl": icon.asset -> url,
         "entryCount": count(* [_type == "entry" && references(^._id)])
       }
       [class.name == "${patternClassName}" && type == "right" && entryCount > 0]
@@ -32,7 +37,8 @@ export const patternInfoQuery = (patternClassName: string | null) => `
     "obligations": 
       *[_type == "pattern"] {
         ..., 
-        class->, 
+        class->,
+        "iconUrl": icon.asset -> url,
         "entryCount": count(* [_type == "entry" && references(^._id)])
       }
       [class.name == "${patternClassName}" && type == "obligation" && entryCount > 0]

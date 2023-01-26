@@ -25,6 +25,7 @@ export type Pattern = {
   class: PatternClass
   entryCount?: number
   type: "right" | "obligation"
+  iconUrl?: string
 }
 
 export type PatternClass = {
