@@ -1,5 +1,5 @@
 .searchRoot {
-  @apply flex items-stretch h-10 justify-center;
+  @apply flex items-stretch h-10 justify-center pointer-events-auto;
 }
 
 .searchRoot label {
@@ -18,8 +18,7 @@
   @apply absolute top-10 z-20;
   @apply w-full;
   @apply overflow-y-auto;
-
-  /* @apply flex justify-end flex-wrap; */
+  @apply pointer-events-auto;
 }
 
 .result {
