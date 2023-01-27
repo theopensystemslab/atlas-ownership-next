@@ -31,18 +31,41 @@ const Header = () => (
   </header>
 );
 
-const PatternNav = (props: { patternClasses: PatternClass[] | undefined, onClick: Dispatch<SetStateAction<PatternClass | undefined>>, selectedPatternClass: PatternClass | undefined }) => (
-  <nav className="columns-9 h-10 gap-0">
-    {props.patternClasses && props.patternClasses.map(patternClass =>
-      <button
+interface PatternNavProps {
+  patternClasses: PatternClass[] | undefined
+  onClick: Dispatch<SetStateAction<PatternClass | undefined>>
+  selectedPatternClass: PatternClass | undefined
+}
+
+const PatternNav = ({ patternClasses, onClick, selectedPatternClass }: PatternNavProps) => (
+  <>
+    <nav className="columns-9 h-10 gap-0 hidden lg:block">
+      {patternClasses && patternClasses.map(patternClass =>
+        <button
         key={patternClass.name}
-        className={`block w-full h-full text-left pl-2 text-sm hover:underline ${patternClass.name === props.selectedPatternClass?.name ? "bg-white" : patternClassLookup[patternClass.name]}`}
-        onClick={() => props.onClick(patternClass)}
+        className={`block w-full h-full text-left pl-2 text-sm hover:underline ${patternClass.name === selectedPatternClass?.name ? "bg-white" : patternClassLookup[patternClass.name]}`}
+        onClick={() => onClick(patternClass)}
+        >
+          {patternClass.name}
+        </button>
+      )}
+    </nav>
+    <nav className={`px-8 lg:hidden w-full flex gap-4 flex-wrap justify-around items-center py-4 ${selectedPatternClass ? patternClassLookup[selectedPatternClass?.name] : patternClassLookup[0]}`}>
+      <label htmlFor="patternsClassSelect">Explore a pattern class:</label>
+      <select 
+        name="patternsClassSelect" 
+        id="patternsClassSelect" 
+        className="px-4 py-2"
+        onChange={(e) => {
+          onClick(patternClasses && patternClasses[Number(e.target.value)])
+        }}
       >
-        {patternClass.name}
-      </button>
-    )}
-  </nav>
+        {patternClasses && patternClasses.map((patternClass, i) =>
+          <option key={`${patternClass.name}-option`} value={i}>{patternClass.name}</option>
+        )}
+      </select>
+    </nav>
+  </>
 );
 
 const PatternList = (props: { patternClass: PatternClass | undefined }) => {
@@ -68,18 +91,18 @@ const PatternItem = (props: { pattern: Pattern, patternClassName: string | undef
 
   return (
     <div className={`flex mb-4 ${reverse ? "flex-row-reverse" : ""}`}>
-      <div className={clsx(`w-1/2 ${patternClassLookup[patternClassName!]} bg-opacity-40 flex items-center justify-center`)}>
+      <div className={clsx(`w-full md:w-1/2 ${patternClassLookup[patternClassName!]} bg-opacity-40 flex items-center justify-center`)}>
         <PatternIcon pattern={pattern} className="w-1/4 flex justify-center" size={32} />
         <div className="p-4 w-3/4">
           <p className="text-lg">{pattern.name}</p>
           <p className="text-xs">{pattern.description}</p>
         </div>
       </div>
-      <div className="w-1/2 grid" style={{ gridTemplateColumns: `repeat(${highestCount}, minmax(0, 1fr))`, direction: reverse ? "rtl" : "ltr" }}>
-        <div className={clsx(`${patternClassLookup[patternClassName!]} bg-opacity-20 flex justify-center flex-col py-2 px-4`)} style={{ gridColumn: `span ${pattern.entryCount}` }}>
-          <p className="text-xs">Appears in</p>
-          <p className="text-5xl py-2">{pattern.entryCount}</p>
-          <p className="text-xs">{pattern?.entryCount || 0 > 1 ? "entries" : "entry"}</p>
+      <div className="md:w-1/2 md:grid w-1/4" style={{ gridTemplateColumns: `repeat(${highestCount}, minmax(0, 1fr))`, direction: reverse ? "rtl" : "ltr" }}>
+        <div className={clsx(`${patternClassLookup[patternClassName!]} bg-opacity-20 flex justify-center flex-col py-2 px-4 h-full`)} style={{ gridColumn: `span ${pattern.entryCount}` }}>
+          <p className="text-center md:text-start text-xs">Appears in</p>
+          <p className="text-center md:text-start text-5xl py-2">{pattern.entryCount}</p>
+          <p className="text-center md:text-start text-xs">{pattern?.entryCount || 0 > 1 ? "entries" : "entry"}</p>
         </div>
       </div>
     </div>
