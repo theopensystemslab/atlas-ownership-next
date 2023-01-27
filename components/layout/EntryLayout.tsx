@@ -1,4 +1,5 @@
 import { getFormattedEntryDates, getFormattedTenureTypes } from "@/lib/entry"
+import useWindowDimensions from "@/lib/useWindowDimension"
 import { ArrowRight, ArrowUpRight, Close } from "@carbon/icons-react"
 import Link from "next/link"
 import { useState } from "react"
@@ -119,13 +120,15 @@ export const EntryLayout = (props: EntryLayoutProps) => {
   const { entry, carouselItems } = props
   const [ showRollup, setShowRollup ] = useState(false);
 
+  const { width, height } = useWindowDimensions();
+
   return (
     <div className="text-white">
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
       {entry?.terms?.length && <Chart
         rollupToPatternClass={showRollup}
-        showLabels={window?.innerWidth > 450 ? true : false}
+        showLabels={width && width > 450 ? true : false}
         terms={entry?.terms}
         entryId={entry?._id}
       />}
