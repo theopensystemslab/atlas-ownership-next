@@ -51,7 +51,7 @@ const PatternNav = ({ patternClasses, onClick, selectedPatternClass }: PatternNa
       )}
     </nav>
     <nav className={`px-8 lg:hidden w-full flex gap-4 flex-wrap justify-around items-center py-4 ${selectedPatternClass ? patternClassLookup[selectedPatternClass?.name] : patternClassLookup[0]}`}>
-      <label htmlFor="patternsClassSelect">Explore a pattern class:</label>
+      <label className="md:text-lg" htmlFor="patternsClassSelect">Explore a pattern class:</label>
       <select 
         name="patternsClassSelect" 
         id="patternsClassSelect" 
