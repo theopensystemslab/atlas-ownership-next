@@ -42,10 +42,10 @@ const MapboxGlobe = () => {
       void router.events.off("beforeHistoryChange", handleRouteChange)
   }, [handleRouteChange, router, router.events])
 
-  const { 
+  const {
     patternNames: selectedPatternNames,
     entryType: selectedEntryTypes,
-    tenureTypes: selectedTenureTypes, 
+    tenureTypes: selectedTenureTypes,
   } = useSelection()
 
   const entryToFeature = (entry: Entry): O.Option<Feature> =>
@@ -74,7 +74,7 @@ const MapboxGlobe = () => {
           entry.patterns?.map((pattern) => pattern.name) ?? []
         return acc && entryPatternNames.includes(v)
       }, true)
-      return isMatch;
+      return isMatch
     }
 
     const entryTypeFilter = (entry: Entry) => {
@@ -87,10 +87,11 @@ const MapboxGlobe = () => {
       if (selectedTenureTypes.length === 0) return true
 
       const isMatch = selectedTenureTypes.reduce((acc, v) => {
-        const tenureTypes = entry.tenureType?.map(tenureType => TenureType[tenureType]) ?? []
+        const tenureTypes =
+          entry.tenureType?.map((tenureType) => TenureType[tenureType]) ?? []
         return acc && tenureTypes.includes(v)
       }, true)
-      return isMatch;
+      return isMatch
     }
 
     const features: Feature<Geometry, GeoJsonProperties>[] = pipe(

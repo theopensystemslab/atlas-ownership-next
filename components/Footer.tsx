@@ -1,48 +1,89 @@
 import Link from "next/link"
 import { LogoTwitter, LogoGithub, ArrowRight } from "@carbon/icons-react"
 import Image from "next/image"
+import { trpc } from "@/lib/trpc"
 
 const FooterLinks = () => {
-  const links = [
+  const pageLinks = [
     { title: "About", path: "/about" },
     { title: "Explore the patterns", path: "/patterns" },
     { title: "Licence", path: "/licence" },
     { title: "Terms of use", path: "/terms-of-use" },
   ]
   return (
-    <div className="flex justify-between items-center p-2 sm:flex-col flex-wrap col-span-6 sm:col-span-2 text-xs sm:mt-1">
-      {links.map((link) => (
-        <Link key={link.title} href={link.path} className="sm:mb-0.5">
-          {link.title}
-        </Link>
-      ))}
+    <div className="col-span-4 text-xs mt-2 mb-4">
+      <div className="grid grid-cols-4 grid-flow-col grid-rows-3 gap-1">
+        {pageLinks.map((link) => (
+          <Link key={link.title} href={link.path}>
+            <a>{link.title}</a>
+          </Link>
+        ))}
+        <a href="https://airtable.com/shru3ZGjdyhEGTzx6" target="_blank" rel="noreferrer">
+          Submit an entry
+        </a>
+        <a href="mailto:atlasofownership@opensystemslab.io">
+          Contact us
+        </a>
+      </div>
     </div>
   )
 }
 
-const Collaborators = () => (
-  <b className="hidden sm:flex row-span-2 col-span-4 text-xs">Collaborators</b>
-)
+const Contributors = () => {
+  const { data: contributors, error: contributorsError } = trpc.contributors.useQuery()
+  return (
+    <div className ="row-span-2 col-span-4">
+      <b className="text-md mb-2 block">Contributors</b>
+      <div className="grid grid-cols-4 grid-rows-6 grid-flow-col">
+      { contributors?.map(contributor => <p key={contributor} className="text-xs mb-1">{contributor}</p>)}
+      </div>
+    </div>
+  )
+}
 
 const OSLLogo = () => (
-  <div>
-    <Image
-      src="/logos/osl.png"
-      alt="Open System Lab logo"
-      width="24px"
-      height="32px"
-      layout="fixed"
-    />
+  <div className="h-5 w-5 mt-0.5">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 196">
+      <path
+        fill="currentColor"
+        d="M84.07 28.36h27.86V.5H28.36v27.86h55.71zm27.86 0v139.28h27.86V28.36h-27.86zm-83.57 83.57V28.36H.5v139.28h27.86v-55.71zm27.85 55.71H28.36v27.86h83.57v-27.86H56.21z"
+      />
+    </svg>
   </div>
 )
 
-const SocialIcons = () => (
-  <div className="hidden sm:flex space-x-3">
-    <LogoTwitter color="white" size={32} />
-    <LogoGithub color="white" size={32} />
-    <OSLLogo />
-  </div>
-)
+const SocialIcons = () => {
+  const socialLinks = [
+    { 
+      url: "https://twitter.com/OpenSystemsLab", 
+      component: <LogoTwitter size={32} />
+    },
+    { 
+      url: "https://github.com/theopensystemslab", 
+      component: <LogoGithub size={32} />
+    },
+    { 
+      url: "https://www.opensystemslab.io/", 
+      component: <OSLLogo />
+    },
+  ]
+  
+  return (
+    <div className="grid grid-cols-4 gap-3">
+      { socialLinks.map((link, i) => (
+        <a 
+          key={`social-link-${i + 1}`} 
+          href={link.url} 
+          target="_blank" 
+          rel="noreferrer"
+          className="text-white hover:text-gray-500"
+        >
+          {link.component}
+        </a>
+      ))}
+    </div>
+  )
+}
 
 const Discalimer = () => (
   <p className="text-xs p-2 sm:p-0 col-span-6 sm:col-span-2">
@@ -66,7 +107,7 @@ const Footer = () => (
   <footer className="bottom-0 absolute w-full h-1/4 sm:pl-3 bg-black text-white text-xs sm:text-sm grid grid-cols-6 grid-rows-3 gap-1">
     <FooterLinks />
     <SubmitButton />
-    <Collaborators />
+    <Contributors />
     <Discalimer />
     <SocialIcons />
   </footer>

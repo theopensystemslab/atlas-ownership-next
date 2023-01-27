@@ -45,4 +45,15 @@ export const deselectTenureType = (tenureType: TenureType): void => {
   )
 }
 
+export const isSelectionEmpty = (): boolean => {
+  const { patternNames, entryType, tenureTypes } = selection;
+  return !patternNames.length && !entryType && !tenureTypes.length;
+}
+
+export const deselectAll = (): void => {
+  selection.patternNames = [];
+  selection.entryType = undefined;
+  selection.tenureTypes = [];
+}
+
 export const useSelection = () => useSnapshot(selection)

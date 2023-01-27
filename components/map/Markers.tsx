@@ -40,8 +40,8 @@ const Marker = (props: MarkerProps) => {
   }
 
   const PopupContent = () => (
-    <div className="w-[500px]">
-      <h2 className="text-xl">{entry?.name}</h2>
+    <div className="w-[320px] sm:w-[500px]">
+      <h2 className="text-lg sm:text-xl">{entry?.name}</h2>
       <span className="text-base">{entry?.tenureType?.map((i) => _.capitalize(_.startCase(i))).join(", ")}</span>
       {entry?.terms?.length && (
         <Chart
