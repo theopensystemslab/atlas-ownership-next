@@ -9,7 +9,7 @@ const Header = () => (
         A map of property rights and obligations across time and space
       </h2>
       <Link href="/about">
-        <a className="pointer-events-auto mt-2 text-lg text-gray-500">Why?</a>
+        <a className="pointer-events-auto mt-2 text-lg opacity-75">Why?</a>
       </Link>
     </div>
     <Search />
