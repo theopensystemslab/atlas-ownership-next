@@ -11,6 +11,7 @@ import { useDebouncedCallback } from "use-debounce"
 import { A } from "../lib/fp"
 import { trpc } from "../lib/trpc"
 import { Entry } from "../lib/types"
+import { useClickAway } from "../lib/utils"
 import css from "./Search.module.css"
 
 const SearchResult = ({
@@ -82,7 +83,7 @@ const Search = () => {
   }
 
   useKey("Escape", clear)
-  // useClickAway(rootRef, clear)
+  useClickAway(rootRef, clear)
 
   return (
     <div ref={rootRef}>
