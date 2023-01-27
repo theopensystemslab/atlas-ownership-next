@@ -157,6 +157,7 @@ const BarChartByPatternClass = (props: BarChartByPatternClassProps) => {
 
 const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) => {
   const { data: formattedTerms, entryId, showLabels } = props
+  const gridCols = showLabels ? 8 : 5
 
   const [open, setOpen] = useState(false)
   const [openIndex, setOpenIndex] = useState(0)
@@ -178,7 +179,7 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
       {formattedTerms.map((term: any, i: number) => (
         <div className="flex flex-col" key={`row-${term.name}-${i}`}>
           <div className="flex">
-            <div className="flex-1 grid" style={{ gridTemplateColumns: showLabels ? `repeat(8, minmax(0, 1fr))` : `repeat(5, minmax(0, 1fr))`, direction: "rtl"}}>
+            <div className="flex-1 grid" style={{ gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`, direction: "rtl"}}>
               <div 
                 className={`${term.type === "Obligation" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Obligation" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
                 style={{ gridColumn: `span ${term.strength}` }}
@@ -192,7 +193,7 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
                 </div>
               }
             </div>
-            <div className="flex-1 grid" style={{ gridTemplateColumns: showLabels ? `repeat(8, minmax(0, 1fr))` : `repeat(5, minmax(0, 1fr))`, direction: "ltr" }}>
+            <div className="flex-1 grid" style={{ gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`, direction: "ltr" }}>
               <div 
                 className={`${term.type === "Right" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Right" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
                 style={{ gridColumn: `span ${term.strength}` }}
