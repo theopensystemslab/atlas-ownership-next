@@ -1,7 +1,9 @@
 import { trpc } from "@/lib/trpc";
-import { Pattern, PatternClass } from "@/lib/types"
+import { Page, Pattern, PatternClass } from "@/lib/types"
+import { PortableText } from "@portabletext/react";
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useState } from "react";
+import { pageComponents } from "../ContentPage";
 import { PageNavbar } from "../PageNavbar";
 import { PatternIcon } from "./ui/PatternIcon";
 
@@ -21,13 +23,17 @@ const patternClassLookup: Record<string, string> = {
   Use: "bg-use",
 } as const;
 
-const Header = () => (
-  <header className="bg-gray-200 px-8 pb-8">
-    <h1 className="text-5xl mt-8 mb-8">Explore the patterns</h1>
-    <h2 className="text-2xl mb-2">What is ownership?</h2>
-    <p className="mb-8">Property is often described as a &quot;bundle&quot; of rights and obligations. We can unbundle these rights into 8 classes.</p>
-    <h2 className="text-2xl mb-2">What is a pattern?</h2>
-    <p>A pattern is a recurring solution. Although the precise details and the legal mechanisms used may vary in each case, by identifying these common patterns we can build a kind of &quot;genome&quot; for property; a library of building blocks that can be used to describe any form of ownership or tenure. Together, we are discovering new patterns all the time, as new entries are added to the Atlas.</p>
+interface HeaderProps {
+  page: Page
+}
+
+const Header = ({ page }: HeaderProps) => (
+  <header className="bg-gray-200 px-8 pb-6 text-black">
+    <h1 className="text-5xl mt-8 mb-8">{page?.title}</h1>
+    <PortableText
+      value={page?.content}
+      components={pageComponents}
+    />
   </header>
 );
 
@@ -87,13 +93,14 @@ const PatternItem = (props: { pattern: Pattern, patternClassName: string | undef
 }
 
 export const PatternsLayout = (props: PatternsLayoutProps) => {
+  const { data: patternsPage } = trpc.page.useQuery({ pageSlug: "patterns" })
   const { patternClasses } = props;
   const [selectedPatternClass, setSelectedPatternClass] = useState<PatternClass | undefined>(patternClasses?.[0]);
 
   return (
     <div className="bg-gray-200 text-black z-20 fixed inset-0 overflow-y-auto">
       <PageNavbar variant="light" />
-      <Header />
+      <Header page={patternsPage}/>
       <PatternNav patternClasses={patternClasses} onClick={setSelectedPatternClass} selectedPatternClass={selectedPatternClass} />
       <PatternList patternClass={selectedPatternClass} />
     </div>
