@@ -5,14 +5,16 @@ import theme from "tailwindcss/defaultTheme"
 import { A } from "../../lib/fp"
 import { trpc } from "../../lib/trpc"
 import Accordion, { EntryFilterData, AccordionItemData } from "./Accordion"
-import { ChevronLeft, ChevronRight } from "@carbon/icons-react"
+import { ChevronLeft, ChevronRight, RadioButton, RadioButtonChecked } from "@carbon/icons-react"
 import { toggleSidebar, useStore } from "lib/store"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { EntryType, Pattern, TenureType } from "@/lib/types"
 import {
+  deselectAll,
   deselectEntryType,
   deselectPattern,
   deselectTenureType,
+  isSelectionEmpty,
   selectEntryType,
   selectPattern,
   selectTenureType,
@@ -24,19 +26,51 @@ import { PatternIcon } from "../layout/ui/PatternIcon"
 const Chevvy = (props: any) => (
   <div className={css.chevvy} {...props}>
     <motion.div
+      className="flex flex-col items-end pr-2"
       variants={{
         closed: {
-          x: `${theme.spacing[8]}`,
+          x: `${theme.spacing[10]}`,
         },
         open: {
           x: 0,
         },
       }}
     >
-      {props?.open ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
+      {props?.open ? <ChevronLeft size={24} className="mr-1" /> : <ChevronRight size={24} className="mr-1" />}
+      <ToggleAllEntries />
     </motion.div>
   </div>
 )
+
+const ToggleAllEntries = () => {
+  const [checked, setChecked] = useState(false)
+  const selection = useSelection()
+
+  useEffect(() => {
+    setChecked(isSelectionEmpty())
+  }, [selection])
+
+  return (
+    <div className="bg-white w-full pt-2 mr-1">
+      <label className="flex justify-between cursor-pointer" htmlFor="toggleAllEntries">
+        <div className="ml-2">
+          <p>All entries</p>
+        </div>
+        {checked ?
+          <RadioButtonChecked size={24} className={css.checkbox} role="checkbox" aria-checked="true" /> :
+          <RadioButton size={24} className={css.checkbox} role="checkbox" aria-checked="false" />
+        }
+      </label>
+      <input
+        id="toggleAllEntries"
+        type="checkbox"
+        className="hidden"
+        onChange={deselectAll}
+        checked={checked}
+      />
+    </div>
+  )
+}
 
 const EntryTypeAccordion = () => {
   const { entryType: selectedEntryType } = useSelection()

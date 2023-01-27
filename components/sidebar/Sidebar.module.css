@@ -12,3 +12,7 @@
   @apply bg-inherit;
   @apply flex justify-end px-1 py-2;
 }
+
+.chevvy + div {
+  @apply pt-0
+}
