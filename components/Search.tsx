@@ -4,9 +4,9 @@ import { pipe } from "fp-ts/lib/function"
 import { truncate } from "lodash"
 import { matchSorter } from "match-sorter"
 import Link from "next/link"
-import { ChangeEvent, Fragment, useEffect, useRef, useState } from "react"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
 import usePortal from "react-cool-portal"
-import { useClickAway, useKey } from "react-use"
+import { useKey } from "react-use"
 import { useDebouncedCallback } from "use-debounce"
 import { A } from "../lib/fp"
 import { trpc } from "../lib/trpc"
@@ -82,7 +82,7 @@ const Search = () => {
   }
 
   useKey("Escape", clear)
-  useClickAway(rootRef, clear)
+  // useClickAway(rootRef, clear)
 
   return (
     <div ref={rootRef}>
