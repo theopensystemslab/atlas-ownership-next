@@ -12,7 +12,6 @@ const FallbackIcon = (props: PatternIconProps) => <Hotel size={props.size} class
 
 export const PatternIcon = (props: PatternIconProps) => {
   const { pattern, size, className } = props;
-  console.log({pattern})
   return (
     pattern.iconUrl ?
     <div className={className}>

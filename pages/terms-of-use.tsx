@@ -4,7 +4,6 @@ import NoopLayout from "../components/layout/NoopLayout"
 
 const TermsOfUsePage = () => {
   const { data: termsOfUsePage } = trpc.page.useQuery({ pageSlug: "terms-of-use" })
-  console.log(termsOfUsePage)
 
   return (
     <ContentPage page={termsOfUsePage} />
