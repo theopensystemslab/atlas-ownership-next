@@ -7,7 +7,7 @@
 }
 
 .searchRoot input {
-  @apply pl-2 bg-transparent text-white;
+  @apply pl-2 bg-transparent text-white text-sm sm:text-base;
 }
 
 .searchRoot button {
@@ -25,7 +25,7 @@
 .result {
   position: relative;
   @apply px-4 py-8;
-  @apply max-w-lg ml-auto  opacity-100 text-white  overflow-hidden;
+  @apply max-w-lg ml-auto opacity-100 text-white overflow-hidden;
   @apply bg-black;
 }
 
@@ -40,6 +40,10 @@
   @apply border-b border-white opacity-50;
 }
 
+.result h1 {
+  @apply text-lg sm:text-2xl
+}
+
 .result p {
-  @apply text-xs;
+  @apply text-xs sm:text-sm;
 }
