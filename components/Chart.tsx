@@ -181,28 +181,28 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
           <div className="flex">
             <div className="flex-1 grid" style={{ gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`, direction: "rtl"}}>
               <div 
-                className={`${term.type === "Obligation" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Obligation" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
-                style={{ gridColumn: `span ${term.strength}` }}
+                className={`${term.type === "Obligation" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Obligation" && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
+                style={{ gridColumn: `span ${term.strength || 1}` }}
                 onClick={() => handleClick(i)}
               >
-                {term.type === "Obligation" && term.strength > 0 && <PatternIcon size="24" className="ml-2 text-black" pattern={{ iconUrl: term.patternIconUrl }}/>}
+                {term.type === "Obligation" && <PatternIcon size="24" className="ml-2 text-black" pattern={{ iconUrl: term.patternIconUrl }}/>}
               </div>
               {showLabels &&
-                <div className="flex-1 h-10 text-black text-xs sm:text-sm flex items-center mr-3 text-right" style={{ gridColumn: showLabels ? `span ${8 - term.strength}` : `span ${5 - term.strength}` }}>
+                <div className="flex-1 h-10 text-black text-xs sm:text-sm flex items-center mr-3 text-right" style={{ gridColumn: showLabels ? `span ${term.strength ? 8 - term.strength : 7}` : `span ${term.strength ? 5 - term.strength : 4}` }}>
                   {term.type === "Obligation" && term.name}
                 </div>
               }
             </div>
             <div className="flex-1 grid" style={{ gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`, direction: "ltr" }}>
               <div 
-                className={`${term.type === "Right" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Right" && term.strength > 0 && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
-                style={{ gridColumn: `span ${term.strength}` }}
+                className={`${term.type === "Right" && term.strength > 0 && backgroundColorClasses[term.patternClassName!]} ${term.type === "Right" && hoverColorClasses[term.patternClassName!]} h-10 cursor-pointer flex justify-end items-center`} 
+                style={{ gridColumn: `span ${term.strength || 1}` }}
                 onClick={() => handleClick(i)}
               >
-                {term.type === "Right" && term.strength > 0 && <PatternIcon size="24" className="mr-2 text-black" pattern={{ iconUrl: term.pattern?.patternIconUrl }} />}
+                {term.type === "Right" && <PatternIcon size="24" className="mr-2 text-black" pattern={{ iconUrl: term.pattern?.patternIconUrl }} />}
               </div>
             {showLabels &&
-                <div className="flex-1 h-10 text-black text-xs sm:text-sm flex items-center justify-start ml-3" style={{ gridColumn: showLabels ? `span ${8 - term.strength}` : `span ${5 - term.strength}` }}>
+                <div className="flex-1 h-10 text-black text-xs sm:text-sm flex items-center justify-start ml-3" style={{ gridColumn: showLabels ? `span ${term.strength ? 8 - term.strength : 7}` : `span ${term.strength ? 5 - term.strength : 4}` }}>
                 {term.type === "Right" && term.name}
               </div> 
             }

@@ -1,5 +1,5 @@
 import { getFormattedEntryDates, getFormattedTenureTypes } from "@/lib/entry"
-import useWindowDimensions from "@/lib/useWindowDimension"
+import { useWindowDimensions } from "@/lib/utils"
 import { ArrowRight, ArrowUpRight, Close } from "@carbon/icons-react"
 import Link from "next/link"
 import { useState } from "react"
@@ -22,7 +22,7 @@ interface EntryItemProps {
 
 // "true" enables toggling between two chart styles
 //    helpful for debugging math between pattern classes & individual terms!
-const DEBUG_CHARTS = false;
+const DEBUG_CHARTS = false
 
 const EntryHeader = (entry?: Entry) => (
   <div
@@ -80,15 +80,18 @@ const EntryDetails = (entry?: Entry) => (
       className="col-span-4 sm:col-span-2"
       heading={getFormattedTenureTypes(entry?.tenureType)}
     />
-    <EntryItem 
+    <EntryItem
       className="col-span-2 sm:col-span-1"
-      heading={entry?.location?.region || "Unknown location"} 
+      heading={entry?.location?.region || "Unknown location"}
     />
-    <EntryItem 
+    <EntryItem
       className="col-span-2 sm:col-span-1 text-right sm:text-left"
-      heading={getFormattedEntryDates(entry?.dates)} />
+      heading={getFormattedEntryDates(entry?.dates)}
+    />
     <EntryItem heading="" className="col-span-4">
-      <p className="text-sm mt-4 sm:mt-0 mb-1 sm:mb-2 whitespace-pre-wrap">{entry?.description}</p>
+      <p className="text-sm mt-4 sm:mt-0 mb-1 sm:mb-2 whitespace-pre-wrap">
+        {entry?.description}
+      </p>
     </EntryItem>
     {entry?.references?.length && (
       <EntryItem heading="More information" className="col-span-2">
@@ -118,25 +121,25 @@ const EntryDetails = (entry?: Entry) => (
 
 export const EntryLayout = (props: EntryLayoutProps) => {
   const { entry, carouselItems } = props
-  const [ showRollup, setShowRollup ] = useState(false);
+  const [showRollup, setShowRollup] = useState(false)
 
-  const { width, height } = useWindowDimensions();
+  const { width, height } = useWindowDimensions()
 
   return (
     <div className="text-white">
       <EntryHeader {...entry} />
       <EntryDetails {...entry} />
-      {entry?.terms?.length && <Chart
-        rollupToPatternClass={showRollup}
-        showLabels={width && width > 450 ? true : false}
-        terms={entry?.terms}
-        entryId={entry?._id}
-      />}
+      {entry?.terms?.length && (
+        <Chart
+          rollupToPatternClass={showRollup}
+          showLabels={width && width > 450 ? true : false}
+          terms={entry?.terms}
+          entryId={entry?._id}
+        />
+      )}
       {DEBUG_CHARTS && (
         <form className="flex m-3 p-3 bg-gray-200">
-          <div className="text-black text-sm mr-2">
-            Chart by:
-          </div>
+          <div className="text-black text-sm mr-2">Chart by:</div>
           <div className="radio text-black text-sm mr-3">
             <label>
               <input
@@ -172,7 +175,12 @@ export const EntryLayout = (props: EntryLayoutProps) => {
           cardClassNames="bg-gray-200"
         />
       )}
-      <a className="w-full bg-black flex py-4 justify-center" href="https://airtable.com/shrl7X5UhiOHUaj3r" target="_blank" rel="noreferrer">
+      <a
+        className="w-full bg-black flex py-4 justify-center"
+        href="https://airtable.com/shrl7X5UhiOHUaj3r"
+        target="_blank"
+        rel="noreferrer"
+      >
         Suggest an improvement to this entry
         <ArrowRight className="pl-2" size={24} />
       </a>

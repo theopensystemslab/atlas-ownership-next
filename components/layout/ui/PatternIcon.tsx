@@ -14,7 +14,7 @@ export const PatternIcon = (props: PatternIconProps) => {
   const { pattern, size, className } = props;
   return (
     pattern.iconUrl ?
-    <div className={className}>
+    <div className={`flex items-center justify-center ${className}`}>
       <Image
         priority
         src={pattern.iconUrl}
