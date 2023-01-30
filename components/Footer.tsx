@@ -86,20 +86,25 @@ const SocialIcons = () => {
 }
 
 const Discalimer = () => (
-  <p className="text-xs col-span-2">
+  <p className="text-xs p-2 sm:p-0 col-span-6 sm:col-span-2">
     The Atlas of Ownership is maintained by Open Systems Lab, non profit company
     9152368 registered in England and Wales
   </p>
 )
 
 const SubmitButton = () => (
-  <a href="https://airtable.com/shru3ZGjdyhEGTzx6" target="_blank" rel="noreferrer" className="bg-white text-black py-1 px-14 col-span-2 col-end-7 mb-4 flex items-center justify-center">
+  <a 
+    href="https://airtable.com/shru3ZGjdyhEGTzx6" 
+    target="_blank" 
+    rel="noreferrer" 
+    className="bg-white text-black py-1 px-14 col-span-6 sm:col-span-2 col-end-7 mb-1 sm:mb-4 flex items-center justify-center"
+  >
     Submit an entry <ArrowRight className="ml-2" size={16} />
   </a>
 )
 
 const Footer = () => (
-  <footer className="bottom-0 absolute w-full h-1/4 pl-3 bg-black text-white text-sm grid grid-cols-6 grid-rows-3 gap-1">
+  <footer className="bottom-0 absolute w-full h-1/4 sm:pl-3 bg-black text-white text-xs sm:text-sm grid grid-cols-6 grid-rows-3 gap-1">
     <FooterLinks />
     <SubmitButton />
     <Contributors />

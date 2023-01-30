@@ -15,7 +15,7 @@ const GlobeLayoutComponent = (props: Props) => {
   const entryOpen = router.pathname.startsWith(`/entry/`)
 
   return (
-    <>
+    <div className="min-w-full fixed inset-0 overflow-y-auto overflow-x-auto">
       <Header />
       <Sidebar />
       <div className="absolute w-full h-3/4">
@@ -40,7 +40,7 @@ const GlobeLayoutComponent = (props: Props) => {
         {children}
       </motion.div>
       <Footer />
-    </>
+    </div>
   )
 }
 
