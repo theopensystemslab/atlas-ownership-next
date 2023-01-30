@@ -70,7 +70,3 @@ a {
     @apply w-auto flex flex-col-reverse;
   }
 }
-
-h1 {
-  @apply font-bold text-2xl;
-}
