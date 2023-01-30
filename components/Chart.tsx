@@ -169,10 +169,19 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
   const [openIndex, setOpenIndex] = useState(0)
 
   const handleClick = (i: number) => {
-    if (open) {
+    if (openIndex === i) {
+      // if it's already open, close it
+      setOpen(!open);
+    } else if (open && openIndex !== i) {
+      // if another is open, just switch which is open
+      setOpenIndex(i);
+    } else if (!open) {
+      // if nothing is open, open the clicked one
+      setOpen(true);
       setOpenIndex(i);
     } else {
-      setOpen(!open);
+      // close by default ? 
+      setOpen(false);
     }
   }
 
