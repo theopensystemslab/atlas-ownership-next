@@ -26,15 +26,9 @@ const GlobeLayoutComponent = (props: Props) => {
 
   return (
     <>
-    <Sidebar />
-    <div className="min-w-full fixed inset-0 overflow-y-auto overflow-x-hidden">
-      <Header />
-      <div className="w-full h-screen max-h-[75vh] relative">
-        <MapboxGlobe />
-        <SubmitButton />
-      </div>
+      <Sidebar />
       <motion.div
-        className="h-full w-full sm:w-1/2 absolute top-0 right-0 bg-white overflow-y-auto no-scrollbar z-50"
+        className="h-full w-full sm:w-1/2 absolute top-0 bottom-0 right-0 bg-white overflow-y-auto no-scrollbar z-50"
         variants={{
           open: {
             x: "0%",
@@ -51,9 +45,14 @@ const GlobeLayoutComponent = (props: Props) => {
       >
         {children}
       </motion.div>
-
-      <Footer />
-    </div>
+      <div className="min-w-full fixed inset-0 overflow-y-auto overflow-x-hidden">
+        <Header />
+        <div className="w-full h-screen max-h-[75vh] relative">
+          <MapboxGlobe />
+          <SubmitButton />
+        </div>
+        <Footer />
+      </div>
     </>
   )
 }
