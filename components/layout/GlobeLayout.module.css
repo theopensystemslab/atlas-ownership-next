@@ -1,0 +1,33 @@
+.submitButton {
+  @apply flex items-center justify-center h-10 bg-white text-black;
+}
+
+@screen sm {
+  .submitButtonContainer {
+    @apply grid absolute bottom-0 right-0 w-full gap-4 pl-20 grid-cols-2;
+  }
+
+  .submitButton {
+    @apply col-start-2;
+  }
+}
+
+@screen md {
+  .submitButtonContainer {
+    @apply pl-20 grid-cols-5;
+  }
+
+  .submitButton {
+    @apply col-start-4 col-span-2;
+  }
+}
+
+@screen lg {
+  .submitButtonContainer {
+    @apply grid-cols-8;
+  }
+
+  .submitButton {
+    @apply col-start-7 col-span-2;
+  }
+}
