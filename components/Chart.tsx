@@ -6,6 +6,7 @@ import { useState } from "react"
 import { PatternClass, Term } from "../lib/types"
 import { Carousel } from "./carousel/Carousel"
 import { PatternIcon } from "./layout/ui/PatternIcon"
+import { Tag } from "./layout/ui/Tag"
 
 // TODO: Move to style utils
 // maps patternClass.name to custom color keys defined in tailwind.config.js
@@ -132,6 +133,11 @@ const ExpandableRow = (props: ExpandableRowProps) => {
             <p className="text-xs sm:text-sm">{term?.description}</p>
           </div>
         )}
+        {term?.legalMechanisms && (
+          <div className="mt-4 flex gap-4">
+            {term.legalMechanisms.map((mechanism: string) => <Tag key={mechanism} className={`${backgroundColorClasses[term.patternClassName]} bg-opacity-20`}>{mechanism}</Tag>)}
+          </div>
+        )}
       </div>
       {showCarousel && <Carousel data={carouselItems} title="Other places that use this pattern" cardClassNames={clsx(`${backgroundColorClasses[term.patternClassName]} bg-opacity-20`)} />}
     </div>
@@ -233,6 +239,7 @@ const Chart = (props: Props) => {
       type: _.capitalize(_.find(patterns, ['id', term.pattern?._ref])?.type) || term.rightsIntensity > 0 ? "Right" : "Obligation", // because pattern.type is not consistently populated
       strength: term.strength, // 1-5
       description: term.description,
+      legalMechanisms: term.termLegalMechanisms?.map((mechanism: Record<string, any>) => mechanism.name),
     }))
     .map((term: any) => ({
       meta: term.pattern,
@@ -243,6 +250,7 @@ const Chart = (props: Props) => {
       type: term.type,
       strength: term.strength,
       description: term.description,
+      legalMechanisms: term.legalMechanisms
     }))
     .sortBy('patternClassOrder', 'name')
     .value();
