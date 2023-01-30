@@ -2,6 +2,7 @@ import { ArrowRight } from "@carbon/icons-react"
 import { motion } from "framer-motion"
 import { useRouter } from "next/router"
 import { PropsWithChildren, ReactElement } from "react"
+import css from "./GlobeLayout.module.css"
 import Footer from "../Footer"
 import Header from "../Header"
 import MapboxGlobe from "../map/MapboxGlobe"
@@ -10,8 +11,8 @@ import Sidebar from "../sidebar/Sidebar"
 type Props = PropsWithChildren<{}>
 
 const SubmitButton = () => (
-  <div className="grid absolute bottom-0 right-0 w-full gap-4 pl-20 auto-cols-fr">
-    <a href="https://airtable.com/shru3ZGjdyhEGTzx6" target="_blank" rel="noreferrer" className="bg-white text-black flex items-center justify-center h-10 col-start-7 col-span-2">
+  <div className={css.submitButtonContainer}>
+    <a href="https://airtable.com/shru3ZGjdyhEGTzx6" target="_blank" rel="noreferrer" className={css.submitButton}>
       Submit an entry <ArrowRight className="ml-2" size={16} />
     </a>
   </div>
