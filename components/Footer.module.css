@@ -1,5 +1,5 @@
 .footer {
-  @apply w-full h-full pb-8 pt-16 px-20;
+  @apply w-full h-full pb-8 pt-16 px-12;
   @apply bg-black text-white text-sm;
   @apply grid grid-cols-1;
 }
@@ -47,7 +47,7 @@
   }
 
   .disclaimer {
-    @apply col-start-4 col-span-2 row-start-1;
+    @apply col-start-4 col-span-2 row-start-1 mr-8;
   }
 
   .contributors {
