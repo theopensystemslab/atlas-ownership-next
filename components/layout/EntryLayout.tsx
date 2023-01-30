@@ -4,7 +4,6 @@ import { ArrowRight, ArrowUpRight, Close } from "@carbon/icons-react"
 import Link from "next/link"
 import { useState } from "react"
 import { CarouselItem, Entry } from "../../lib/types"
-import Back from "../Back"
 import { Carousel } from "../carousel/Carousel"
 import Chart from "../Chart"
 import { Tag } from "./ui/Tag"
@@ -32,14 +31,12 @@ const EntryHeader = (entry?: Entry) => (
     className="h-80 p-8 pt-2 flex flex-col justify-between bg-center bg-cover"
   >
     <nav className="flex justify-between">
-      <Back>
-        <Link href="/">Back to map</Link>
-      </Back>
-      <Back>
-        <a>
-          <Close size={32} className="cursor-pointer" />
-        </a>
-      </Back>
+    <Link href="/">Back to map</Link>
+    <Link href="/">
+      <a>
+        <Close size={32} className="cursor-pointer" />
+      </a>
+    </Link>
     </nav>
     <div className="flex flex-row justify-between items-center">
       <h1 className="text-3xl sm:text-5xl w-2/3 sm:w-1/2">{entry?.name}</h1>
