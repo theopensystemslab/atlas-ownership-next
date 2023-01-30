@@ -172,7 +172,7 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
   }
 
   return (
-    <div className="m-4">
+    <div className="m-8">
       <div className="flex">
         <div className="flex-1 h-10 text-base sm:text-lg text-center text-black">Obligations</div>
         <div className="flex-1 h-10 text-base sm:text-lg text-center text-black">Rights</div>
