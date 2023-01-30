@@ -29,7 +29,7 @@ const EntryHeader = (entry?: Entry) => (
     // TODO: The sanity image pipeline could get us an optimized image here
     // https://www.sanity.io/docs/presenting-images
     style={{ backgroundImage: `url(${entry?.mainImage?.file?.asset?.url})` }}
-    className="h-80 p-4 pt-2 flex flex-col justify-between bg-center bg-cover"
+    className="h-80 p-8 pt-2 flex flex-col justify-between bg-center bg-cover"
   >
     <nav className="flex justify-between">
       <Back>
@@ -75,7 +75,7 @@ const References = (entry?: Entry) => (
 )
 
 const EntryDetails = (entry?: Entry) => (
-  <div className="bg-white text-black grid grid-cols-4 grid-rows-auto gap-x-4 gap-y-1 sm:gap-y-6 p-4">
+  <div className="bg-white text-black grid grid-cols-4 grid-rows-auto gap-x-4 gap-y-1 sm:gap-y-6 p-8">
     <EntryItem
       className="col-span-4 sm:col-span-2"
       heading={getFormattedTenureTypes(entry?.tenureType)}
@@ -123,7 +123,7 @@ export const EntryLayout = (props: EntryLayoutProps) => {
   const { entry, carouselItems } = props
   const [showRollup, setShowRollup] = useState(false)
 
-  const { width, height } = useWindowDimensions()
+  const { width } = useWindowDimensions()
 
   return (
     <div className="text-white">
@@ -167,6 +167,7 @@ export const EntryLayout = (props: EntryLayoutProps) => {
         </form>
       )}
       {entry?.tenureType && (
+        <div className="m-4">
         <Carousel
           data={carouselItems}
           title={`Other examples of ${getFormattedTenureTypes(
@@ -174,6 +175,7 @@ export const EntryLayout = (props: EntryLayoutProps) => {
           )}`}
           cardClassNames="bg-gray-200"
         />
+        </div>
       )}
       <a
         className="w-full bg-black flex py-4 justify-center"
