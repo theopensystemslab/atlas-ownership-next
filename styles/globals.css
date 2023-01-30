@@ -60,9 +60,15 @@ a {
   padding-right: 6px;
 }
 
-/* Display attribution beneath Mapbox logo */
 .mapboxgl-ctrl-bottom-left {
-  @apply flex flex-col-reverse;
+  @apply w-full flex justify-between flex-row-reverse;
+}
+
+@screen sm {
+  /* Display attribution beneath Mapbox logo */
+  .mapboxgl-ctrl-bottom-left {
+    @apply w-auto flex flex-col-reverse;
+  }
 }
 
 h1 {
