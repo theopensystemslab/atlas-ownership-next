@@ -10,6 +10,7 @@ import "mapbox-gl/dist/mapbox-gl.css"
 import { useRouter } from "next/router"
 import React, { useCallback, useEffect, useMemo } from "react"
 import Map, {
+  AttributionControl,
   GeoJSONSource,
   Layer,
   LayerProps,
@@ -198,6 +199,7 @@ const MapboxGlobe = () => {
       }}
       onRender={updateMarkers}
       onClick={onClick}
+      attributionControl={false}
       reuseMaps
     >
       <Source
@@ -207,12 +209,14 @@ const MapboxGlobe = () => {
         cluster={true}
         clusterMaxZoom={13}
         clusterRadius={150}
+        
       >
         <Layer {...clusterLayer} />
         <Layer {...clusterCountLayer} />
         <Layer {...unclusteredPointLayer} />
       </Source>
       <Markers entries={entries} />
+      <AttributionControl position="bottom-left"/>
     </Map>
   )
 }

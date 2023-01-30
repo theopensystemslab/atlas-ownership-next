@@ -60,6 +60,11 @@ a {
   padding-right: 6px;
 }
 
+/* Display attribution beneath Mapbox logo */
+.mapboxgl-ctrl-bottom-left {
+  @apply flex flex-col-reverse;
+}
+
 h1 {
   @apply font-bold text-2xl;
 }

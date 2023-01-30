@@ -1,13 +1,12 @@
 .footer {
-  @apply w-full bottom-0 absolute;
+  @apply w-full min-h-[50vh] h-full pb-8 pt-8;
   @apply bg-black text-white text-sm;
-  @apply min-h-[25vh] h-1/4;
-  @apply pl-12 pb-4 bg-black text-white text-sm grid grid-cols-6 grid-rows-3 gap-8;
 }
 
-/* @screen md {
+@screen md {
   .footer {
-    @apply pl-12 pb-4;
-    @apply grid grid-cols-6 grid-rows-3 gap-8;
+    @apply h-1/2;
+    @apply pl-20 pb-4;
+    @apply grid grid-cols-8 grid-rows-3 gap-4;
   }
-} */
+}
