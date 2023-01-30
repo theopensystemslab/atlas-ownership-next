@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { LogoTwitter, LogoGithub, ArrowRight } from "@carbon/icons-react"
-import Image from "next/image"
 import { trpc } from "@/lib/trpc"
+import css from "./Footer.module.css"
 
 const FooterLinks = () => {
   const pageLinks = [
@@ -34,7 +34,7 @@ const Contributors = () => {
   return (
     <div className ="row-span-2 col-span-4 mt-4">
       <b className="text-md mb-3 block">Contributors</b>
-      <div className="grid grid-cols-6 grid-rows-4 grid-flow-col">
+      <div className="grid grid-cols-6 grid-rows-3 grid-flow-col">
       { contributors?.map(contributor => <p key={contributor} className="text-xs mb-1">{contributor}</p>)}
       </div>
     </div>
@@ -99,7 +99,7 @@ const SubmitButton = () => (
 )
 
 const Footer = () => (
-  <footer className="bottom-0 absolute w-full h-1/4 pl-12 pb-4 bg-black text-white text-sm grid grid-cols-6 grid-rows-3 gap-8">
+  <footer className={css.footer}>
     <FooterLinks />
     <SubmitButton />
     <Contributors />
