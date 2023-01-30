@@ -9,3 +9,7 @@
     letter-spacing: -0.03em;
   }
 }
+
+.link {
+  @apply m-2
+}
