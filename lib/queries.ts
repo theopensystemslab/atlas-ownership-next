@@ -4,7 +4,16 @@ import { O, RA } from "./fp"
 import { trpc } from "./trpc"
 import { Entry } from "./types"
 
-export const entriesQuery = groq`*[_type == "entry"]{...,  entryRating-> { grade }, mainImage {..., file {..., asset-> } }, 'patterns': terms[].pattern->{ name } }`
+export const entriesQuery = groq`
+  *[_type == "entry"]
+  {
+    ...,  
+    entryRating-> { grade },
+    mainImage {..., file {..., asset-> } },
+    'patterns': terms[].pattern->{ name },
+    terms[]{ ..., termLegalMechanisms[]-> }
+  }`
+
 export const patternsQuery = groq`*[_type == "pattern"] {..., "iconUrl": icon.asset -> url} `
 export const patternClassesQuery = groq`*[_type == "patternClass"] | order(order)`
 export const patternsWithClassQuery = groq`
