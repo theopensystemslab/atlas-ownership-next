@@ -165,24 +165,10 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
   const { data: formattedTerms, entryId, showLabels } = props
   const gridCols = showLabels ? 8 : 5
 
-  const [open, setOpen] = useState(false)
-  const [openIndex, setOpenIndex] = useState(0)
+  const [openIndex, setOpenIndex] = useState<number | undefined>(undefined)
 
   const handleClick = (i: number) => {
-    if (openIndex === i) {
-      // if it's already open, close it
-      setOpen(!open);
-    } else if (open && openIndex !== i) {
-      // if another is open, just switch which is open
-      setOpenIndex(i);
-    } else if (!open) {
-      // if nothing is open, open the clicked one
-      setOpen(true);
-      setOpenIndex(i);
-    } else {
-      // close by default ? 
-      setOpen(false);
-    }
+    i === openIndex ? setOpenIndex(undefined) : setOpenIndex(i)
   }
 
   return (
@@ -223,10 +209,7 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
             }
             </div>
           </div>
-          {
-            open && openIndex === i &&
-            <ExpandableRow term={term} onClick={() => setOpen(false)} entryId={entryId} />
-          }
+          {openIndex === i && <ExpandableRow term={term} onClick={() => setOpenIndex(undefined)} entryId={entryId} />}
         </div>
       ))}
     </div>
