@@ -45,7 +45,7 @@ interface PatternNavProps {
 
 const PatternNav = ({ patternClasses, onClick, selectedPatternClass }: PatternNavProps) => (
   <>
-    <nav className="columns-9 h-10 gap-0 hidden lg:block">
+    <nav className="columns-8 h-10 gap-0 hidden lg:block">
       {patternClasses && patternClasses.map(patternClass =>
         <button
         key={patternClass.name}
