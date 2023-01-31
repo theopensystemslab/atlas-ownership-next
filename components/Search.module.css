@@ -1,5 +1,5 @@
 .searchRoot {
-  @apply flex items-stretch h-10 justify-center pointer-events-auto;
+  @apply flex items-stretch h-10 justify-center;
 }
 
 .searchRoot label {
@@ -7,7 +7,7 @@
 }
 
 .searchRoot input {
-  @apply pl-2 bg-transparent text-white text-sm sm:text-base;
+  @apply pl-2 bg-transparent text-white text-sm;
 }
 
 .searchRoot button {

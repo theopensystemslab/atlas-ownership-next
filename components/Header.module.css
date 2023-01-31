@@ -9,3 +9,14 @@
     letter-spacing: -0.03em;
   }
 }
+
+.link {
+  @apply hidden;
+}
+
+@screen md {
+
+  .link {
+    @apply m-2 block;
+  }
+}
