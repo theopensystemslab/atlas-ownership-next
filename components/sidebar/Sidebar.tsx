@@ -1,6 +1,7 @@
 import css from "./Sidebar.module.css"
 import { pipe } from "fp-ts/lib/function"
 import { motion } from "framer-motion"
+import capitalize from "lodash/capitalize"
 import theme from "tailwindcss/defaultTheme"
 import { A } from "../../lib/fp"
 import { trpc } from "../../lib/trpc"
@@ -132,7 +133,7 @@ const TenureTypeAccordion = () => {
       _id: tenureType,
       checked: tenureTypes.includes(tenureType),
       data: tenureType,
-      displayText: tenureType,
+      displayText: capitalize(tenureType),
       icon: getTenureTypeIcon(tenureType),
     })
   )

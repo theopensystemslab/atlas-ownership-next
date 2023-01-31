@@ -6,5 +6,5 @@ export const getFormattedEntryDates = (dates?: Entry["dates"]): string =>
     : "Unknown dates"
 
 export const getFormattedTenureTypes = (tenureType?: Entry["tenureType"]): string => tenureType ?
-  tenureType.map(type => TenureType[type]).join(" - ")
+  tenureType.map(type => TenureType[type]).join(", ")
   : "Unknown tenure type"
