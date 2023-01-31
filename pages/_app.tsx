@@ -1,6 +1,7 @@
 import * as Fathom from "fathom-client"
 import { NextPage } from "next"
 import type { AppProps } from "next/app"
+import Head from "next/head"
 import { useRouter } from "next/router"
 import { ReactElement, ReactNode, useEffect } from "react"
 import GlobeLayout from "../components/layout/GlobeLayout"
@@ -41,7 +42,13 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     };
   }, []);
 
-  return getLayout(<Component {...pageProps} />)
+  return getLayout(
+    <>
+      <Head>
+        <title>The Atlas of Ownership</title>
+      </Head>
+      <Component {...pageProps} />
+    </>)
 }
 
 export default trpc.withTRPC(MyApp as any)

@@ -1,5 +1,6 @@
 import { Page } from "@/lib/types"
 import { PortableText } from "@portabletext/react"
+import Head from "next/head"
 import React from "react"
 
 export const pageComponents = {
@@ -11,12 +12,15 @@ export const pageComponents = {
 }
 
 interface ContentPageProps {
-  page: Page
+  page?: Page
 }
 
 export const ContentPage = ({ page }: ContentPageProps) => {
   return (
     <div className="w-full sm:w-1/3">
+      <Head>
+        <title>{page?.title} - The Atlas of Ownership</title>
+      </Head>
       <h1 className="text-3xl sm:text-5xl font-semibold mb-12">
         {page?.title}
       </h1>

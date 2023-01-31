@@ -24,7 +24,7 @@ const patternClassLookup: Record<string, string> = {
 } as const;
 
 interface HeaderProps {
-  page: Page
+  page?: Page
 }
 
 const Header = ({ page }: HeaderProps) => (

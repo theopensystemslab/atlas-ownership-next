@@ -1,4 +1,4 @@
-import { CarouselItem } from './../../lib/types';
+import { CarouselItem, Page } from './../../lib/types';
 import { procedure, router } from "../trpc"
 import { sanityClient } from "@/lib/sanity.server"
 import {
@@ -70,7 +70,7 @@ export const appRouter = router({
       })
     )
     .query(
-      ({ input }): Promise<any> =>
+      ({ input }): Promise<Page> =>
         sanityClient.fetch(pageQuery(input?.pageSlug))
     ),
 })
