@@ -8,7 +8,7 @@ const AboutPage = () => {
 
   return (
     <div className="flex flex-col sm:flex-row">
-      <ContentPage page={aboutPage} />
+      <ContentPage page={aboutPage} title="About"/>
       <div className="w-full sm:w-2/3 relative sm:flex sm:items-center sm:justify-center h-80 sm:h-auto my-0">
         <Image
           src="/images/real-estate-value-diagram-reverse.svg"

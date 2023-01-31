@@ -13,13 +13,14 @@ export const pageComponents = {
 
 interface ContentPageProps {
   page?: Page
+  title?: string
 }
 
-export const ContentPage = ({ page }: ContentPageProps) => {
+export const ContentPage = ({ page, title }: ContentPageProps) => {
   return (
     <div className="w-full sm:w-1/3">
       <Head>
-        <title>{page?.title} - The Atlas of Ownership</title>
+        <title>{title || page?.title} - The Atlas of Ownership</title>
       </Head>
       <h1 className="text-3xl sm:text-5xl font-semibold mb-12">
         {page?.title}
