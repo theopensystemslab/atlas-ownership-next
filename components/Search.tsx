@@ -13,6 +13,7 @@ import { trpc } from "../lib/trpc"
 import { Entry } from "../lib/types"
 import { useClickAway } from "../lib/utils"
 import css from "./Search.module.css"
+import { motion } from "framer-motion"
 
 const SearchResult = ({
   entry,
@@ -31,10 +32,6 @@ const SearchResult = ({
         <div>
           <h1>{entry.name}</h1>
           <p>{truncate(entry.description, { length: 280, separator: " " })}</p>
-          {/* <div>
-        {entry.slug?.current && (
-        )}
-      </div> */}
         </div>
       </Link>
     </div>
@@ -46,6 +43,7 @@ const Search = () => {
 
   const [results, setResults] = useState<Entry[]>([])
   const [searchQuery, setSearchQuery] = useState("")
+  const [isOpen, setIsOpen] = useState(false)
 
   const { Portal } = usePortal({
     autoRemoveContainer: false,
@@ -88,7 +86,7 @@ const Search = () => {
   return (
     <div ref={rootRef}>
       <div className={css.searchRoot}>
-        <label>
+        <label className={css.searchLabel}>
           <SearchIcon size={24} color={"white"} />
         </label>
         <input
@@ -97,12 +95,38 @@ const Search = () => {
           type="text"
           onChange={handler}
           placeholder="Search the atlas"
+          className={css.searchInput}
         />
-        {/* <button>
-          <SettingsAdjust size={24} onClick={toggleSidebar} />
-        </button> */}
       </div>
-      {/* <button className="bg-white text-black px-6 h-auto">Search</button> */}
+      <div className="flex items-stretch h-10 mr-4 justify-end md:hidden">
+        <label className={css.searchLabel}>
+          <SearchIcon size={24} color={"white"} onClick={() => setIsOpen(!isOpen)} />
+        </label>
+        <motion.input
+          variants={{
+            open: {
+              width: "100%",
+              visibility: "visible",
+            },
+            closed: {
+              width: "0%",
+              visibility: "hidden",
+            },
+          }}
+          animate={isOpen ? "open" : "closed"}
+          initial="closed"
+          transition={{
+            duration: 1,
+          }}
+          ref={inputRef}
+          id="search"
+          type="text"
+          onChange={handler}
+          placeholder="Search the atlas"
+          className={css.searchInput}
+        >
+        </motion.input>
+      </div>
       {searchQuery.length > 0 && (
         <Portal>
           <div className={clsx(css.resultsRoot, "no-scrollbar")}>
