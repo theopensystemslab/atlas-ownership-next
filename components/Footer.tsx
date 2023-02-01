@@ -2,6 +2,7 @@ import Link from "next/link"
 import { LogoTwitter, LogoGithub } from "@carbon/icons-react"
 import { trpc } from "@/lib/trpc"
 import css from "./Footer.module.css"
+import Image from "next/image"
 
 const FooterLinks = () => {
   const pageLinks = [
@@ -34,7 +35,7 @@ const Contributors = () => {
   return (
     <div className={css.contributors}>
       <b className="text-md mb-3 block">Contributors</b>
-      <div className="grid grid-cols-auto grid-rows-6 grid-flow-col gap-1">
+      <div className="grid grid-cols-auto grid-rows-4 grid-flow-col gap-1">
       { contributors?.map(contributor => <p key={contributor}>{contributor}</p>)}
       </div>
     </div>
@@ -92,12 +93,22 @@ const Disclaimer = () => (
   </p>
 )
 
+const Logos = () => (
+  <div className="col-span-full flex items-center flex-wrap gap-y-1 gap-x-12 md:pr-20 justify-center md:justify-start">
+    <Image objectFit="contain" height="100" width="200" src="/logos/arts-council.png" alt="Arts Council"></Image>
+    <Image objectFit="contain" height="100" width="200" src="/logos/arts-council.png" alt="Arts Council"></Image>
+    <Image objectFit="contain" height="100" width="200" src="/logos/arts-council.png" alt="Arts Council"></Image>
+    <Image objectFit="contain" height="100" width="200" src="/logos/arts-council.png" alt="Arts Council"></Image>
+  </div>
+)
+
 const Footer = () => (
   <footer className={css.footer}>
     <FooterLinks />
     <Disclaimer />
     <Contributors />
     <SocialIcons />
+    <Logos />
   </footer>
 )
 

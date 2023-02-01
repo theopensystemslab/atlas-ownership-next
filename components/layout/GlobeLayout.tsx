@@ -47,7 +47,7 @@ const GlobeLayoutComponent = (props: Props) => {
       </motion.div>
       <div className="min-w-full fixed inset-0 overflow-y-auto overflow-x-hidden">
         <Header />
-        <div className="w-full h-screen max-h-[75vh] relative">
+        <div className="w-full h-screen max-h-[85vh] relative">
           <MapboxGlobe />
           <SubmitButton />
         </div>
