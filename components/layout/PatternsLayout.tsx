@@ -29,7 +29,11 @@ interface HeaderProps {
 
 const Header = ({ page }: HeaderProps) => (
   <header className="bg-gray-200 px-8 pb-6 text-black">
-    <h1 className="text-5xl mt-8 mb-8">{page?.title}</h1>
+    <h1 className="mt-8 mb-8" style={{
+      fontSize: "50px",
+      lineHeight: "52.5px",
+      letterSpacing: "-0.03em",
+    }}>{page?.title}</h1>
     <PortableText
       value={page?.content}
       components={pageComponents}
@@ -79,12 +83,12 @@ const PatternList = (props: { patternClass: PatternClass | undefined }) => {
   const { data: patternInfo, error: patternInfoError } = trpc.patternInfo.useQuery({ patternClassName: patternClass?.name || null })
   return (
     <section className="p-8 bg-white">
-      <p className="mb-4">{patternClass?.description}</p>
-      <h3 className="text-lg mb-4">Rights</h3>
+      <p className="mb-4 text-lg">{patternClass?.description}</p>
+      <h3 className="text-lg mb-4 font-semibold">Rights</h3>
       {patternInfo?.rights.map((pattern, i) => (
         <PatternItem key={`${pattern.name}-${i}`} pattern={pattern} patternClassName={patternClass?.name} highestCount={patternInfo?.rights[0].entryCount} />
       ))}
-      <h3 className="text-lg mb-4">Obligations</h3>
+      <h3 className="text-lg mb-4 font-semibold">Obligations</h3>
       {patternInfo?.obligations.map((pattern, i) => (
         <PatternItem key={`${pattern.name}-${i}`} pattern={pattern} patternClassName={patternClass?.name} reverse highestCount={patternInfo?.obligations[0].entryCount} />
       ))}
