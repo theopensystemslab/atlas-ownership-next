@@ -200,7 +200,7 @@ const ExpandableBarChartByPattern = (props: ExpandableBarChartByPatternProps) =>
                 style={{ gridColumn: `span ${term.strength || 1}` }}
                 onClick={() => handleClick(i)}
               >
-                {term.type === "Right" && <PatternIcon size="24" className="mr-2 text-black" pattern={{ iconUrl: term.pattern?.patternIconUrl }} />}
+                {term.type === "Right" && <PatternIcon size="24" className="mr-2 text-black" pattern={{ iconUrl: term.patternIconUrl }} />}
               </div>
             {showLabels &&
                 <div className="flex-1 h-10 text-black text-xs sm:text-sm flex items-center justify-start ml-3" style={{ gridColumn: showLabels ? `span ${term.strength ? 8 - term.strength : 7}` : `span ${term.strength ? 5 - term.strength : 4}` }}>
