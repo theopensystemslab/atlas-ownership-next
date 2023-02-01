@@ -1,8 +1,8 @@
 import { trpc } from "@/lib/trpc";
-import { Page, Pattern, PatternClass } from "@/lib/types"
+import { Page, Pattern, PatternClass, PatternInfo } from "@/lib/types"
 import { PortableText } from "@portabletext/react";
 import clsx from "clsx";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
 import { pageComponents } from "../ContentPage";
 import { PageNavbar } from "../PageNavbar";
 import { PatternIcon } from "./ui/PatternIcon";
@@ -74,9 +74,10 @@ const PatternNav = ({ patternClasses, onClick, selectedPatternClass }: PatternNa
   </>
 );
 
-const PatternList = (props: { patternClass: PatternClass | undefined }) => {
-  const { patternClass } = props;
-  const { data: patternInfo, error: patternInfoError } = trpc.patternInfo.useQuery({ patternClassName: patternClass?.name || null })
+const PatternList = (props: { patternClass: PatternClass | undefined, patternInfoList: PatternInfo[] | undefined }) => {
+  const { patternClass, patternInfoList } = props;  
+  const patternInfo = patternInfoList?.find(patternInfo => patternInfo.name === patternClass?.name);
+
   return (
     <section className="p-8 bg-white">
       <p className="mb-4">{patternClass?.description}</p>
@@ -117,15 +118,22 @@ const PatternItem = (props: { pattern: Pattern, patternClassName: string | undef
 
 export const PatternsLayout = (props: PatternsLayoutProps) => {
   const { data: patternsPage } = trpc.page.useQuery({ pageSlug: "patterns" })
+  const { data: patternInfoList, error: patternInfoListError } = trpc.patternInfoList.useQuery();
+
   const { patternClasses } = props;
   const [selectedPatternClass, setSelectedPatternClass] = useState<PatternClass | undefined>(patternClasses?.[0]);
+
+  useEffect(() => {
+    setSelectedPatternClass(patternClasses?.[0])
+  }, [patternClasses])
+  
 
   return (
     <div className="bg-gray-200 text-black z-20 fixed inset-0 overflow-y-auto">
       <PageNavbar variant="light" />
       <Header page={patternsPage}/>
       <PatternNav patternClasses={patternClasses} onClick={setSelectedPatternClass} selectedPatternClass={selectedPatternClass} />
-      <PatternList patternClass={selectedPatternClass} />
+      <PatternList patternClass={selectedPatternClass} patternInfoList={patternInfoList}/>
     </div>
   )
 }
