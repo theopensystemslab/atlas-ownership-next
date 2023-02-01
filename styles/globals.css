@@ -70,3 +70,15 @@ a {
     @apply w-auto flex flex-col-reverse;
   }
 }
+
+.title {
+  @apply text-2xl;
+}
+
+@screen sm {
+  .title {
+    font-size: 50px;
+    line-height: 52.5px;
+    letter-spacing: -0.03em;
+  }
+}
