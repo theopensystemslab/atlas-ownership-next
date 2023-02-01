@@ -86,10 +86,10 @@ export type Entry = {
 export enum TenureType {
   leasehold = "Leasehold",
   freehold = "Freehold",
-  communityLandTrust = "Community Land Trust",
+  communityLandTrust = "Community land trust",
   renting = "Renting",
-  collectiveOwnership = "Collective Ownership",
-  indigenousRecognition = "Indigenous Recognition",
+  collectiveOwnership = "Collective ownership",
+  indigenousRecognition = "Indigenous recognition",
   commons = "Commons",
   other = "Other",
 }

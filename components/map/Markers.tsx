@@ -10,6 +10,7 @@ import { MapboxEvent, Marker as MapboxMarker, Popup } from "react-map-gl"
 import { ArrowRight } from "@carbon/icons-react"
 import { useGetEntryFromSlug } from "@/lib/queries"
 import _ from "lodash"
+import { getFormattedTenureTypes } from "@/lib/entry"
 
 type MarkersProps = {
   entries: Entry[]
@@ -42,7 +43,7 @@ const Marker = (props: MarkerProps) => {
   const PopupContent = () => (
     <div className="w-[320px] sm:w-[500px]">
       <h2 className="text-lg sm:text-xl">{entry?.name}</h2>
-      <span className="text-base">{entry?.tenureType?.map((i) => _.capitalize(_.startCase(i))).join(", ")}</span>
+      <span className="text-base">{getFormattedTenureTypes(entry?.tenureType)}</span>
       {entry?.terms?.length && (
         <Chart
           rollupToPatternClass={true}
