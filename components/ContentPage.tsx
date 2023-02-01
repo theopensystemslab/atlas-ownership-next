@@ -22,7 +22,7 @@ export const ContentPage = ({ page, title }: ContentPageProps) => {
       <Head>
         <title>{title || page?.title} - The Atlas of Ownership</title>
       </Head>
-      <h1 className="text-3xl sm:text-5xl font-semibold mb-12">
+      <h1 className="title mb-12 sm:min-w-[40vw]">
         {page?.title}
       </h1>
       <div className="flex flex-col">

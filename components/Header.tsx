@@ -5,7 +5,7 @@ import Search from "./Search"
 const Header = () => (
   <header className="absolute z-10 w-full flex justify-between pointer-events-none text-sm">
     <div className="pl-16 pt-20 sm:pt-10 pr-5 w-3/4 sm:w-1/2 md:w-1/4 text-white">
-      <h1 className={css.title}>The Atlas of Ownership</h1>
+      <h1 className="title">The Atlas of Ownership</h1>
       <h2 className="text-sm sm:text-lg pt-3">
         A map of property rights and obligations across time and space
       </h2>
