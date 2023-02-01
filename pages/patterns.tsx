@@ -1,12 +1,29 @@
 import { PatternsLayout } from "@/components/layout/PatternsLayout"
+import { createProxySSGHelpers } from "@trpc/react-query/ssg"
+import { GetStaticProps, InferGetStaticPropsType } from "next"
 import Head from "next/head"
+import SuperJSON from "superjson"
 import NoopLayout from "../components/layout/NoopLayout"
-import { trpc } from "../lib/trpc"
+import { appRouter } from "../server/routers/_app"
 
-const PatternsPage = () => {
-  const { data: patternClasses, error: patternClassesError } =
-    trpc.patternClasses.useQuery()
+export const getStaticProps: GetStaticProps = async (context) => {
+  const ssg = await createProxySSGHelpers({
+    router: appRouter,
+    ctx: {},
+    transformer: SuperJSON, // optional - adds superjson serialization
+  })
+  const patternClasses = await ssg.patternClasses.fetch()
 
+  return {
+    props: {
+      patternClasses,
+    },
+  }
+}
+
+const PatternsPage = ({
+  patternClasses,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <>
       <Head>
