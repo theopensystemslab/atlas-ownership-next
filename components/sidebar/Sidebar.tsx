@@ -37,7 +37,6 @@ const Chevvy = (props: any) => (
       }}
     >
       {props?.open ? <ChevronLeft size={24} className="mr-1" /> : <ChevronRight size={24} className="mr-1" />}
-      <ToggleAllEntries />
     </motion.div>
   </div>
 )
@@ -51,8 +50,8 @@ const ToggleAllEntries = () => {
   }, [selection])
 
   return (
-    <div className="bg-white w-full pt-2 mr-1">
-      <label className="flex justify-between cursor-pointer" htmlFor="toggleAllEntries">
+    <>
+      <label className="flex justify-between items-center bg-white cursor-pointer pr-2 py-2" htmlFor="toggleAllEntries">
         <div className="ml-2">
           <p>All entries</p>
         </div>
@@ -68,7 +67,7 @@ const ToggleAllEntries = () => {
         onChange={deselectAll}
         checked={checked}
       />
-    </div>
+    </>
   )
 }
 
@@ -245,6 +244,7 @@ const Sidebar = () => {
       }}
     >
       <Chevvy onClick={toggleSidebar} open={isOpen} />
+      <ToggleAllEntries />
       <EntryTypeAccordion />
       <TenureTypeAccordion />
       <PatternClassAccordion />
