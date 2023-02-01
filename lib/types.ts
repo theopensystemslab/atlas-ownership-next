@@ -39,6 +39,12 @@ export type PatternClass = {
   }
 }
 
+export type PatternInfo = {
+  name: string,
+  rights: Pattern[]
+  obligations: Pattern[]
+}
+
 export type Reference = {
   name: string
   link: string

@@ -32,8 +32,9 @@ export const useGetEntryFromSlug = () => {
     )
 }
 
-export const patternInfoQuery = (patternClassName: string | null) => groq`
-  {
+export const patternInfoQuery = groq`
+  *[_type == "patternClass"] {
+    name,
     "rights": 
       *[_type == "pattern"] { 
         ..., 
@@ -41,7 +42,7 @@ export const patternInfoQuery = (patternClassName: string | null) => groq`
         "iconUrl": icon.asset -> url,
         "entryCount": count(* [_type == "entry" && references(^._id)])
       }
-      [class.name == "${patternClassName}" && type == "right" && entryCount > 0]
+      [class.name == ^.name && type == "right" && entryCount > 0]
       | order(entryCount desc),
     "obligations": 
       *[_type == "pattern"] {
@@ -50,9 +51,9 @@ export const patternInfoQuery = (patternClassName: string | null) => groq`
         "iconUrl": icon.asset -> url,
         "entryCount": count(* [_type == "entry" && references(^._id)])
       }
-      [class.name == "${patternClassName}" && type == "obligation" && entryCount > 0]
+      [class.name == ^.name && type == "obligation" && entryCount > 0]
       | order(entryCount desc),
-  }
+  } | order(order)
 `
 
 export const tenureTypeQuery = (

@@ -1,8 +1,8 @@
-import { trpc } from "@/lib/trpc"
-import { Page, Pattern, PatternClass } from "@/lib/types"
+import { Page, Pattern, PatternClass, PatternInfo } from "@/lib/types"
 import { PortableText } from "@portabletext/react"
 import clsx from "clsx"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { trpc } from "../../lib/trpc"
 import { pageComponents } from "../ContentPage"
 import { PageNavbar } from "../PageNavbar"
 import { PatternIcon } from "./ui/PatternIcon"
@@ -30,20 +30,17 @@ interface HeaderProps {
 
 const Header = ({ page }: HeaderProps) => (
   <header className="bg-gray-200 px-8 pb-6 text-black">
-<<<<<<< HEAD
-    <h1 className="mt-8 mb-8" style={{
-      fontSize: "50px",
-      lineHeight: "52.5px",
-      letterSpacing: "-0.03em",
-    }}>{page?.title}</h1>
-    <PortableText
-      value={page?.content}
-      components={pageComponents}
-    />
-=======
-    <h1 className="text-5xl mt-8 mb-8">{page?.title}</h1>
+    <h1
+      className="mt-8 mb-8"
+      style={{
+        fontSize: "50px",
+        lineHeight: "52.5px",
+        letterSpacing: "-0.03em",
+      }}
+    >
+      {page?.title}
+    </h1>
     <PortableText value={page?.content} components={pageComponents} />
->>>>>>> 47744eb (wip another ssg query)
   </header>
 )
 
@@ -104,10 +101,15 @@ const PatternNav = ({
   </>
 )
 
-const PatternList = (props: { patternClass: PatternClass | undefined }) => {
-  const { patternClass } = props
-  const { data: patternInfo, error: patternInfoError } =
-    trpc.patternInfo.useQuery({ patternClassName: patternClass?.name || null })
+const PatternList = (props: {
+  patternClass: PatternClass | undefined
+  patternInfoList: PatternInfo[] | undefined
+}) => {
+  const { patternClass, patternInfoList } = props
+  const patternInfo = patternInfoList?.find(
+    (patternInfo) => patternInfo.name === patternClass?.name
+  )
+
   return (
     <section className="p-8 bg-white">
       <p className="mb-4 text-lg">{patternClass?.description}</p>
@@ -195,6 +197,13 @@ export const PatternsLayout = (props: PatternsLayoutProps) => {
     PatternClass | undefined
   >(patternClasses?.[0])
 
+  useEffect(() => {
+    setSelectedPatternClass(patternClasses?.[0])
+  }, [patternClasses])
+
+  const { data: patternInfoList, error: patternInfoListError } =
+    trpc.patternInfoList.useQuery()
+
   return (
     <div className="bg-gray-200 text-black z-20 fixed inset-0 overflow-y-auto">
       <PageNavbar variant="light" />
@@ -204,7 +213,10 @@ export const PatternsLayout = (props: PatternsLayoutProps) => {
         onClick={setSelectedPatternClass}
         selectedPatternClass={selectedPatternClass}
       />
-      <PatternList patternClass={selectedPatternClass} />
+      <PatternList
+        patternClass={selectedPatternClass}
+        patternInfoList={patternInfoList}
+      />
     </div>
   )
 }
