@@ -5,9 +5,9 @@ import React from "react"
 
 export const pageComponents = {
   block: {
-    normal: ({ children }: { children?: React.ReactNode }) => <p className="mb-4">{children}</p>,
+    normal: ({ children }: { children?: React.ReactNode }) => <p className="mb-4 text-lg">{children}</p>,
     blockquote: ({ children }: { children?: React.ReactNode }) => <blockquote className="text-gray-400 mb-4">{children}</blockquote>,
-    h2: ({ children }: { children?: React.ReactNode }) => <h2 className="text-2xl mb-2 mt-8">{children}</h2>,
+    h2: ({ children }: { children?: React.ReactNode }) => <h2 className="mb-2 mt-8 font-semibold text-lg">{children}</h2>,
   }
 }
 
