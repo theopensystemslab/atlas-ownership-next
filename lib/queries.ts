@@ -74,3 +74,5 @@ export const entriesByPatternIdQuery = (
 export const contributorsQuery = groq`array::unique(*[_type == "entry" && defined(contributors)].contributors[].name)`
 
 export const pageQuery = (pageSlug: string | undefined) => groq`*[_type == "page" && slug == "${pageSlug}"][0]`
+
+export const footerLogoQuery = groq`*[_type == "footerLogo"] {..., logo { asset-> { url } }} | order(order)`;

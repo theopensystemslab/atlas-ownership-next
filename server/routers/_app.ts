@@ -11,6 +11,7 @@ import {
   tenureTypeQuery,
   contributorsQuery,
   pageQuery,
+  footerLogoQuery,
 } from "@/lib/queries"
 import { Entry, Pattern, PatternClass } from "@/lib/types"
 import { z } from "zod"
@@ -73,6 +74,9 @@ export const appRouter = router({
       ({ input }): Promise<Page> =>
         sanityClient.fetch(pageQuery(input?.pageSlug))
     ),
+  footerLogos: procedure.query(
+    (): Promise<any[]> => sanityClient.fetch(footerLogoQuery)
+  ),
 })
 
 // export type definition of API
