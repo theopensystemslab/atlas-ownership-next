@@ -99,7 +99,7 @@ const Logos = () => {
   return (
     <div className="col-span-full">
       <b className="text-md block mb-2">Thanks to</b>
-      <div className="flex items-center flex-wrap gap-y-1 gap-x-12 md:pr-20 justify-center md:justify-start">
+      <div className="flex items-center flex-wrap gap-y-1 gap-x-12 md:pr-20 justify-start">
         {
           footerLogos && footerLogos.map(footerLogo => (
             <Image key={footerLogo._id} objectFit="contain" height="100" width="200" src={footerLogo.logo.asset.url} alt={footerLogo.description}/>
