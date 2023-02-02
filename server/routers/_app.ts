@@ -1,4 +1,4 @@
-import { CarouselItem, Page } from './../../lib/types';
+import { CarouselItem, Page, PatternInfo } from './../../lib/types';
 import { procedure, router } from "../trpc"
 import { sanityClient } from "@/lib/sanity.server"
 import {
@@ -28,15 +28,9 @@ export const appRouter = router({
   patternsWithClass: procedure.query(
     (): Promise<Pattern[]> => sanityClient.fetch(patternsWithClassQuery)
   ),
-  patternInfo: procedure
-    .input(
-      z.object({
-        patternClassName: z.string().nullable(),
-      })
-    )
-    .query(
-      ({ input }): Promise<Record<"rights" | "obligations", Pattern[]>> =>
-        sanityClient.fetch(patternInfoQuery(input?.patternClassName))
+  patternInfoList: procedure.query(
+    (): Promise<PatternInfo[]> =>
+      sanityClient.fetch(patternInfoQuery)
     ),
   tenureType: procedure
     .input(
