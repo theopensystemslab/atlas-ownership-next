@@ -10,6 +10,7 @@ import { PatternIcon } from "./ui/PatternIcon"
 interface PatternsLayoutProps {
   patternClasses?: PatternClass[]
   patternsPageData?: Page
+  patternInfoList?: PatternInfo[]
 }
 
 const patternClassLookup: Record<string, string> = {
@@ -192,7 +193,7 @@ const PatternItem = (props: {
 }
 
 export const PatternsLayout = (props: PatternsLayoutProps) => {
-  const { patternClasses, patternsPageData } = props
+  const { patternClasses, patternsPageData, patternInfoList } = props
   const [selectedPatternClass, setSelectedPatternClass] = useState<
     PatternClass | undefined
   >(patternClasses?.[0])
@@ -200,9 +201,6 @@ export const PatternsLayout = (props: PatternsLayoutProps) => {
   useEffect(() => {
     setSelectedPatternClass(patternClasses?.[0])
   }, [patternClasses])
-
-  const { data: patternInfoList, error: patternInfoListError } =
-    trpc.patternInfoList.useQuery()
 
   return (
     <div className="bg-gray-200 text-black z-20 fixed inset-0 overflow-y-auto">

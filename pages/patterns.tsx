@@ -4,12 +4,13 @@ import { GetStaticProps, InferGetStaticPropsType } from "next"
 import Head from "next/head"
 import SuperJSON from "superjson"
 import NoopLayout from "../components/layout/NoopLayout"
-import { Page, PatternClass } from "../lib/types"
+import { Page, PatternClass, PatternInfo } from "../lib/types"
 import { appRouter } from "../server/routers/_app"
 
 export const getStaticProps: GetStaticProps<{
   patternClasses: PatternClass[]
   patternsPageData: Page
+  patternInfoList: PatternInfo[]
 }> = async (context) => {
   const ssg = await createProxySSGHelpers({
     router: appRouter,
@@ -19,11 +20,13 @@ export const getStaticProps: GetStaticProps<{
 
   const patternClasses = await ssg.patternClasses.fetch()
   const patternsPageData = await ssg.page.fetch({ pageSlug: "patterns" })
+  const patternInfoList = await ssg.patternInfoList.fetch()
 
   return {
     props: {
       patternClasses,
       patternsPageData,
+      patternInfoList,
     },
   }
 }
@@ -31,7 +34,7 @@ export const getStaticProps: GetStaticProps<{
 const PatternsPage = (
   props: InferGetStaticPropsType<typeof getStaticProps>
 ) => {
-  const { patternClasses, patternsPageData } = props
+  const { patternClasses, patternsPageData, patternInfoList } = props
   return (
     <>
       <Head>
@@ -40,6 +43,7 @@ const PatternsPage = (
       <PatternsLayout
         patternClasses={patternClasses}
         patternsPageData={patternsPageData}
+        patternInfoList={patternInfoList}
       />
     </>
   )
