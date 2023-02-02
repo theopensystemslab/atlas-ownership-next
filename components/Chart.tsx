@@ -228,7 +228,7 @@ const Chart = (props: Props) => {
     .map((term: any) => ({
       pattern: _.find(patterns, ['_id', term.pattern?._ref]),
       patternName: _.find(patterns, ['_id', term.pattern?._ref])?.name,
-      type: _.capitalize(_.find(patterns, ['id', term.pattern?._ref])?.type) || term.rightsIntensity > 0 ? "Right" : "Obligation", // because pattern.type is not consistently populated
+      type: _.capitalize(_.find(patterns, ['_id', term.pattern?._ref])?.type) || term.rightsIntensity > 0 ? "Right" : "Obligation", // because pattern.type is not consistently populated
       strength: term.strength, // 1-5
       description: term.description,
       legalMechanisms: term.termLegalMechanisms?.map((mechanism: Record<string, any>) => mechanism.name),
