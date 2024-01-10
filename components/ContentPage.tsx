@@ -1,19 +1,40 @@
-import { Page } from "@/lib/types"
-import { PortableText } from "@portabletext/react"
-import Head from "next/head"
-import React from "react"
+import { Page } from "@/lib/types";
+import { ArrowUpRight } from "@carbon/icons-react";
+import { PortableText, PortableTextComponents } from "@portabletext/react";
+import Head from "next/head";
+import React from "react";
 
-export const pageComponents = {
+export const pageComponents: PortableTextComponents = {
   block: {
-    normal: ({ children }: { children?: React.ReactNode }) => <p className="mb-4 text-lg">{children}</p>,
-    blockquote: ({ children }: { children?: React.ReactNode }) => <blockquote className="text-gray-400 mb-4">{children}</blockquote>,
-    h2: ({ children }: { children?: React.ReactNode }) => <h2 className="mb-2 mt-8 font-semibold text-lg">{children}</h2>,
-  }
-}
+    normal: ({ children }) => <p className="mb-4 text-lg">{children}</p>,
+    blockquote: ({ children }) => (
+      <blockquote className="text-gray-400 mb-4">{children}</blockquote>
+    ),
+    h2: ({ children }) => (
+      <h2 className="mb-2 mt-8 font-semibold text-lg">{children}</h2>
+    ),
+  },
+  marks: {
+    link: ({ children, value }) => {
+      return (
+        <a
+          href={value.href}
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center space-x-1 underline"
+        >
+          <span>{children}</span>
+
+          <ArrowUpRight />
+        </a>
+      );
+    },
+  },
+};
 
 interface ContentPageProps {
-  page?: Page
-  title?: string
+  page?: Page;
+  title?: string;
 }
 
 export const ContentPage = ({ page, title }: ContentPageProps) => {
@@ -22,15 +43,10 @@ export const ContentPage = ({ page, title }: ContentPageProps) => {
       <Head>
         <title>{title || page?.title} - The Atlas of Ownership</title>
       </Head>
-      <h1 className="title mb-12 sm:min-w-[40vw]">
-        {page?.title}
-      </h1>
+      <h1 className="title mb-12 sm:min-w-[40vw]">{page?.title}</h1>
       <div className="flex flex-col">
-        <PortableText
-          value={page?.content}
-          components={pageComponents}
-        />
+        <PortableText value={page?.content} components={pageComponents} />
       </div>
     </div>
-  )
-}
+  );
+};
