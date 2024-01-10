@@ -9,8 +9,10 @@ const FooterLinks = () => {
     { title: "About", path: "/about" },
     { title: "Explore the patterns", path: "/patterns" },
     { title: "Licence", path: "/licence" },
+    { title: "Accessibility", path: "/accessibility" },
     { title: "Terms of use", path: "/terms-of-use" },
   ]
+
   return (
     <div className={css.footerLinkContainer}>
       <div className={css.footerLinks}>
@@ -19,10 +21,19 @@ const FooterLinks = () => {
             <a>{link.title}</a>
           </Link>
         ))}
-        <a href="https://airtable.com/shru3ZGjdyhEGTzx6" target="_blank" rel="noreferrer">
+        <a
+          href="https://airtable.com/shru3ZGjdyhEGTzx6"
+          target="_blank"
+          rel="noreferrer"
+        >
           Submit an entry
         </a>
-        <a href="mailto:atlasofownership@opensystemslab.io">
+
+        <a
+          href="https://form.typeform.com/to/j262YI8p"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Contact us
         </a>
       </div>
@@ -31,12 +42,15 @@ const FooterLinks = () => {
 }
 
 const Contributors = () => {
-  const { data: contributors, error: contributorsError } = trpc.contributors.useQuery()
+  const { data: contributors, error: contributorsError } =
+    trpc.contributors.useQuery()
   return (
     <div className={css.contributors}>
       <b className="text-md mb-3 block">Contributors</b>
       <div className="grid grid-cols-auto grid-rows-4 grid-flow-col gap-1">
-      { contributors?.map(contributor => <p key={contributor}>{contributor}</p>)}
+        {contributors?.map((contributor) => (
+          <p key={contributor}>{contributor}</p>
+        ))}
       </div>
     </div>
   )
@@ -55,27 +69,27 @@ const OSLLogo = () => (
 
 const SocialIcons = () => {
   const socialLinks = [
-    { 
-      url: "https://twitter.com/OpenSystemsLab", 
-      component: <LogoTwitter size={32} />
+    {
+      url: "https://twitter.com/OpenSystemsLab",
+      component: <LogoTwitter size={32} />,
     },
-    { 
-      url: "https://github.com/theopensystemslab", 
-      component: <LogoGithub size={32} />
+    {
+      url: "https://github.com/theopensystemslab",
+      component: <LogoGithub size={32} />,
     },
-    { 
-      url: "https://www.opensystemslab.io/", 
-      component: <OSLLogo />
+    {
+      url: "https://www.opensystemslab.io/",
+      component: <OSLLogo />,
     },
   ]
-  
+
   return (
     <div className={css.socialIcons}>
-      { socialLinks.map((link, i) => (
-        <a 
-          key={`social-link-${i + 1}`} 
-          href={link.url} 
-          target="_blank" 
+      {socialLinks.map((link, i) => (
+        <a
+          key={`social-link-${i + 1}`}
+          href={link.url}
+          target="_blank"
           rel="noreferrer"
           className="text-white hover:text-gray-500"
         >
@@ -94,17 +108,23 @@ const Disclaimer = () => (
 )
 
 const Logos = () => {
-  const { data: footerLogos } = trpc.footerLogos.useQuery();
+  const { data: footerLogos } = trpc.footerLogos.useQuery()
 
   return (
     <div className="col-span-full">
       <b className="text-md block mb-2">Thanks to</b>
       <div className="flex items-center flex-wrap gap-y-1 gap-x-12 md:pr-20 justify-start">
-        {
-          footerLogos && footerLogos.map(footerLogo => (
-            <Image key={footerLogo._id} objectFit="contain" height="100" width="200" src={footerLogo.logo.asset.url} alt={footerLogo.description}/>
-          ))
-        }
+        {footerLogos &&
+          footerLogos.map((footerLogo) => (
+            <Image
+              key={footerLogo._id}
+              objectFit="contain"
+              height="100"
+              width="200"
+              src={footerLogo.logo.asset.url}
+              alt={footerLogo.description}
+            />
+          ))}
       </div>
     </div>
   )

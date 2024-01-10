@@ -1,5 +1,3 @@
-import { PortableTextBlockComponent } from "@portabletext/react"
-
 export type Geopoint = {
   lat: number
   lng: number
@@ -40,7 +38,7 @@ export type PatternClass = {
 }
 
 export type PatternInfo = {
-  name: string,
+  name: string
   rights: Pattern[]
   obligations: Pattern[]
 }
