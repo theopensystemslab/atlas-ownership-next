@@ -9,8 +9,10 @@ const FooterLinks = () => {
     { title: "About", path: "/about" },
     { title: "Explore the patterns", path: "/patterns" },
     { title: "Licence", path: "/licence" },
+    { title: "Accessibility", path: "/accessibility" },
     { title: "Terms of use", path: "/terms-of-use" },
   ];
+
   return (
     <div className={css.footerLinkContainer}>
       <div className={css.footerLinks}>

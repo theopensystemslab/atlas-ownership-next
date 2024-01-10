@@ -21,7 +21,7 @@ export const pageComponents: PortableTextComponents = {
           href={value.href}
           target="_blank"
           rel="noreferrer"
-          className="flex items-center space-x-1 underline"
+          className="inline-flex items-center space-x-1 underline"
         >
           <span>{children}</span>
 
