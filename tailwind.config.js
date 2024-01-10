@@ -16,6 +16,7 @@ module.exports = {
         stewardship: 'rgb(var(--color-stewardship) / <alpha-value>)',
         use: 'rgb(var(--color-use) / <alpha-value>)',
         access: 'rgb(var(--color-access) / <alpha-value>)',
+        safety: "#ECE81A",
       },
     },
   },

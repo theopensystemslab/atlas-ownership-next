@@ -1,6 +1,6 @@
-import Link from "next/link"
-import css from "./Header.module.css"
-import Search from "./Search"
+import Link from "next/link";
+import css from "./Header.module.css";
+import Search from "./Search";
 
 const Header = () => (
   <header className="absolute z-10 w-full flex justify-between pointer-events-none text-sm">
@@ -10,19 +10,21 @@ const Header = () => (
         A map of property rights and obligations across time and space
       </h2>
       <Link href="/about">
-        <a className="pointer-events-auto mt-2 text-sm sm:text-lg opacity-75 underline hover:opacity-100">About</a>
+        <a className="pointer-events-auto mt-2 text-sm sm:text-lg opacity-75 underline hover:opacity-100">
+          About
+        </a>
       </Link>
     </div>
     <div className="h-fit mt-4 flex gap-10 pointer-events-auto text-white">
       <Link href="/patterns">
         <a className={css.link}>Patterns</a>
-        </Link>
+      </Link>
       <Link href="/about">
         <a className={css.link}>About</a>
       </Link>
       <Search />
     </div>
   </header>
-)
+);
 
-export default Header
+export default Header;
