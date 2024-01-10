@@ -1,6 +1,6 @@
-import Link from "next/link";
-import css from "./Header.module.css";
-import Search from "./Search";
+import Link from "next/link"
+import css from "./Header.module.css"
+import Search from "./Search"
 
 const Header = () => (
   <header className="absolute z-10 w-full flex justify-between pointer-events-none text-sm">
@@ -25,6 +25,6 @@ const Header = () => (
       <Search />
     </div>
   </header>
-);
+)
 
-export default Header;
+export default Header

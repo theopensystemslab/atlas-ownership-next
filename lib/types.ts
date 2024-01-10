@@ -1,91 +1,91 @@
 export type Geopoint = {
-  lat: number;
-  lng: number;
-};
+  lat: number
+  lng: number
+}
 
 export type Location = {
-  geopoint: Geopoint;
-  region: string;
-};
+  geopoint: Geopoint
+  region: string
+}
 
-export type IntensityRange = 0 | 1 | 2 | 3 | 4 | 5;
+export type IntensityRange = 0 | 1 | 2 | 3 | 4 | 5
 
 export type Term = {
-  description: string;
-  pattern: Pattern;
-  rightsIntensity?: IntensityRange;
-  obligationIntensity?: IntensityRange;
-  strength: IntensityRange;
-};
+  description: string
+  pattern: Pattern
+  rightsIntensity?: IntensityRange
+  obligationIntensity?: IntensityRange
+  strength: IntensityRange
+}
 
 export type Pattern = {
-  _id: string;
-  name: string;
-  description: string;
-  class: PatternClass;
-  entryCount?: number;
-  type: "right" | "obligation";
-  iconUrl?: string;
-};
+  _id: string
+  name: string
+  description: string
+  class: PatternClass
+  entryCount?: number
+  type: "right" | "obligation"
+  iconUrl?: string
+}
 
 export type PatternClass = {
-  name: string;
-  description: string;
-  order: number;
+  name: string
+  description: string
+  order: number
   color: {
-    hex: string;
-  };
-};
+    hex: string
+  }
+}
 
 export type PatternInfo = {
-  name: string;
-  rights: Pattern[];
-  obligations: Pattern[];
-};
+  name: string
+  rights: Pattern[]
+  obligations: Pattern[]
+}
 
 export type Reference = {
-  name: string;
-  link: string;
-  source: string;
-  _key: string;
-};
+  name: string
+  link: string
+  source: string
+  _key: string
+}
 
 export type Tag = {
-  label: string;
-  value: string;
-};
+  label: string
+  value: string
+}
 
 export type Entry = {
-  _id?: string;
-  name?: string;
-  description?: string;
-  location?: Location;
+  _id?: string
+  name?: string
+  description?: string
+  location?: Location
   dates?: {
-    start?: string;
-    end?: string;
-  };
+    start?: string
+    end?: string
+  }
   mainImage?: {
-    source?: string;
-    credit?: string;
+    source?: string
+    credit?: string
     file?: {
       asset?: {
-        url?: string;
-      };
-    };
-  };
-  references?: Reference[];
+        url?: string
+      }
+    }
+  }
+  references?: Reference[]
   slug?: {
-    current: string;
-  };
-  terms?: Term[];
-  patterns?: Pattern[];
-  tenureType?: Array<keyof typeof TenureType>;
+    current: string
+  }
+  terms?: Term[]
+  patterns?: Pattern[]
+  tenureType?: Array<keyof typeof TenureType>
   entryRating?: {
-    grade: string;
-  };
-  tags?: Tag[];
-  type?: string;
-};
+    grade: string
+  }
+  tags?: Tag[]
+  type?: string
+}
 
 export enum TenureType {
   leasehold = "Leasehold",
@@ -98,15 +98,15 @@ export enum TenureType {
   other = "Other",
 }
 
-export type CarouselItem = Pick<Entry, "dates" | "location" | "name" | "slug">;
+export type CarouselItem = Pick<Entry, "dates" | "location" | "name" | "slug">
 
 export type EntryType = {
-  title: string;
-  value: string;
-};
+  title: string
+  value: string
+}
 
 export type Page = {
-  slug?: string;
-  title?: string;
-  content?: any[];
-};
+  slug?: string
+  title?: string
+  content?: any[]
+}

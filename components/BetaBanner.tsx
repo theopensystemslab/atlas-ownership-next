@@ -1,8 +1,8 @@
-import { Close } from "@carbon/icons-react";
-import { useState } from "react";
+import { Close } from "@carbon/icons-react"
+import { useState } from "react"
 
 const BetaBanner = () => {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(true)
 
   return open ? (
     <div className="flex justify-between py-1.5 px-2 text-sm w-full bg-safety">
@@ -38,7 +38,7 @@ const BetaBanner = () => {
         </span>
       </div>
     </div>
-  ) : null;
-};
+  ) : null
+}
 
-export default BetaBanner;
+export default BetaBanner

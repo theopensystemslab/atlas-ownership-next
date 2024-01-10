@@ -1,8 +1,8 @@
-import { Page } from "@/lib/types";
-import { ArrowUpRight } from "@carbon/icons-react";
-import { PortableText, PortableTextComponents } from "@portabletext/react";
-import Head from "next/head";
-import React from "react";
+import { Page } from "@/lib/types"
+import { ArrowUpRight } from "@carbon/icons-react"
+import { PortableText, PortableTextComponents } from "@portabletext/react"
+import Head from "next/head"
+import React from "react"
 
 export const pageComponents: PortableTextComponents = {
   block: {
@@ -27,14 +27,14 @@ export const pageComponents: PortableTextComponents = {
 
           <ArrowUpRight />
         </a>
-      );
+      )
     },
   },
-};
+}
 
 interface ContentPageProps {
-  page?: Page;
-  title?: string;
+  page?: Page
+  title?: string
 }
 
 export const ContentPage = ({ page, title }: ContentPageProps) => {
@@ -48,5 +48,5 @@ export const ContentPage = ({ page, title }: ContentPageProps) => {
         <PortableText value={page?.content} components={pageComponents} />
       </div>
     </div>
-  );
-};
+  )
+}

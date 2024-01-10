@@ -1,8 +1,8 @@
-import Link from "next/link";
-import { LogoTwitter, LogoGithub } from "@carbon/icons-react";
-import { trpc } from "@/lib/trpc";
-import css from "./Footer.module.css";
-import Image from "next/image";
+import Link from "next/link"
+import { LogoTwitter, LogoGithub } from "@carbon/icons-react"
+import { trpc } from "@/lib/trpc"
+import css from "./Footer.module.css"
+import Image from "next/image"
 
 const FooterLinks = () => {
   const pageLinks = [
@@ -11,7 +11,7 @@ const FooterLinks = () => {
     { title: "Licence", path: "/licence" },
     { title: "Accessibility", path: "/accessibility" },
     { title: "Terms of use", path: "/terms-of-use" },
-  ];
+  ]
 
   return (
     <div className={css.footerLinkContainer}>
@@ -38,12 +38,12 @@ const FooterLinks = () => {
         </a>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const Contributors = () => {
   const { data: contributors, error: contributorsError } =
-    trpc.contributors.useQuery();
+    trpc.contributors.useQuery()
   return (
     <div className={css.contributors}>
       <b className="text-md mb-3 block">Contributors</b>
@@ -53,8 +53,8 @@ const Contributors = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
 const OSLLogo = () => (
   <div className="h-5 w-5 mt-0.5">
@@ -65,7 +65,7 @@ const OSLLogo = () => (
       />
     </svg>
   </div>
-);
+)
 
 const SocialIcons = () => {
   const socialLinks = [
@@ -81,7 +81,7 @@ const SocialIcons = () => {
       url: "https://www.opensystemslab.io/",
       component: <OSLLogo />,
     },
-  ];
+  ]
 
   return (
     <div className={css.socialIcons}>
@@ -97,18 +97,18 @@ const SocialIcons = () => {
         </a>
       ))}
     </div>
-  );
-};
+  )
+}
 
 const Disclaimer = () => (
   <p className={css.disclaimer}>
     The Atlas of Ownership is maintained by Open Systems Lab, non profit company
     9152368 registered in England and Wales
   </p>
-);
+)
 
 const Logos = () => {
-  const { data: footerLogos } = trpc.footerLogos.useQuery();
+  const { data: footerLogos } = trpc.footerLogos.useQuery()
 
   return (
     <div className="col-span-full">
@@ -127,8 +127,8 @@ const Logos = () => {
           ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
 const Footer = () => (
   <footer className={css.footer}>
@@ -138,6 +138,6 @@ const Footer = () => (
     <SocialIcons />
     <Logos />
   </footer>
-);
+)
 
-export default Footer;
+export default Footer
