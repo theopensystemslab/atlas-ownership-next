@@ -5,7 +5,7 @@ const BetaBanner = () => {
   const [open, setOpen] = useState(true)
 
   return open ? (
-    <div className="flex justify-between py-1.5 px-2 text-sm w-full bg-safety">
+    <div className="flex justify-between py-[0.5rem] px-2 text-base w-full bg-safety">
       <div>
         <span className="font-bold ml-12">BETA</span>
         <span className="ml-2">{`This is a prototype. `}</span>
