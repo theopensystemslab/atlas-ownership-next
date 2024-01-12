@@ -1,4 +1,4 @@
-import { Close } from "@carbon/icons-react"
+import { ArrowUpRight, Close } from "@carbon/icons-react"
 import { useState } from "react"
 
 const BetaBanner = () => {
@@ -18,16 +18,31 @@ const BetaBanner = () => {
           >
             Register your support
           </a>
-          {` and `}
+        </span>
+        <span>
+          {` and share your `}
           <a
             className="underline"
             href="https://form.typeform.com/to/j262YI8p"
             target="_blank"
             rel="noopener noreferrer"
           >
-            share your feedback
+            feedback
           </a>
-          {`.`}
+          {`. `}
+        </span>
+        <span>
+          <a
+            // className="inline-flex items-center space-x-1 underline"
+            href="https://about.atlasofownership.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="inline-flex underline items-center">
+              {`Find out more about how you can help build the Atlas`}
+              <ArrowUpRight />
+            </span>
+          </a>
         </span>
       </div>
       <div>
