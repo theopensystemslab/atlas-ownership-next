@@ -39,7 +39,7 @@ const BetaBanner = () => {
             rel="noopener noreferrer"
           >
             <span className="inline-flex underline items-center">
-              {`Find out more about how you can help build the Atlas`}
+              {`Find out more about how to support the Atlas of Ownership `}
               <ArrowUpRight />
             </span>
           </a>
