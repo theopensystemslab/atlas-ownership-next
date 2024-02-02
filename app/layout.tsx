@@ -41,4 +41,5 @@ export const metadata = {
     cardType: "summary_large_image",
   },
 }
+
 export default RootLayout
