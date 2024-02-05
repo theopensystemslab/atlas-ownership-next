@@ -1,11 +1,23 @@
 import { Entry, TenureType } from "./types"
 
-export const getFormattedEntryDates = (dates?: Entry["dates"]): string =>
-  dates?.start
-    ? new Date(Date.parse(dates.start)).getFullYear() +
-      " - " +
-      (dates.end ? new Date(Date.parse(dates.end)).getFullYear() : "Present")
-    : "Unknown dates"
+const formatYear = (year: number): string =>
+  year < 0 ? `${Math.abs(year)} BCE` : year.toString()
+
+export const getFormattedEntryDates = (dates?: {
+  startYear?: number
+  endYear?: number
+}): string => {
+  if (dates?.startYear !== null && typeof dates?.startYear !== "undefined") {
+    const startYearFormatted = formatYear(dates.startYear)
+    const endYearFormatted =
+      dates.endYear !== null && typeof dates.endYear !== "undefined"
+        ? formatYear(dates.endYear)
+        : "Present"
+    return `${startYearFormatted} - ${endYearFormatted}`
+  } else {
+    return "Unknown dates"
+  }
+}
 
 export const getFormattedTenureTypes = (
   tenureType?: Entry["tenureType"]

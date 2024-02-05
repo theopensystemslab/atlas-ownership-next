@@ -66,8 +66,8 @@ export type Entry = {
   content?: PortableTextBlock[]
   location?: Location
   dates?: {
-    start?: string
-    end?: string
+    startYear?: number
+    endYear?: number
   }
   mainImage?: {
     source?: string
