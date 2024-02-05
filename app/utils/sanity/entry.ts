@@ -4,7 +4,7 @@ export const getFormattedEntryDates = (dates?: Entry["dates"]): string =>
   dates?.start
     ? new Date(Date.parse(dates.start)).getFullYear() +
       " - " +
-      (dates.end ? new Date(Date.parse(dates.end)).getFullYear() : "")
+      (dates.end ? new Date(Date.parse(dates.end)).getFullYear() : "Present")
     : "Unknown dates"
 
 export const getFormattedTenureTypes = (
